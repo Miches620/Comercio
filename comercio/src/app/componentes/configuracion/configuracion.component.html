@@ -1,0 +1,113 @@
+<section id="configurar">
+    <div class="container mt-3">
+      <h3 class="text-center">Configuración</h3>
+      <div class="config-header">
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#marcaModal">Agregar Marca</button>
+        <button type="button" class="btn btn-outline-primary">Agregar Producto</button>
+        <button type="button" class="btn btn-outline-primary">Agregar Proveedor</button>
+      </div>
+      <div class="config-title">
+              <h5 class="config-title">Ingresar Producto</h5>
+            </div>
+            <div class="config-body">
+            <form>
+              <div class="mb-3">
+                <label for="tipoDeProducto" class="form-label">Tipo de Producto</label>
+                <select class="form-select" id="tipoDeProducto" required>
+                  <option selected disabled value="">Seleccione Producto</option>
+                  <option *ngFor="let item of producto">{{item.nombre}}</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="codigoProducto" class="form-label">Código del Producto</label>
+                <input type="text" class="form-control" id="codigoProducto">
+              </div>
+              <div class="mb-3">
+                <label for="cantidadProducto" class="form-label">Cantidad</label>
+                <input type="number" class="form-control" id="cantidadProducto">
+              </div>
+              <div class="mb-3">
+                <label for="vencimientoProducto" class="form-label">Vencimiento</label>
+                <input type="date" class="form-control" id="vencimientoProducto">
+              </div>
+              <div class="mb-3">
+                <label for="marcaProducto" class="form-label">Marca</label>
+                <select class="form-select" id="marcaProducto" required>
+                  <option selected disabled value="">Seleccione Marca</option>
+                  <option *ngFor="let item of marca">{{item.nombre}}</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="proveedorProducto" class="form-label">Proveedor</label>
+                <select class="form-select" id="proveedorProducto" required>
+                  <option selected disabled value="">Seleccione Proveedor</option>
+                  <option *ngFor="let item of proveedor">{{item.nombre}}</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="costoProducto" class="form-label">Costo</label>
+                <input type="number" class="form-control" id="costoProducto">
+              </div>
+              <div class="mb-3">
+                <label for="margenProducto" class="form-label">Ganancia (%)</label>
+                <input type="number" class="form-control" id="margenProducto">
+              </div>
+              <div class="mb-3">
+                <label for="codigoDeBarrasProducto" class="form-label">Código de Barras</label>
+                <input type="number" class="form-control" id="codigoDeBarrasProducto">
+              </div>
+              <div class="mb-3">
+                <label for="imagenProducto" class="form-label">Imagen</label>
+                <input type="file" class="form-control" id="imagenProducto">
+              </div>
+              <button type="submit" class="btn btn-primary">Actualizar Stock</button>
+            </form>
+            <table class="table">
+              <thead class="table-dark">
+                <th scope="col">ID</th>
+                <th scope="col">Producto</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Vencimiento</th>
+                <th scope="col">Proveedor</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Costo</th>
+                <th scope="col">Ganancia(%)</th>
+                <th scope="col">Cod. Barras</th>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row">01</td>
+                  <td scope="row">pañales</td>
+                  <td scope="row">5</td>
+                  <td scope="row">-</td>
+                  <td scope="row">Manolo SRL</td>
+                  <td scope="row">Pampers</td>
+                  <td scope="row">560</td>
+                  <td scope="row">4</td>
+                  <td scope="row">125432432432</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+    </div>
+  </section>
+
+  <div id="modalMarca" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nueva Marca</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="mb-3">
+          <label for="nuevaMarcaProducto" class="form-label">Ingrese el nombre de la Marca:</label>
+          <input type="number" class="form-control" id="nuevaMarcaProducto">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

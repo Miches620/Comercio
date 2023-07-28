@@ -1,0 +1,10 @@
+{
+    "producto":[
+
+        {"nombre":"Algodon"},
+        {"nombre":"Pañales"},
+        {"nombre":"Biberon"},
+        {"nombre":"Chupete"}
+          
+    ]
+}
