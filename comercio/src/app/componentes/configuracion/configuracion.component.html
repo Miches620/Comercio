@@ -1,11 +1,6 @@
 <section id="configurar">
     <div class="container mt-3">
       <h3 class="text-center">Configuración</h3>
-      <div class="config-header">
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#marcaModal">Agregar Marca</button>
-        <button type="button" class="btn btn-outline-primary">Agregar Producto</button>
-        <button type="button" class="btn btn-outline-primary">Agregar Proveedor</button>
-      </div>
       <div class="config-title">
               <h5 class="config-title">Ingresar Producto</h5>
             </div>
@@ -13,36 +8,31 @@
             <form>
               <div class="mb-3">
                 <label for="tipoDeProducto" class="form-label">Tipo de Producto</label>
-                <select class="form-select" id="tipoDeProducto" required>
+                <select class="form-select" id="tipoDeProducto">
                   <option selected disabled value="">Seleccione Producto</option>
                   <option *ngFor="let item of producto">{{item.nombre}}</option>
                 </select>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productoModal">+</button>
               </div>
               <div class="mb-3">
                 <label for="codigoProducto" class="form-label">Código del Producto</label>
                 <input type="text" class="form-control" id="codigoProducto">
               </div>
               <div class="mb-3">
-                <label for="cantidadProducto" class="form-label">Cantidad</label>
-                <input type="number" class="form-control" id="cantidadProducto">
-              </div>
-              <div class="mb-3">
-                <label for="vencimientoProducto" class="form-label">Vencimiento</label>
-                <input type="date" class="form-control" id="vencimientoProducto">
-              </div>
-              <div class="mb-3">
                 <label for="marcaProducto" class="form-label">Marca</label>
-                <select class="form-select" id="marcaProducto" required>
+                <select class="form-select" id="marcaProducto">
                   <option selected disabled value="">Seleccione Marca</option>
                   <option *ngFor="let item of marca">{{item.nombre}}</option>
                 </select>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#marcaModal">+</button>
               </div>
               <div class="mb-3">
                 <label for="proveedorProducto" class="form-label">Proveedor</label>
-                <select class="form-select" id="proveedorProducto" required>
+                <select class="form-select" id="proveedorProducto">
                   <option selected disabled value="">Seleccione Proveedor</option>
                   <option *ngFor="let item of proveedor">{{item.nombre}}</option>
                 </select>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#proveedorModal">+</button>
               </div>
               <div class="mb-3">
                 <label for="costoProducto" class="form-label">Costo</label>
@@ -54,20 +44,19 @@
               </div>
               <div class="mb-3">
                 <label for="codigoDeBarrasProducto" class="form-label">Código de Barras</label>
-                <input type="number" class="form-control" id="codigoDeBarrasProducto">
+                <input type="number"  class="form-control" id="codigoDeBarrasProducto">
+                <button type="button" class="btn btn-primary"><i class="fa-solid fa-qrcode"></i></button>
               </div>
               <div class="mb-3">
                 <label for="imagenProducto" class="form-label">Imagen</label>
-                <input type="file" class="form-control" id="imagenProducto">
+                <input type="file" class="form-control" id="imagenProducto" style="font-size: .8rem;">
               </div>
-              <button type="submit" class="btn btn-primary">Actualizar Stock</button>
+              <button type="submit" class="btn btn-primary">Actualizar Listado</button>
             </form>
             <table class="table">
               <thead class="table-dark">
                 <th scope="col">ID</th>
                 <th scope="col">Producto</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Vencimiento</th>
                 <th scope="col">Proveedor</th>
                 <th scope="col">Marca</th>
                 <th scope="col">Costo</th>
@@ -78,8 +67,6 @@
                 <tr>
                   <td scope="row">01</td>
                   <td scope="row">pañales</td>
-                  <td scope="row">5</td>
-                  <td scope="row">-</td>
                   <td scope="row">Manolo SRL</td>
                   <td scope="row">Pampers</td>
                   <td scope="row">560</td>
@@ -92,22 +79,74 @@
     </div>
   </section>
 
-  <div id="modalMarca" class="modal fade" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Nueva Marca</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <!-- Modales -->
+<div class="modal fade" id="productoModal" tabindex="-1" aria-labelledby="tituloProducto" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="tituloProducto">Nuevo Producto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="nombreProductoNuevo" class="form-label">Ingrese el nombre del Producto</label>
         </div>
         <div class="mb-3">
-          <label for="nuevaMarcaProducto" class="form-label">Ingrese el nombre de la Marca:</label>
-          <input type="number" class="form-control" id="nuevaMarcaProducto">
+          <input type="text" class="form-control" id="nombreProductoNuevo">
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary">Guardar</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Añadir</button>
       </div>
     </div>
   </div>
+</div>
+
+<div class="modal fade" id="marcaModal" tabindex="-1" aria-labelledby="tituloMarca" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="tituloMarca">Nueva Marca</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="nombreMarcaNueva" class="form-label">Ingrese el nombre de la Marca</label>
+        </div>
+        <div class="mb-3">
+          <input type="text" class="form-control" id="nombreMarcaNueva">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Añadir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="proveedorModal" tabindex="-1" aria-labelledby="tituloProveedor" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="tituloProveedor">Nuevo Proveedor</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="nombreProveedorNueva" class="form-label">Ingrese el nombre del Proveedor</label>
+        </div>
+        <div class="mb-3">
+          <input type="text" class="form-control" id="nombreProveedorNueva">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Añadir</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   

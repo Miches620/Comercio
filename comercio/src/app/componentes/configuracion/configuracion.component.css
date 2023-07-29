@@ -2,12 +2,6 @@
     height: 50%;
 }
 
-.config-header{
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-}
-
 .config-body table{
     width: 75%;
 }
@@ -30,6 +24,27 @@
 
 .config-body input, .config-body select{
     width: 58%;
+}
+
+.config-body .form-select, #codigoDeBarrasProducto{
+    width: 45%;
+    font-size: .7rem;
+}
+
+#tipoDeProducto{   
+    margin-right: -1.5rem;
+}
+
+#marcaProducto{
+    margin-right: -6.2rem;
+}
+
+#proveedorProducto{
+    margin-right: -4.3rem;
+}
+
+#codigoDeBarrasProducto{
+    margin-right: -1.3rem;
 }
 
 .mb-3{
