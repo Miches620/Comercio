@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#" style="font-size: 1.5rem;"><i class="fas fa-user"></i></a>
+      <a class="navbar-brand" href="#" style="font-size: 1.5rem;" *ngIf="this.logout" id="login" href="#" data-bs-toggle="modal" data-bs-target="#loginModal"><i class="fas fa-user"></i></a>
+      <a class="navbar-brand" href="#" style="font-size: 1.5rem;" *ngIf="this.login"  id="logout" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal"><i class="fa-solid fa-user-slash"></i></a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -22,3 +23,55 @@
       </div>
     </div>
   </nav>
+
+
+    <!-- Modal Login-->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Acceso de Administrador</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="limpiarFormulario()"></button>
+          </div>
+          <div class="modal-body">
+              <form [formGroup]="formulario">
+                  <div class="mb-3">
+                    <label for="loginUsuario" class="form-label">Usuario</label>
+                    <input type="text" class="form-control" id="loginUsuario" formControlName="ingresoUsuario">
+                  </div>
+                  <div class="mb-3">
+                    <label for="loginContraseña" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="loginContraseña" formControlName="ingresoContraseña">
+                  </div>
+                </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="cerrarLogin" class="btn btn-secondary" data-bs-dismiss="modal" (click)="limpiarFormulario()">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="iniciarSesion()">Ingresar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- Modal Logout-->
+   <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutModalLabel">Acceso de Administrador</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="formulario">
+                <div class="modal-body">
+                  <p>Esta seguro de que desea cerrar session?</p>
+                </div>
+                </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cerrarLogout" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" (click)="cerrarSesion()">Cerrar Sesion</button>
+        </div>
+      </div>
+    </div>
+  </div>

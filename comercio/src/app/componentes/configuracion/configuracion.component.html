@@ -5,22 +5,27 @@
               <h5 class="config-title">Ingresar Producto</h5>
             </div>
             <div class="config-body">
-            <form>
+            <form [formGroup]="formulario">
               <div class="mb-3">
                 <label for="tipoDeProducto" class="form-label">Tipo de Producto</label>
-                <select class="form-select" id="tipoDeProducto">
+                <select class="form-select" id="tipoDeProducto" formControlName="formProducto">
                   <option selected disabled value="">Seleccione Producto</option>
                   <option *ngFor="let item of producto">{{item.nombre}}</option>
                 </select>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productoModal">+</button>
               </div>
+              <!-- <div *ngIf="formProducto?.invalid && formProducto?.touched">
+                <div *ngIf="formProducto?.errors?.['required']">
+                  Campo Vacio. Por favor Completar.
+                </div>
+              </div>-->
               <div class="mb-3">
                 <label for="codigoProducto" class="form-label">Código del Producto</label>
-                <input type="text" class="form-control" id="codigoProducto">
+                <input type="text" class="form-control" id="codigoProducto" formControlName="formCodProd">
               </div>
               <div class="mb-3">
                 <label for="marcaProducto" class="form-label">Marca</label>
-                <select class="form-select" id="marcaProducto">
+                <select class="form-select" id="marcaProducto" formControlName="formMarca">
                   <option selected disabled value="">Seleccione Marca</option>
                   <option *ngFor="let item of marca">{{item.nombre}}</option>
                 </select>
@@ -28,7 +33,7 @@
               </div>
               <div class="mb-3">
                 <label for="proveedorProducto" class="form-label">Proveedor</label>
-                <select class="form-select" id="proveedorProducto">
+                <select class="form-select" id="proveedorProducto" formControlName="formProveedor">
                   <option selected disabled value="">Seleccione Proveedor</option>
                   <option *ngFor="let item of proveedor">{{item.nombre}}</option>
                 </select>
@@ -36,20 +41,20 @@
               </div>
               <div class="mb-3">
                 <label for="costoProducto" class="form-label">Costo</label>
-                <input type="number" class="form-control" id="costoProducto">
+                <input type="number" class="form-control" id="costoProducto" formControlName="formCosto">
               </div>
               <div class="mb-3">
                 <label for="margenProducto" class="form-label">Ganancia (%)</label>
-                <input type="number" class="form-control" id="margenProducto">
+                <input type="number" class="form-control" id="margenProducto" formControlName="formGanancia">
               </div>
               <div class="mb-3">
                 <label for="codigoDeBarrasProducto" class="form-label">Código de Barras</label>
-                <input type="number"  class="form-control" id="codigoDeBarrasProducto">
+                <input type="number"  class="form-control" id="codigoDeBarrasProducto" formControlName="formCodBarras">
                 <button type="button" class="btn btn-primary"><i class="fa-solid fa-qrcode"></i></button>
               </div>
               <div class="mb-3">
                 <label for="imagenProducto" class="form-label">Imagen</label>
-                <input type="file" class="form-control" id="imagenProducto" style="font-size: .8rem;">
+                <input type="file" class="form-control" id="imagenProducto" style="font-size: .8rem;" formControlName="formImagen">
               </div>
               <button type="submit" class="btn btn-primary">Actualizar Listado</button>
             </form>
