@@ -5,5 +5,107 @@
       "pwd": "Ponton",
       "id": 1
     }
+  ],
+  "marca": [
+    {
+      "id": 1,
+      "nombreMarca": "Pampers"
+    },
+    {
+      "id": 2,
+      "nombreMarca": "PYG"
+    },
+    {
+      "id": 3,
+      "nombreMarca": "Huggies"
+    },
+    {
+      "id": 4,
+      "nombreMarca": "Johnson&Johnson"
+    },
+    {
+      "id": 5,
+      "nombreMarca": "Ford"
+    },
+    {
+      "id": 6,
+      "nombreMarca": "Chivas"
+    }
+  ],
+  "producto": [
+    {
+      "id": 1,
+      "nombreProducto": "Algodon"
+    },
+    {
+      "id": 2,
+      "nombreProducto": "Pañales"
+    },
+    {
+      "nombreProducto": "Alcohol",
+      "id": 3
+    },
+    {
+      "nombreProducto": "Biberon",
+      "id": 4
+    },
+    {
+      "id": 5,
+      "nombreProducto": "Tomate"
+    },
+    {
+      "id": 6,
+      "nombreProducto": "Camaron Bombay"
+    },
+    {
+      "id": 7,
+      "nombreProducto": "Cerveza"
+    }
+  ],
+  "proveedor": [
+    {
+      "id": 1,
+      "nombreProveedor": "Johnson&Johnson"
+    },
+    {
+      "id": 2,
+      "nombreProveedor": "Unilever"
+    },
+    {
+      "id": 3,
+      "nombreProveedor": "Pepito SRL"
+    },
+    {
+      "id": 4,
+      "nombreProveedor": "Ramon"
+    },
+    {
+      "id": 5,
+      "nombreProveedor": "Pepita"
+    }
+  ],
+  "registro": [
+    {
+      "id": 1,
+      "nombreProducto": "Algodon",
+      "codigoProducto": "A1",
+      "marcaProducto": "PYG",
+      "proveedorProducto": "Ramon",
+      "costoProducto": 46,
+      "gananciaProducto": 1,
+      "barrasProducto": 12435433,
+      "imagenProducto": ""
+    },
+    {
+      "id": 2,
+      "nombreProducto": "Pañales",
+      "codigoProducto": "A2",
+      "marcaProducto": "Pampers",
+      "proveedorProducto": "Unilever",
+      "costoProducto": 5454,
+      "gananciaProducto": 3,
+      "barrasProducto": "54223233",
+      "imagenProducto": ""
+    }
   ]
 }

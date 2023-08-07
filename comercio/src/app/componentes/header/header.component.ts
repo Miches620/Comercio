@@ -37,7 +37,7 @@ if(this.formulario.valid){
   let user=this.formulario.get('ingresoUsuario')?.value;
   let pwd=this.formulario.get('ingresoContraseña')?.value
   let login = new Login(1,user,pwd);
-  this.servicio.obtenerAccesoAdmin(login).subscribe({
+  this.servicio.obtenerAccesoAdmin(login).subscribe({ //aca falla porque aun no tengo el backend hecho!!!!!!
     next:(data) =>{
       console.log(data);
      if(data==true){

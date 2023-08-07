@@ -1,0 +1,51 @@
+{
+  "login": [
+    {
+      "user": "Pablo",
+      "pwd": "Ponton",
+      "id": 1
+    }
+  ],
+  "marca": [
+    {
+      "nombre": "Pampers"
+    },
+    {
+      "nombre": "PYG"
+    },
+    {
+      "nombre": "Huggies"
+    },
+    {
+      "nombre": "Johnson&Johnson"
+    }
+  ],
+  "producto": [
+    {
+      "nombre": "Algodon"
+    },
+    {
+      "nombre": "Pañales"
+    },
+    {
+      "nombre": "Biberon"
+    },
+    {
+      "nombre": "Chupete"
+    } 
+  ],
+  "proveedor": [
+    {
+      "nombre": "Johnson&Johnson"
+    },
+    {
+      "nombre": "Unilever"
+    },
+    {
+      "nombre": "Pepito SRL"
+    },
+    {
+      "nombre": "Ramon"
+    }
+  ]
+}

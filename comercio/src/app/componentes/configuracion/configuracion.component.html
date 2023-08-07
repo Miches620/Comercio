@@ -10,7 +10,7 @@
                 <label for="tipoDeProducto" class="form-label">Tipo de Producto</label>
                 <select class="form-select" id="tipoDeProducto" formControlName="formProducto">
                   <option selected disabled value="">Seleccione Producto</option>
-                  <option *ngFor="let item of producto">{{item.nombre}}</option>
+                  <option *ngFor="let item of producto">{{item}}</option>
                 </select>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productoModal">+</button>
               </div>
@@ -20,14 +20,14 @@
                 </div>
               </div>-->
               <div class="mb-3">
-                <label for="codigoProducto" class="form-label">Código del Producto</label>
+                <label id="idCodProd"for="codigoProducto" class="form-label">Código del Producto</label>
                 <input type="text" class="form-control" id="codigoProducto" formControlName="formCodProd">
               </div>
               <div class="mb-3">
                 <label for="marcaProducto" class="form-label">Marca</label>
                 <select class="form-select" id="marcaProducto" formControlName="formMarca">
                   <option selected disabled value="">Seleccione Marca</option>
-                  <option *ngFor="let item of marca">{{item.nombre}}</option>
+                  <option *ngFor="let item of marca">{{item}}</option>
                 </select>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#marcaModal">+</button>
               </div>
@@ -35,7 +35,7 @@
                 <label for="proveedorProducto" class="form-label">Proveedor</label>
                 <select class="form-select" id="proveedorProducto" formControlName="formProveedor">
                   <option selected disabled value="">Seleccione Proveedor</option>
-                  <option *ngFor="let item of proveedor">{{item.nombre}}</option>
+                  <option *ngFor="let item of proveedor">{{item}}</option>
                 </select>
                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#proveedorModal">+</button>
               </div>
@@ -49,15 +49,16 @@
               </div>
               <div class="mb-3">
                 <label for="codigoDeBarrasProducto" class="form-label">Código de Barras</label>
-                <input type="number"  class="form-control" id="codigoDeBarrasProducto" formControlName="formCodBarras">
+                <input type="text"  class="form-control" id="codigoDeBarrasProducto" formControlName="formCodBarras">
                 <button type="button" class="btn btn-primary"><i class="fa-solid fa-qrcode"></i></button>
               </div>
               <div class="mb-3">
                 <label for="imagenProducto" class="form-label">Imagen</label>
                 <input type="file" class="form-control" id="imagenProducto" style="font-size: .8rem;" formControlName="formImagen">
               </div>
-              <button type="submit" class="btn btn-primary">Actualizar Listado</button>
+              <button type="submit" class="btn btn-primary" (click)="actualizarListado()">Actualizar Listado</button>
             </form>
+            <div id="Tabla">
             <table class="table">
               <thead class="table-dark">
                 <th scope="col">ID</th>
@@ -69,17 +70,18 @@
                 <th scope="col">Cod. Barras</th>
               </thead>
               <tbody>
-                <tr>
-                  <td scope="row">01</td>
-                  <td scope="row">pañales</td>
-                  <td scope="row">Manolo SRL</td>
-                  <td scope="row">Pampers</td>
-                  <td scope="row">560</td>
-                  <td scope="row">4</td>
-                  <td scope="row">125432432432</td>
+                <tr *ngFor="let item of registro">
+                  <td scope="row" id="CodProd"><a (click)="obtenerDatosSeleccion(item.codigoProducto)">{{item.codigoProducto}}</a></td>
+                  <td scope="row">{{item.nombreProducto}}</td>
+                  <td scope="row">{{item.proveedorProducto}}</td>
+                  <td scope="row">{{item.marcaProducto}}</td>
+                  <td scope="row">{{item.costoProducto}}</td>
+                  <td scope="row">{{item.gananciaProducto}}</td>
+                  <td scope="row">{{item.barrasProducto}}</td>
                 </tr>
               </tbody>
             </table>
+          </div>
           </div>
     </div>
   </section>
@@ -92,18 +94,20 @@
         <h1 class="modal-title fs-5" id="tituloProducto">Nuevo Producto</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <form [formGroup]="ingresoProducto">
       <div class="modal-body">
         <div class="mb-3">
           <label for="nombreProductoNuevo" class="form-label">Ingrese el nombre del Producto</label>
         </div>
         <div class="mb-3">
-          <input type="text" class="form-control" id="nombreProductoNuevo">
+          <input type="text" class="form-control" id="nombreProductoNuevo" formControlName="formNuevoProducto">
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Añadir</button>
+        <button id="cerrarModalNuevoProducto"type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="ingresarNuevoProducto()">Añadir</button>
       </div>
+    </form>
     </div>
   </div>
 </div>
@@ -115,18 +119,20 @@
         <h1 class="modal-title fs-5" id="tituloMarca">Nueva Marca</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <form [formGroup]="ingresoMarca">
       <div class="modal-body">
         <div class="mb-3">
           <label for="nombreMarcaNueva" class="form-label">Ingrese el nombre de la Marca</label>
         </div>
         <div class="mb-3">
-          <input type="text" class="form-control" id="nombreMarcaNueva">
+          <input type="text" class="form-control" id="nombreMarcaNueva" formControlName="formNuevaMarca">
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Añadir</button>
+        <button id="cerrarModalNuevaMarca"type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="ingresarNuevaMarca()">Añadir</button>
       </div>
+    </form>
     </div>
   </div>
 </div>
@@ -138,20 +144,39 @@
         <h1 class="modal-title fs-5" id="tituloProveedor">Nuevo Proveedor</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
+      <form [formGroup]="ingresoProveedor">
       <div class="modal-body">
         <div class="mb-3">
-          <label for="nombreProveedorNueva" class="form-label">Ingrese el nombre del Proveedor</label>
+          <label for="nombreProveedorNuevo" class="form-label">Ingrese el nombre del Proveedor</label>
         </div>
         <div class="mb-3">
-          <input type="text" class="form-control" id="nombreProveedorNueva">
+          <input type="text" class="form-control" id="nombreProveedorNuevo" formControlName="formNuevoProveedor">
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Añadir</button>
+        <button id="cerrarModalNuevoProveedor"type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="ingresarNuevoProveedor()">Añadir</button>
       </div>
+    </form>
     </div>
   </div>
 </div>
+
+
+<div style='text-align: center;'>
+  <!-- insert your custom barcode setting your data in the GET parameter "data" -->
+  <img alt='Barcode Generator TEC-IT'
+       [src]=urlCodBarras/>
+</div>
+<div style='padding-top:8px; text-align:center; font-size:15px; font-family: Source Sans Pro, Arial, sans-serif;'>
+  <!-- back-linking to www.tec-it.com is required -->
+  <a href='https://www.tec-it.com' title='Barcode Software by TEC-IT' target='_blank'>
+    TEC-IT Barcode Generator<br/>
+    <!-- logos are optional -->
+    <img alt='TEC-IT Barcode Software' border='0'
+         src='http://www.tec-it.com/pics/banner/web/TEC-IT_Logo_75x75.gif'>
+  </a>
+</div>
+
 
   
