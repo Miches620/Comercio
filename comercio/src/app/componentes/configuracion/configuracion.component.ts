@@ -16,7 +16,12 @@ export class ConfiguracionComponent implements OnInit {
   marca:any=[];
   producto:any=[];
   proveedor:any=[];
+  listaDeProveedores:any=[];
   formulario:FormGroup;
+  proveedores:FormGroup;
+  collapseProducto:boolean=false;
+  collapseProveedor:boolean=true;
+  collapseGastos:boolean=false;
   ingresoProducto:FormGroup;
   ingresoMarca:FormGroup;
   ingresoProveedor:FormGroup;
@@ -33,6 +38,11 @@ export class ConfiguracionComponent implements OnInit {
       formGanancia:['',Validators.required],
       formCodBarras:[''],
       formImagen:['']
+    })
+    this.proveedores=this.servicioFormulario.group({
+      formProveedor:['',Validators.required],
+      formTelefono:['',Validators.minLength(10)],
+      formEmail:['',Validators.pattern("[a-zA-Z0-9!#$%&'*\/=?^_`\{\|\}~\+\-]([\.]?[a-zA-Z0-9!#$%&'*\/=?^_`\{\|\}~\+\-])+@[a-zA-Z0-9]([^@&%$\/\(\)=?¿!\.,:;]|\d)+[a-zA-Z0-9][\.][a-zA-Z]{2,4}([\.][a-zA-Z]{2})?")]
     })
     this.ingresoProducto=this.servicioFormulario.group({
       formNuevoProducto:['',Validators.required]
@@ -60,6 +70,7 @@ get formProducto(){
       }
     });
     this.configurar.obtenerDatosProveedores().subscribe(data =>{
+      this.listaDeProveedores=data;
       for(let i=0;i<data.length;i++){
         this.proveedor[i]=data[i].nombreProveedor;
       }
@@ -69,9 +80,10 @@ get formProducto(){
     })
   }
 
-obtenerDatosSeleccion(id:String){
+obtenerDatosSeleccion(id:String,barras:String){
   for(let item of this.registro){
-    if(item.codigoProducto==id){
+    this.urlCodBarras="https://barcode.tec-it.com/barcode.ashx?data="+id+"&code=Code128&translate-esc=on";
+    if(item.codigoProducto==id && item.barrasProducto == barras){
       this.formulario.get('formProducto')?.setValue(item.nombreProducto);
       this.formulario.get('formCodProd')?.setValue(item.codigoProducto);
       this.formulario.get('formMarca')?.setValue(item.marcaProducto);
@@ -79,14 +91,92 @@ obtenerDatosSeleccion(id:String){
       this.formulario.get('formCosto')?.setValue(item.costoProducto);
       this.formulario.get('formGanancia')?.setValue(item.gananciaProducto);
       this.formulario.get('formCodBarras')?.setValue(item.barrasProducto);
-      //this.formulario.get('formImagen')?.setValue(item.imagenProducto);
-      this.urlCodBarras="https://barcode.tec-it.com/barcode.ashx?data="+id+"&code=Code128&translate-esc=on";
-
+      this.formulario.get('formImagen')?.setValue(item.imagenProducto);
     }
   }
 }
 
-  actualizarListado(){
+abrirColapsable(id:number){
+switch(id){
+
+  //probar display:none
+  case 1:{
+    this.collapseProducto=true;
+    this.collapseProveedor=false;
+    this.collapseGastos=false;
+    this.ngOnInit();
+    break;
+  }
+  case 2:{
+    this.collapseProducto=false;
+    this.collapseProveedor=true;
+    this.collapseGastos=false;
+    //document.getElementById('solapaProveedores')?.style.backgroundColor='green';
+    this.ngOnInit();
+    break;
+  }
+  /*case 3:{
+    this.collapseProducto=false;
+    this.collapseProveedor=false;
+    this.collapseGastos=true;
+    break;
+  }*/
+}
+}
+
+guardarCodigoDeProducto(){
+  this.urlCodBarras+="&download=true";
+  console.log(this.urlCodBarras);
+}
+
+  borrarRegistroSeleccionado(){
+    for(let item of this.registro){
+      if(item.barrasProducto==this.formulario.get('formCodBarras')?.value && item.codigoProducto==this.formulario.get('formCodProd')?.value){
+        let idRegistro=item.id;
+        this.configurar.borrarRegistro(idRegistro).subscribe({
+          next: (data) =>{
+            alert("Registro Eliminado Correctamente");
+            this.ngOnInit();
+            this.formulario.reset();
+          },
+          error: (error) =>{
+            alert("Error al borrar el Registro. Por favor intente nuevamente")
+          }
+        })
+        
+      }
+    }
+  }
+
+  editarRegistroSeleccionado(){
+    if(this.formulario.valid){
+      let producto = this.formulario.get('formProducto')?.value;
+      let codigoDelProducto=this.formulario.get('formCodProd')?.value;
+      let marca = this.formulario.get('formMarca')?.value;
+      let proveedor = this.formulario.get('formProveedor')?.value;
+      let costo = this.formulario.get('formCosto')?.value;
+      let ganancia = this.formulario.get('formGanancia')?.value;
+      let codigoDeBarrasDelProducto=this.formulario.get('formCodBarras')?.value;
+      let imagen = this.formulario.get('formImagen')?.value;
+      for(let item of this.registro){
+        if(item.codigoProducto == codigoDelProducto && item.barrasProducto == codigoDeBarrasDelProducto){
+          let registroEditado = new Registro(item.id,producto,codigoDelProducto,marca,proveedor,costo,ganancia,codigoDeBarrasDelProducto,imagen)
+          this.configurar.editarRegistro(item.id,registroEditado).subscribe({
+            next:(data) =>{
+              alert("Registro Actualizado Correctamente");
+              this.ngOnInit();
+              this.formulario.reset();
+            },
+            error: (error) =>{
+              alert("Error al intentar actualizar el registro. Por favor intente nuevamente");
+            }
+          })
+        }
+      }
+    }
+  }
+
+  agregarAlListado(){
     if (this.formulario.valid){
 
       let valorRepetido:boolean=false;
@@ -101,8 +191,7 @@ obtenerDatosSeleccion(id:String){
       let imagen = this.formulario.get('formImagen')?.value;
     
       for(let item of this.registro){
-        console.log(item)
-        if(item.barrasProducto==codigoDeBarrasDelProducto || item.codigoProducto==codigoDelProducto){
+        if(item.barrasProducto==codigoDeBarrasDelProducto && item.codigoProducto==codigoDelProducto){
           valorRepetido=true;
           alert("INGRESO REPETIDO");
           this.formulario.reset();
@@ -189,7 +278,7 @@ ingresarNuevoProveedor(){
     }
   }
   if(valorRepetido==false){
-    let nuevoItemProveedor = new Proveedor(idNuevoProveedor,nuevoProveedor);
+    let nuevoItemProveedor = new Proveedor(idNuevoProveedor,nuevoProveedor,"-","-");
     this.configurar.agregarDatosProveedor(nuevoItemProveedor).subscribe({ 
       next:(data) =>{
             this.ingresoProveedor.reset();
@@ -201,6 +290,17 @@ ingresarNuevoProveedor(){
       }
   })
   }
+}
+
+recuperarProveedor(proveedor:String){
+  for(let item of this.listaDeProveedores){
+    if(item.nombreProveedor==proveedor){
+      this.proveedores.get('formProveedor')?.setValue(item.nombreProveedor);
+      this.proveedores.get('formTelefono')?.setValue(item.telefonoProveedor);
+      this.proveedores.get('formEmail')?.setValue(item.emailProveedor);
+    }
+  }
+  
 }
 }
   

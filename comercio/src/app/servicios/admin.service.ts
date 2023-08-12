@@ -11,41 +11,54 @@ import { Registro } from '../entidades/registro';
   providedIn: 'root'
 })
 export class AdminService {
+  url:string="http://localhost:3000/";
 
   constructor(private http:HttpClient) { }
 
   //GET:
 
   obtenerDatosMarcas():Observable<any>{
-    return this.http.get('http://localhost:3000/marca');
+    return this.http.get(this.url+'marca');
   }
   obtenerDatosProductos():Observable<any>{
-    return this.http.get('http://localhost:3000/producto');
+    return this.http.get(this.url+'producto');
   }
   
   obtenerDatosProveedores():Observable<any>{
-    return this.http.get('http://localhost:3000/proveedor');
+    return this.http.get(this.url+'proveedor');
   }
 
   obtenerRegistro():Observable<any>{
-    return this.http.get('http://localhost:3000/registro')
+    return this.http.get(this.url+'registro')
   }
 
   //POST:
 
   agregarDatosProducto(producto:Producto):Observable<any>{
-    return this.http.post('http://localhost:3000/producto',producto)
+    return this.http.post(this.url+'producto',producto)
   }
 
   agregarDatosProveedor(proveedor:Proveedor):Observable<any>{
-    return this.http.post('http://localhost:3000/proveedor',proveedor)
+    return this.http.post(this.url+'proveedor',proveedor)
   }
 
   agregarDatosMarca(marca:Marca):Observable<any>{
-    return this.http.post('http://localhost:3000/marca',marca)
+    return this.http.post(this.url+'marca',marca)
   }
 
   agregarRegistro(registro:Registro):Observable<any>{
-    return this.http.post('http://localhost:3000/registro',registro)
+    return this.http.post(this.url+'registro',registro)
+  }
+
+  //PUT:
+
+  editarRegistro(id:number,registro:Registro):Observable<any>{
+  return this.http.put(this.url+'registro/'+id,registro);
+  }
+
+  //DELETE:
+
+  borrarRegistro(id:number):Observable<any>{
+    return this.http.delete(this.url+'registro/'+id);
   }
 }

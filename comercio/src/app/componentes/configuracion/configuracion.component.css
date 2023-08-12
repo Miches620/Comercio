@@ -2,6 +2,13 @@
     height: 50%;
 }
 
+
+.config-title{
+    margin-bottom: 1rem;
+    display: flex;
+    gap: .5rem;
+}
+
 .config-body table{
     width: 100%;
 }
@@ -34,19 +41,24 @@
     font-size: .7rem;
 }
 
-#tipoDeProducto{   
+#tipoDeProducto{ 
     width: 10rem;
     margin-right: -1.5rem;
 }
 
+
+
+#codigoProducto{
+    width: 10rem;
+}
 #marcaProducto{
     width: 10rem;
     margin-right: -6.2rem;
 }
 
-#proveedorProducto{
+#proveedorProducto, #proveedorListado{
     width: 10rem;
-    margin-right: -4.3rem;
+    margin-right: -4.5rem;
 }
 
 #codigoDeBarrasProducto{
@@ -67,7 +79,7 @@
 
 }
 
-#Tabla{
+#TablaRegistro, #TablaProveedores{
     height: 26rem;
     overflow: auto;
     width:100%;
@@ -75,8 +87,20 @@
     justify-content: flex-end;
 }
 
-#CodProd{
+#TablaProveedores{
+    height: 10rem;
+}
+
+#CodProd, #idCodBar,#idProveedor{
     color:rgb(52, 52, 219);
     cursor: pointer;
     text-decoration: underline;
+}
+
+#btnAgregarProducto, #btnEditarProducto, #btnBorrarProducto,#btnAgregarProveedor, #btnEditarProveedor, #btnBorrarProveedor{
+    margin-right: .5rem;
+}
+
+#btnproducto,#btncod,#btnmarca,#btnproveedor,#btnbarras{
+    width: 2.5rem;
 }

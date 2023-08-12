@@ -1,182 +1,549 @@
 <section id="configurar">
-    <div class="container mt-3">
-      <h3 class="text-center">Configuración</h3>
-      <div class="config-title">
-              <h5 class="config-title">Ingresar Producto</h5>
-            </div>
-            <div class="config-body">
-            <form [formGroup]="formulario">
-              <div class="mb-3">
-                <label for="tipoDeProducto" class="form-label">Tipo de Producto</label>
-                <select class="form-select" id="tipoDeProducto" formControlName="formProducto">
-                  <option selected disabled value="">Seleccione Producto</option>
-                  <option *ngFor="let item of producto">{{item}}</option>
-                </select>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#productoModal">+</button>
-              </div>
-              <!-- <div *ngIf="formProducto?.invalid && formProducto?.touched">
-                <div *ngIf="formProducto?.errors?.['required']">
-                  Campo Vacio. Por favor Completar.
-                </div>
-              </div>-->
-              <div class="mb-3">
-                <label id="idCodProd"for="codigoProducto" class="form-label">Código del Producto</label>
-                <input type="text" class="form-control" id="codigoProducto" formControlName="formCodProd">
-              </div>
-              <div class="mb-3">
-                <label for="marcaProducto" class="form-label">Marca</label>
-                <select class="form-select" id="marcaProducto" formControlName="formMarca">
-                  <option selected disabled value="">Seleccione Marca</option>
-                  <option *ngFor="let item of marca">{{item}}</option>
-                </select>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#marcaModal">+</button>
-              </div>
-              <div class="mb-3">
-                <label for="proveedorProducto" class="form-label">Proveedor</label>
-                <select class="form-select" id="proveedorProducto" formControlName="formProveedor">
-                  <option selected disabled value="">Seleccione Proveedor</option>
-                  <option *ngFor="let item of proveedor">{{item}}</option>
-                </select>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#proveedorModal">+</button>
-              </div>
-              <div class="mb-3">
-                <label for="costoProducto" class="form-label">Costo</label>
-                <input type="number" class="form-control" id="costoProducto" formControlName="formCosto">
-              </div>
-              <div class="mb-3">
-                <label for="margenProducto" class="form-label">Ganancia (%)</label>
-                <input type="number" class="form-control" id="margenProducto" formControlName="formGanancia">
-              </div>
-              <div class="mb-3">
-                <label for="codigoDeBarrasProducto" class="form-label">Código de Barras</label>
-                <input type="text"  class="form-control" id="codigoDeBarrasProducto" formControlName="formCodBarras">
-                <button type="button" class="btn btn-primary"><i class="fa-solid fa-qrcode"></i></button>
-              </div>
-              <div class="mb-3">
-                <label for="imagenProducto" class="form-label">Imagen</label>
-                <input type="file" class="form-control" id="imagenProducto" style="font-size: .8rem;" formControlName="formImagen">
-              </div>
-              <button type="submit" class="btn btn-primary" (click)="actualizarListado()">Actualizar Listado</button>
-            </form>
-            <div id="Tabla">
-            <table class="table">
-              <thead class="table-dark">
-                <th scope="col">ID</th>
-                <th scope="col">Producto</th>
-                <th scope="col">Proveedor</th>
-                <th scope="col">Marca</th>
-                <th scope="col">Costo</th>
-                <th scope="col">Ganancia(%)</th>
-                <th scope="col">Cod. Barras</th>
-              </thead>
-              <tbody>
-                <tr *ngFor="let item of registro">
-                  <td scope="row" id="CodProd"><a (click)="obtenerDatosSeleccion(item.codigoProducto)">{{item.codigoProducto}}</a></td>
-                  <td scope="row">{{item.nombreProducto}}</td>
-                  <td scope="row">{{item.proveedorProducto}}</td>
-                  <td scope="row">{{item.marcaProducto}}</td>
-                  <td scope="row">{{item.costoProducto}}</td>
-                  <td scope="row">{{item.gananciaProducto}}</td>
-                  <td scope="row">{{item.barrasProducto}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          </div>
+  <div class="container mt-3">
+    <h3 class="text-center">Configuración</h3>
+    <div class="config-title">
+      <button
+        id="solapaProductos"
+        class="btn btn-secondary"
+        type="button"
+        (click)="abrirColapsable(1)"
+      >
+        Productos
+      </button>
+      <button
+        id="solapaProveedores"
+        class="btn btn-secondary"
+        type="button"
+        (click)="abrirColapsable(2)"
+      >
+        Proveedores
+      </button>
+      <button
+        id="solapaGastos"
+        class="btn btn-secondary"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#collapseIngresoProducto"
+        aria-expanded="false"
+        aria-controls="collapseGastos"
+        (click)="abrirColapsable(3)"
+      >
+        Gastos
+      </button>
     </div>
-  </section>
+    <!--Colapsable Producto-->
+    <div *ngIf="collapseProducto" class="config-body">
+      <form [formGroup]="formulario">
+        <div class="mb-3">
+          <label for="tipoDeProducto" class="form-label"
+            >Tipo de Producto</label
+          >
+          <select
+            class="form-select"
+            id="tipoDeProducto"
+            formControlName="formProducto"
+          >
+            <option selected disabled value="">Seleccione Producto</option>
+            <option *ngFor="let item of producto">{{ item }}</option>
+          </select>
+          <button
+            id="btnproducto"
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#productoModal"
+          >
+            +
+          </button>
+        </div>
+        <!-- <div *ngIf="formProducto?.invalid && formProducto?.touched">
+            <div *ngIf="formProducto?.errors?.['required']">
+              Campo Vacio. Por favor Completar.
+            </div>
+          </div>-->
+        <div class="mb-3">
+          <label id="idCodProd" for="codigoProducto" class="form-label"
+            >Código del Producto</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="codigoProducto"
+            formControlName="formCodProd"
+          />
+          <button
+            id="btncod"
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#codigoModal"
+          >
+            <i class="fa-solid fa-print"></i>
+          </button>
+        </div>
+        <div class="mb-3">
+          <label for="marcaProducto" class="form-label">Marca</label>
+          <select
+            class="form-select"
+            id="marcaProducto"
+            formControlName="formMarca"
+          >
+            <option selected disabled value="">Seleccione Marca</option>
+            <option *ngFor="let item of marca">{{ item }}</option>
+          </select>
+          <button
+            id="btnmarca"
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#marcaModal"
+          >
+            +
+          </button>
+        </div>
+        <div class="mb-3">
+          <label for="proveedorProducto" class="form-label">Proveedor</label>
+          <select
+            class="form-select"
+            id="proveedorProducto"
+            formControlName="formProveedor"
+          >
+            <option selected disabled value="">Seleccione Proveedor</option>
+            <option *ngFor="let item of proveedor">{{ item }}</option>
+          </select>
+          <button
+            id="btnproveedor"
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#proveedorModal"
+          >
+            +
+          </button>
+        </div>
+        <div class="mb-3">
+          <label for="costoProducto" class="form-label">Costo</label>
+          <input
+            type="number"
+            class="form-control"
+            id="costoProducto"
+            formControlName="formCosto"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="margenProducto" class="form-label">Ganancia (%)</label>
+          <input
+            type="number"
+            class="form-control"
+            id="margenProducto"
+            formControlName="formGanancia"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="codigoDeBarrasProducto" class="form-label"
+            >Código de Barras</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="codigoDeBarrasProducto"
+            formControlName="formCodBarras"
+          />
+          <button id="btnbarras" type="button" class="btn btn-primary">
+            <i class="fa-solid fa-qrcode"></i>
+          </button>
+        </div>
+        <div class="mb-3">
+          <label for="imagenProducto" class="form-label">Imagen</label>
+          <input
+            type="file"
+            class="form-control"
+            id="imagenProducto"
+            style="font-size: 0.8rem"
+            formControlName="formImagen"
+          />
+        </div>
+        <button
+          id="btnAgregarProducto"
+          type="submit"
+          class="btn btn-primary"
+          (click)="agregarAlListado()"
+        >
+          Agregar
+        </button>
+        <button
+          id="btnEditarProducto"
+          type="submit"
+          class="btn btn-warning"
+          (click)="editarRegistroSeleccionado()"
+        >
+          Actualizar
+        </button>
+        <button
+          id="btnBorrarProducto "
+          type="submit"
+          class="btn btn-danger"
+          (click)="borrarRegistroSeleccionado()"
+        >
+          Borrar
+        </button>
+      </form>
+      <div id="TablaRegistro">
+        <table class="table">
+          <thead class="table-dark">
+            <th scope="col">ID</th>
+            <th scope="col">Producto</th>
+            <th scope="col">Proveedor</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Costo</th>
+            <th scope="col">Ganancia(%)</th>
+            <th scope="col">Cod. Barras</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of registro">
+              <td scope="row" id="CodProd">
+                <a
+                  (click)="
+                    obtenerDatosSeleccion(
+                      item.codigoProducto,
+                      item.barrasProducto
+                    )
+                  "
+                  >{{ item.codigoProducto }}</a
+                >
+              </td>
+              <td scope="row">{{ item.nombreProducto }}</td>
+              <td scope="row">{{ item.proveedorProducto }}</td>
+              <td scope="row">{{ item.marcaProducto }}</td>
+              <td scope="row">{{ item.costoProducto }}</td>
+              <td scope="row">{{ item.gananciaProducto }}</td>
+              <td scope="row" id="idCodBar">
+                <a
+                  (click)="
+                    obtenerDatosSeleccion(
+                      item.codigoProducto,
+                      item.barrasProducto
+                    )
+                  "
+                  >{{ item.barrasProducto }}</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!--Colapsable Proveedor-->
+    <div *ngIf="collapseProveedor" class="config-body">
+      <form [formGroup]="proveedores">
+        <div class="mb-3">
+          <label id="telefonoProveedor" for="telProveedor" class="form-label"
+            >Proveedor</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="nombreProveedor"
+            formControlName="formProveedor"
+          />
+        </div>
+        <div class="mb-3">
+          <label id="telefonoProveedor" for="telProveedor" class="form-label"
+            >Telefono de Contacto</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="telProveedor"
+            formControlName="formTelefono"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="emailProveedor" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="emailProveedor"
+            formControlName="formEmail"
+          />
+        </div>
+        <button
+          id="btnAgregarProveedor"
+          type="submit"
+          class="btn btn-primary"
+          (click)="agregarAlListado()"
+        >
+          Agregar
+        </button>
+        <button
+          id="btnEditarProveedor"
+          type="submit"
+          class="btn btn-warning"
+          (click)="editarRegistroSeleccionado()"
+        >
+          Actualizar
+        </button>
+        <button
+          id="btnBorrarProveedor "
+          type="submit"
+          class="btn btn-danger"
+          (click)="borrarRegistroSeleccionado()"
+        >
+          Borrar
+        </button>
+      </form>
+      <div id="TablaProveedores">
+        <table class="table">
+          <thead class="table-dark">
+            <th scope="col">Proveedor</th>
+            <th scope="col">Telefono</th>
+            <th scope="col">Email</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of listaDeProveedores">
+              <td scope="row" id="idProveedor"><a (click)="recuperarProveedor(item.nombreProveedor)">{{ item.nombreProveedor }}</a></td>
+              <td scope="row">{{ item.telefonoProveedor }}</td>
+              <td scope="row">{{ item.emailProveedor }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
 
-  <!-- Modales -->
-<div class="modal fade" id="productoModal" tabindex="-1" aria-labelledby="tituloProducto" aria-hidden="true">
+<!-- Modales -->
+<div
+  class="modal fade"
+  id="productoModal"
+  tabindex="-1"
+  aria-labelledby="tituloProducto"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="tituloProducto">Nuevo Producto</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <form [formGroup]="ingresoProducto">
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="nombreProductoNuevo" class="form-label">Ingrese el nombre del Producto</label>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="nombreProductoNuevo" class="form-label"
+              >Ingrese el nombre del Producto</label
+            >
+          </div>
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="nombreProductoNuevo"
+              formControlName="formNuevoProducto"
+            />
+          </div>
         </div>
-        <div class="mb-3">
-          <input type="text" class="form-control" id="nombreProductoNuevo" formControlName="formNuevoProducto">
+        <div class="modal-footer">
+          <button
+            id="cerrarModalNuevoProducto"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="ingresarNuevoProducto()"
+          >
+            Añadir
+          </button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button id="cerrarModalNuevoProducto"type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="ingresarNuevoProducto()">Añadir</button>
-      </div>
-    </form>
+      </form>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="marcaModal" tabindex="-1" aria-labelledby="tituloMarca" aria-hidden="true">
+<div
+  class="modal fade"
+  id="marcaModal"
+  tabindex="-1"
+  aria-labelledby="tituloMarca"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="tituloMarca">Nueva Marca</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <form [formGroup]="ingresoMarca">
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="nombreMarcaNueva" class="form-label">Ingrese el nombre de la Marca</label>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="nombreMarcaNueva" class="form-label"
+              >Ingrese el nombre de la Marca</label
+            >
+          </div>
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="nombreMarcaNueva"
+              formControlName="formNuevaMarca"
+            />
+          </div>
         </div>
-        <div class="mb-3">
-          <input type="text" class="form-control" id="nombreMarcaNueva" formControlName="formNuevaMarca">
+        <div class="modal-footer">
+          <button
+            id="cerrarModalNuevaMarca"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="ingresarNuevaMarca()"
+          >
+            Añadir
+          </button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button id="cerrarModalNuevaMarca"type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="ingresarNuevaMarca()">Añadir</button>
-      </div>
-    </form>
+      </form>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="proveedorModal" tabindex="-1" aria-labelledby="tituloProveedor" aria-hidden="true">
+<div
+  class="modal fade"
+  id="proveedorModal"
+  tabindex="-1"
+  aria-labelledby="tituloProveedor"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="tituloProveedor">Nuevo Proveedor</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <form [formGroup]="ingresoProveedor">
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="nombreProveedorNuevo" class="form-label">Ingrese el nombre del Proveedor</label>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="nombreProveedorNuevo" class="form-label"
+              >Ingrese el nombre del Proveedor</label
+            >
+          </div>
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="nombreProveedorNuevo"
+              formControlName="formNuevoProveedor"
+            />
+          </div>
         </div>
-        <div class="mb-3">
-          <input type="text" class="form-control" id="nombreProveedorNuevo" formControlName="formNuevoProveedor">
+        <div class="modal-footer">
+          <button
+            id="cerrarModalNuevoProveedor"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="ingresarNuevoProveedor()"
+          >
+            Añadir
+          </button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button id="cerrarModalNuevoProveedor"type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="ingresarNuevoProveedor()">Añadir</button>
-      </div>
-    </form>
+      </form>
     </div>
   </div>
 </div>
 
-
-<div style='text-align: center;'>
-  <!-- insert your custom barcode setting your data in the GET parameter "data" -->
-  <img alt='Barcode Generator TEC-IT'
-       [src]=urlCodBarras/>
+<div
+  class="modal fade"
+  id="codigoModal"
+  tabindex="-1"
+  aria-labelledby="codigoDeProducto"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="codigoDeProducto">
+          Codigo de Producto:
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div style="text-align: center">
+          <!-- insert your custom barcode setting your data in the GET parameter "data" -->
+          <img alt="Barcode Generator TEC-IT" [src]="urlCodBarras" />
+        </div>
+        <div
+          style="
+            padding-top: 8px;
+            text-align: center;
+            font-size: 15px;
+            font-family: Source Sans Pro, Arial, sans-serif;
+          "
+        >
+          <!-- back-linking to www.tec-it.com is required -->
+          <a
+            href="https://www.tec-it.com"
+            title="Barcode Software by TEC-IT"
+            target="_blank"
+          >
+            TEC-IT Barcode Generator<br />
+          </a>
+        </div>
+        <div class="modal-footer">
+          <button
+            id="cerrarModalCodigoDeBarras"
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancelar
+          </button>
+          <a [href]="urlCodBarras"
+            ><button
+              id="btnGuardarCodigoDeProducto"
+              type="button"
+              class="btn btn-primary"
+              (click)="guardarCodigoDeProducto()"
+            >
+              Guardar
+            </button></a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<div style='padding-top:8px; text-align:center; font-size:15px; font-family: Source Sans Pro, Arial, sans-serif;'>
-  <!-- back-linking to www.tec-it.com is required -->
-  <a href='https://www.tec-it.com' title='Barcode Software by TEC-IT' target='_blank'>
-    TEC-IT Barcode Generator<br/>
-    <!-- logos are optional -->
-    <img alt='TEC-IT Barcode Software' border='0'
-         src='http://www.tec-it.com/pics/banner/web/TEC-IT_Logo_75x75.gif'>
-  </a>
-</div>
-
-
-  

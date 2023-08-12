@@ -8,44 +8,136 @@
   ],
   "marca": [
     {
-      "nombre": "Pampers"
+      "id": 1,
+      "nombreMarca": "Pampers"
     },
     {
-      "nombre": "PYG"
+      "id": 2,
+      "nombreMarca": "PYG"
     },
     {
-      "nombre": "Huggies"
+      "id": 3,
+      "nombreMarca": "Huggies"
     },
     {
-      "nombre": "Johnson&Johnson"
+      "id": 4,
+      "nombreMarca": "Johnson&Johnson"
+    },
+    {
+      "id": 5,
+      "nombreMarca": "Ford"
+    },
+    {
+      "id": 6,
+      "nombreMarca": "Chivas"
     }
   ],
   "producto": [
     {
-      "nombre": "Algodon"
+      "id": 1,
+      "nombreProducto": "Algodon"
     },
     {
-      "nombre": "Pañales"
+      "id": 2,
+      "nombreProducto": "Pañales"
     },
     {
-      "nombre": "Biberon"
+      "nombreProducto": "Alcohol",
+      "id": 3
     },
     {
-      "nombre": "Chupete"
-    } 
+      "nombreProducto": "Biberon",
+      "id": 4
+    },
+    {
+      "id": 5,
+      "nombreProducto": "Tomate"
+    },
+    {
+      "id": 6,
+      "nombreProducto": "Camaron Bombay"
+    },
+    {
+      "id": 7,
+      "nombreProducto": "Cerveza"
+    }
   ],
   "proveedor": [
     {
-      "nombre": "Johnson&Johnson"
+      "id": 1,
+      "nombreProveedor": "Johnson&Johnson",
+      "telefonoProveedor":"-",
+      "emailProveedor":"-"
     },
     {
-      "nombre": "Unilever"
+      "id": 2,
+      "nombreProveedor": "Unilever",
+      "telefonoProveedor":"-",
+      "emailProveedor":"-"
     },
     {
-      "nombre": "Pepito SRL"
+      "id": 3,
+      "nombreProveedor": "Pepito SRL",
+      "telefonoProveedor":"-",
+      "emailProveedor":"-"
     },
     {
-      "nombre": "Ramon"
+      "id": 4,
+      "nombreProveedor": "Ramon",
+      "telefonoProveedor":"-",
+      "emailProveedor":"-"
+    },
+    {
+      "id": 5,
+      "nombreProveedor": "Pepita",
+      "telefonoProveedor":"-",
+      "emailProveedor":"-"
+    }
+  ],
+  "registro": [
+    {
+      "id": 1,
+      "nombreProducto": "Algodon",
+      "codigoProducto": "A1",
+      "marcaProducto": "PYG",
+      "proveedorProducto": "Ramon",
+      "costoProducto": 46,
+      "gananciaProducto": 1,
+      "barrasProducto": 12435433,
+      "imagenProducto": ""
+    },
+    {
+      "id": 2,
+      "nombreProducto": "Pañales",
+      "codigoProducto": "A2",
+      "marcaProducto": "Pampers",
+      "proveedorProducto": "Unilever",
+      "costoProducto": 5211,
+      "gananciaProducto": 3,
+      "barrasProducto": "54223233",
+      "imagenProducto": ""
+    },
+    {
+      "id": 4,
+      "nombreProducto": "Pañales",
+      "codigoProducto": "A4",
+      "marcaProducto": "Pampers",
+      "proveedorProducto": "Unilever",
+      "costoProducto": 3222,
+      "gananciaProducto": 3,
+      "barrasProducto": "54223233",
+      "imagenProducto": ""
+    },
+    {
+      "id": 5,
+      "nombreProducto": "Pañales",
+      "codigoProducto": "A2",
+      "marcaProducto": "PYG",
+      "proveedorProducto": "Ramon",
+      "costoProducto": 5000,
+      "gananciaProducto": 3,
+      "barrasProducto": "54223235",
+      "imagenProducto": ""
     }
   ]
 }
