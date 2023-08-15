@@ -22,10 +22,8 @@
 }
 
 .config-body{
-    /*margin-top: 1em;*/
     display: flex;
     gap: 1rem;
-    /*justify-content: space-between;*/
 }
 
 .config-body label{
@@ -97,10 +95,15 @@
     text-decoration: underline;
 }
 
-#btnAgregarProducto, #btnEditarProducto, #btnBorrarProducto,#btnAgregarProveedor, #btnEditarProveedor, #btnBorrarProveedor{
+#btnAgregarProducto, #btnEditarProducto, #btnBorrarProducto, #btnAgregarProveedor, #btnEditarProveedor, #btnBorrarProveedor{
     margin-right: .5rem;
 }
 
 #btnproducto,#btncod,#btnmarca,#btnproveedor,#btnbarras{
     width: 2.5rem;
+}
+
+.modalIngreso-body{
+    margin-left: 1rem;
+    display: flex;
 }

@@ -30,6 +30,10 @@
     {
       "id": 6,
       "nombreMarca": "Chivas"
+    },
+    {
+      "id": 7,
+      "nombreMarca": "Roland"
     }
   ],
   "producto": [
@@ -60,38 +64,36 @@
     {
       "id": 7,
       "nombreProducto": "Cerveza"
+    },
+    {
+      "id": 8,
+      "nombreProducto": "Damajuana"
     }
   ],
   "proveedor": [
     {
       "id": 1,
       "nombreProveedor": "Johnson&Johnson",
-      "telefonoProveedor":"-",
-      "emailProveedor":"-"
-    },
-    {
-      "id": 2,
-      "nombreProveedor": "Unilever",
-      "telefonoProveedor":"-",
-      "emailProveedor":"-"
+      "telefonoProveedor": "-",
+      "emailProveedor": "-"
     },
     {
       "id": 3,
       "nombreProveedor": "Pepito SRL",
-      "telefonoProveedor":"-",
-      "emailProveedor":"-"
+      "telefonoProveedor": "-",
+      "emailProveedor": "-"
     },
     {
       "id": 4,
       "nombreProveedor": "Ramon",
-      "telefonoProveedor":"-",
-      "emailProveedor":"-"
+      "telefonoProveedor": "-",
+      "emailProveedor": "-"
     },
     {
       "id": 5,
-      "nombreProveedor": "Pepita",
-      "telefonoProveedor":"-",
-      "emailProveedor":"-"
+      "nombreProveedor": "Jorgito",
+      "telefonoProveedor": "",
+      "emailProveedor": ""
     }
   ],
   "registro": [
@@ -111,7 +113,7 @@
       "nombreProducto": "Pañales",
       "codigoProducto": "A2",
       "marcaProducto": "Pampers",
-      "proveedorProducto": "Unilever",
+      "proveedorProducto": "Pepito SRL",
       "costoProducto": 5211,
       "gananciaProducto": 3,
       "barrasProducto": "54223233",
@@ -122,8 +124,8 @@
       "nombreProducto": "Pañales",
       "codigoProducto": "A4",
       "marcaProducto": "Pampers",
-      "proveedorProducto": "Unilever",
-      "costoProducto": 3222,
+      "proveedorProducto": "Johnson&Johnson",
+      "costoProducto": 3255,
       "gananciaProducto": 3,
       "barrasProducto": "54223233",
       "imagenProducto": ""
@@ -132,11 +134,11 @@
       "id": 5,
       "nombreProducto": "Pañales",
       "codigoProducto": "A2",
-      "marcaProducto": "PYG",
-      "proveedorProducto": "Ramon",
-      "costoProducto": 5000,
+      "marcaProducto": "Huggies",
+      "proveedorProducto": "Pepito SRL",
+      "costoProducto": 5211,
       "gananciaProducto": 3,
-      "barrasProducto": "54223235",
+      "barrasProducto": "54223255",
       "imagenProducto": ""
     }
   ]

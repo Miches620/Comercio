@@ -56,11 +56,6 @@
             +
           </button>
         </div>
-        <!-- <div *ngIf="formProducto?.invalid && formProducto?.touched">
-            <div *ngIf="formProducto?.errors?.['required']">
-              Campo Vacio. Por favor Completar.
-            </div>
-          </div>-->
         <div class="mb-3">
           <label id="idCodProd" for="codigoProducto" class="form-label"
             >Código del Producto</label
@@ -77,6 +72,7 @@
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#codigoModal"
+            (click)="generarCodigoDeBarras()"
           >
             <i class="fa-solid fa-print"></i>
           </button>
@@ -180,12 +176,20 @@
           Actualizar
         </button>
         <button
-          id="btnBorrarProducto "
+          id="btnBorrarProducto"
           type="submit"
           class="btn btn-danger"
           (click)="borrarRegistroSeleccionado()"
         >
-          Borrar
+          Eliminar
+        </button>
+        <button
+          id="btnLimpiar"
+          type="submit"
+          class="btn btn-success"
+          (click)="resetearModal(formulario,1)"
+        >
+          Limpiar
         </button>
       </form>
       <div id="TablaRegistro">
@@ -202,15 +206,9 @@
           <tbody>
             <tr *ngFor="let item of registro">
               <td scope="row" id="CodProd">
-                <a
-                  (click)="
-                    obtenerDatosSeleccion(
-                      item.codigoProducto,
-                      item.barrasProducto
-                    )
-                  "
-                  >{{ item.codigoProducto }}</a
-                >
+                <a (click)="obtenerDatosSeleccion(item.id)">{{
+                  item.codigoProducto
+                }}</a>
               </td>
               <td scope="row">{{ item.nombreProducto }}</td>
               <td scope="row">{{ item.proveedorProducto }}</td>
@@ -218,15 +216,9 @@
               <td scope="row">{{ item.costoProducto }}</td>
               <td scope="row">{{ item.gananciaProducto }}</td>
               <td scope="row" id="idCodBar">
-                <a
-                  (click)="
-                    obtenerDatosSeleccion(
-                      item.codigoProducto,
-                      item.barrasProducto
-                    )
-                  "
-                  >{{ item.barrasProducto }}</a
-                >
+                <a (click)="obtenerDatosSeleccion(item.id)">{{
+                  item.barrasProducto
+                }}</a>
               </td>
             </tr>
           </tbody>
@@ -271,7 +263,7 @@
           id="btnAgregarProveedor"
           type="submit"
           class="btn btn-primary"
-          (click)="agregarAlListado()"
+          (click)="ingresarNuevoProveedor()"
         >
           Agregar
         </button>
@@ -279,7 +271,7 @@
           id="btnEditarProveedor"
           type="submit"
           class="btn btn-warning"
-          (click)="editarRegistroSeleccionado()"
+          (click)="editarProveedor()"
         >
           Actualizar
         </button>
@@ -287,7 +279,7 @@
           id="btnBorrarProveedor "
           type="submit"
           class="btn btn-danger"
-          (click)="borrarRegistroSeleccionado()"
+          (click)="borrarProveedor()"
         >
           Borrar
         </button>
@@ -301,7 +293,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let item of listaDeProveedores">
-              <td scope="row" id="idProveedor"><a (click)="recuperarProveedor(item.nombreProveedor)">{{ item.nombreProveedor }}</a></td>
+              <td scope="row" id="idProveedor">
+                <a (click)="recuperarProveedor(item.id)">{{
+                  item.nombreProveedor
+                }}</a>
+              </td>
               <td scope="row">{{ item.telefonoProveedor }}</td>
               <td scope="row">{{ item.emailProveedor }}</td>
             </tr>
@@ -329,6 +325,7 @@
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          (click)="resetearModal(ingresoProducto,0)"
         ></button>
       </div>
       <form [formGroup]="ingresoProducto">
@@ -346,6 +343,11 @@
               formControlName="formNuevoProducto"
             />
           </div>
+          <div class="advertencia" *ngIf="nuevoProducto?.invalid && nuevoProducto?.touched">
+            <div class="advertencia" *ngIf="nuevoProducto?.errors?.['required']">
+              Campo Vacio. Por favor Completar.
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button
@@ -353,6 +355,7 @@
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
+            (click)="resetearModal(ingresoProducto,0)"
           >
             Cancelar
           </button>
@@ -385,6 +388,7 @@
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          (click)="resetearModal(ingresoMarca,0)"
         ></button>
       </div>
       <form [formGroup]="ingresoMarca">
@@ -402,6 +406,11 @@
               formControlName="formNuevaMarca"
             />
           </div>
+          <div class="advertencia" *ngIf="nuevaMarca?.invalid && nuevaMarca?.touched">
+            <div class="advertencia" *ngIf="nuevaMarca?.errors?.['required']">
+              Campo Vacio. Por favor Completar.
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button
@@ -409,6 +418,7 @@
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
+            (click)="resetearModal(ingresoMarca,0)"
           >
             Cancelar
           </button>
@@ -441,6 +451,7 @@
           class="btn-close"
           data-bs-dismiss="modal"
           aria-label="Close"
+          (click)="resetearModal(ingresoProveedor,0)"
         ></button>
       </div>
       <form [formGroup]="ingresoProveedor">
@@ -458,6 +469,11 @@
               formControlName="formNuevoProveedor"
             />
           </div>
+          <div class="advertencia" *ngIf="nuevoProveedor?.invalid && nuevoProveedor?.touched">
+            <div class="advertencia" *ngIf="nuevoProveedor?.errors?.['required']">
+              Campo Vacio. Por favor Completar.
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button
@@ -465,6 +481,7 @@
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
+            (click)="resetearModal(ingresoProveedor,0)"
           >
             Cancelar
           </button>
@@ -487,8 +504,7 @@
   tabindex="-1"
   aria-labelledby="codigoDeProducto"
   aria-hidden="true"
->
-  <div class="modal-dialog">
+><div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="codigoDeProducto">
@@ -503,46 +519,47 @@
       </div>
       <div class="modal-body">
         <div style="text-align: center">
-          <!-- insert your custom barcode setting your data in the GET parameter "data" -->
-          <img alt="Barcode Generator TEC-IT" [src]="urlCodBarras" />
+          <img
+            *ngIf="!campoVacio"
+            id="imgCodProd"
+            alt="Barcode Generator TEC-IT"
+            [src]="urlCodBarras"
+          />
+          <h3 *ngIf="campoVacio">Error al cargar el codigo de Producto</h3>
+          <p *ngIf="campoVacio">
+            Por favor verifique que el campo correspondiente no se encuentra
+            vacio e intente Nuevamente.
+          </p>
         </div>
-        <div
-          style="
-            padding-top: 8px;
-            text-align: center;
-            font-size: 15px;
-            font-family: Source Sans Pro, Arial, sans-serif;
-          "
+      </div>
+      <div class="modal-footer">
+        <button
+          id="cerrarModalCodigoDeBarras"
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
         >
-          <!-- back-linking to www.tec-it.com is required -->
-          <a
-            href="https://www.tec-it.com"
-            title="Barcode Software by TEC-IT"
-            target="_blank"
-          >
-            TEC-IT Barcode Generator<br />
-          </a>
-        </div>
-        <div class="modal-footer">
-          <button
-            id="cerrarModalCodigoDeBarras"
+          Cancelar
+        </button>
+        <button
+          *ngIf="!campoVacio"
+          id="btnImprimirCodigoDeProducto"
+          type="button"
+          class="btn btn-primary"
+          (click)="imprimirCodigoDeProducto(urlCodBarras)"
+        >
+          Imprimir
+        </button>
+        <a *ngIf="!campoVacio" [href]="urlCodBarras"
+          ><button
+            id="btnGuardarCodigoDeProducto"
             type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
+            class="btn btn-primary"
+            (click)="guardarCodigoDeProducto()"
           >
-            Cancelar
-          </button>
-          <a [href]="urlCodBarras"
-            ><button
-              id="btnGuardarCodigoDeProducto"
-              type="button"
-              class="btn btn-primary"
-              (click)="guardarCodigoDeProducto()"
-            >
-              Guardar
-            </button></a
-          >
-        </div>
+            Guardar
+          </button></a
+        >
       </div>
     </div>
   </div>

@@ -56,9 +56,17 @@ export class AdminService {
   return this.http.put(this.url+'registro/'+id,registro);
   }
 
+  editarDatosProveedor(id:number,proveedor:Proveedor):Observable<any>{
+    return this.http.put(this.url+'proveedor/'+id,proveedor);
+  }
+
   //DELETE:
 
   borrarRegistro(id:number):Observable<any>{
     return this.http.delete(this.url+'registro/'+id);
+  }
+
+  borrarProveedor(id:number):Observable<any>{
+    return this.http.delete(this.url+'proveedor/'+id);
   }
 }
