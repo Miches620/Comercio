@@ -60,6 +60,14 @@ export class AdminService {
     return this.http.put(this.url+'proveedor/'+id,proveedor);
   }
 
+  editarDatosProducto(id:number,producto:Producto):Observable<any>{
+    return this.http.put(this.url+'producto/'+id,producto);
+  }
+
+  editarDatosMarca(id:number,marca:Marca):Observable<any>{
+    return this.http.put(this.url+'marca/'+id,marca);
+  }
+
   //DELETE:
 
   borrarRegistro(id:number):Observable<any>{
@@ -68,5 +76,13 @@ export class AdminService {
 
   borrarProveedor(id:number):Observable<any>{
     return this.http.delete(this.url+'proveedor/'+id);
+  }
+
+  borrarProducto(id:number):Observable<any>{
+    return this.http.delete(this.url+'producto/'+id);
+  }
+
+  borrarMarca(id:number):Observable<any>{
+    return this.http.delete(this.url+'marca/'+id);
   }
 }

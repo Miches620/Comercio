@@ -107,3 +107,13 @@
     margin-left: 1rem;
     display: flex;
 }
+
+.modal-footer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.registros{
+    display: flex;
+    gap:.5em;
+}

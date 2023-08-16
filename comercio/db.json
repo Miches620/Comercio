@@ -12,62 +12,30 @@
       "nombreMarca": "Pampers"
     },
     {
-      "id": 2,
-      "nombreMarca": "PYG"
-    },
-    {
-      "id": 3,
-      "nombreMarca": "Huggies"
-    },
-    {
       "id": 4,
-      "nombreMarca": "Johnson&Johnson"
-    },
-    {
-      "id": 5,
-      "nombreMarca": "Ford"
+      "nombreMarca": "Johnson"
     },
     {
       "id": 6,
-      "nombreMarca": "Chivas"
-    },
-    {
-      "id": 7,
-      "nombreMarca": "Roland"
+      "nombreMarca": "Always"
     }
   ],
   "producto": [
     {
       "id": 1,
-      "nombreProducto": "Algodon"
+      "nombreProducto": "Algodones"
     },
     {
       "id": 2,
       "nombreProducto": "Pañales"
     },
     {
-      "nombreProducto": "Alcohol",
-      "id": 3
+      "id": 3,
+      "nombreProducto": "Crema corporal"
     },
     {
-      "nombreProducto": "Biberon",
-      "id": 4
-    },
-    {
-      "id": 5,
-      "nombreProducto": "Tomate"
-    },
-    {
-      "id": 6,
-      "nombreProducto": "Camaron Bombay"
-    },
-    {
-      "id": 7,
-      "nombreProducto": "Cerveza"
-    },
-    {
-      "id": 8,
-      "nombreProducto": "Damajuana"
+      "id": 4,
+      "nombreProducto": "Perfume de bebe"
     }
   ],
   "proveedor": [
@@ -113,33 +81,22 @@
       "nombreProducto": "Pañales",
       "codigoProducto": "A2",
       "marcaProducto": "Pampers",
-      "proveedorProducto": "Pepito SRL",
-      "costoProducto": 5211,
-      "gananciaProducto": 3,
-      "barrasProducto": "54223233",
-      "imagenProducto": ""
-    },
-    {
-      "id": 4,
-      "nombreProducto": "Pañales",
-      "codigoProducto": "A4",
-      "marcaProducto": "Pampers",
       "proveedorProducto": "Johnson&Johnson",
-      "costoProducto": 3255,
-      "gananciaProducto": 3,
-      "barrasProducto": "54223233",
+      "costoProducto": 766,
+      "gananciaProducto": 2,
+      "barrasProducto": "12435444",
       "imagenProducto": ""
     },
     {
-      "id": 5,
-      "nombreProducto": "Pañales",
-      "codigoProducto": "A2",
-      "marcaProducto": "Huggies",
-      "proveedorProducto": "Pepito SRL",
-      "costoProducto": 5211,
-      "gananciaProducto": 3,
-      "barrasProducto": "54223255",
-      "imagenProducto": ""
+      "id": 3,
+      "nombreProducto": "Crema corporal",
+      "codigoProducto": "A3",
+      "marcaProducto": "",
+      "proveedorProducto": "",
+      "costoProducto": 522,
+      "gananciaProducto": 4,
+      "barrasProducto": "8765432",
+      "imagenProducto": null
     }
   ]
 }

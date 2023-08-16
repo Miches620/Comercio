@@ -52,6 +52,7 @@
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#productoModal"
+            (click)=" recuperarId(1)"
           >
             +
           </button>
@@ -93,6 +94,7 @@
             class="btn btn-primary"
             data-bs-toggle="modal"
             data-bs-target="#marcaModal"
+            (click)="recuperarId(2)"
           >
             +
           </button>
@@ -165,7 +167,7 @@
           class="btn btn-primary"
           (click)="agregarAlListado()"
         >
-          Agregar
+          Añadir
         </button>
         <button
           id="btnEditarProducto"
@@ -173,15 +175,16 @@
           class="btn btn-warning"
           (click)="editarRegistroSeleccionado()"
         >
-          Actualizar
+          Editar
         </button>
         <button
           id="btnBorrarProducto"
           type="submit"
           class="btn btn-danger"
-          (click)="borrarRegistroSeleccionado()"
+          data-bs-toggle="modal"
+          data-bs-target="#borrarModal"
         >
-          Eliminar
+          Borrar
         </button>
         <button
           id="btnLimpiar"
@@ -265,7 +268,7 @@
           class="btn btn-primary"
           (click)="ingresarNuevoProveedor()"
         >
-          Agregar
+          Añadir
         </button>
         <button
           id="btnEditarProveedor"
@@ -273,7 +276,7 @@
           class="btn btn-warning"
           (click)="editarProveedor()"
         >
-          Actualizar
+          Editar
         </button>
         <button
           id="btnBorrarProveedor "
@@ -351,14 +354,15 @@
         </div>
         <div class="modal-footer">
           <button
-            id="cerrarModalNuevoProducto"
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-            (click)="resetearModal(ingresoProducto,0)"
-          >
-            Cancelar
-          </button>
+          id="cerrarModalNuevoProducto"
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          (click)="resetearModal(ingresoProducto,0)"
+        >
+          Cancelar
+        </button>
+          <div class="registros">
           <button
             type="button"
             class="btn btn-primary"
@@ -366,6 +370,23 @@
           >
             Añadir
           </button>
+          <button
+           *ngIf="!campoVacio"
+            type="button"
+            class="btn btn-warning"
+            (click)="editarProductoOMarca(1)"
+          >
+            Editar
+          </button>
+          <button
+            *ngIf="!campoVacio"
+            type="button"
+            class="btn btn-danger"
+            (click)="borrarProductoOMarca(1)"
+          >
+            Borrar
+          </button>
+        </div>
         </div>
       </form>
     </div>
@@ -414,14 +435,15 @@
         </div>
         <div class="modal-footer">
           <button
-            id="cerrarModalNuevaMarca"
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-            (click)="resetearModal(ingresoMarca,0)"
-          >
-            Cancelar
-          </button>
+          id="cerrarModalNuevaMarca"
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          (click)="resetearModal(ingresoMarca,0)"
+        >
+          Cancelar
+        </button>
+          <div class="registros">
           <button
             type="button"
             class="btn btn-primary"
@@ -429,6 +451,23 @@
           >
             Añadir
           </button>
+          <button
+            *ngIf="!campoVacio"
+            type="button"
+            class="btn btn-warning"
+            (click)="editarProductoOMarca(2)"
+          >
+            Editar
+          </button>
+          <button
+            *ngIf="!campoVacio"
+            type="button"
+            class="btn btn-danger"
+            (click)="borrarProductoOMarca(2)"
+          >
+            Borrar
+          </button>
+        </div>
         </div>
       </form>
     </div>
@@ -560,6 +599,54 @@
             Guardar
           </button></a
         >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="borrarModal"
+  tabindex="-1"
+  aria-labelledby="BorrarProducto"
+  aria-hidden="true"
+><div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="BorrarProducto">
+          Confirmar accion
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div style="text-align: center">
+          <p>
+            Borrar Registro Seleccionado?
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          id="cerrarModalEliminar"
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cancelar
+        </button>
+        <button
+          id="btnBorrarRegistroDeProducto"
+          type="button"
+          class="btn btn-danger"
+          (click)="borrarRegistroSeleccionado()"
+        >
+          Confirmar
+        </button>
       </div>
     </div>
   </div>
