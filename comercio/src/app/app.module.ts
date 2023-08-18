@@ -7,12 +7,14 @@ import { ConfiguracionComponent } from './componentes/configuracion/configuracio
 import { HeaderComponent } from './componentes/header/header.component';
 import {HttpClientModule} from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StockComponent } from './componentes/stock/stock.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConfiguracionComponent,
-    HeaderComponent
+    HeaderComponent,
+    StockComponent
   ],
   imports: [
     BrowserModule,

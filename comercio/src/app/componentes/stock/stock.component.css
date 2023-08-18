@@ -1,0 +1,97 @@
+#Stock{
+    height: 50%;
+}
+
+.stock-body table{
+    width: 100%;
+}
+.stock-body form{
+    width: 40%;
+}
+
+.stock-body table .table-dark{
+    height: 6%;
+    background-color:#201f1f;
+}
+
+.stock-body{
+    display: flex;
+    gap: 1rem;
+}
+
+.stock-body label{
+    margin: 0;
+}
+
+.stock-body input, .stock-body select{
+    width: 58%;
+}
+
+
+.mb-3{
+   margin-bottom: 0;
+   display: flex;
+   justify-content: space-between
+
+}
+
+.table thead, .table tbody{
+   text-align: center;
+   width: 100%;
+
+}
+
+#TablaRegistro, #TablaProveedores{
+    height:fit-content;
+    max-height: 40.5em;
+    overflow: auto;
+    width:100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#TablaProveedores{
+    height: 10rem;
+}
+
+#CodProd, #idCodBar{
+    color:rgb(52, 52, 219);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.modalIngreso-body{
+    margin-left: 1rem;
+    display: flex;
+}
+
+.modal-footer{
+    display: flex;
+    justify-content: space-between;
+}
+
+.registros{
+    display: flex;
+    gap:.5em;
+}
+
+
+#previewImage{
+    height: 16rem;
+    width: 23rem;
+    border: 2px solid red;
+    border-radius: 4%;
+    -webkit-border-radius: 4%;
+    -moz-border-radius: 4%;
+    -ms-border-radius: 4%;
+    -o-border-radius: 4%;
+}
+
+.dtList{
+    border-radius: 2%;
+    -webkit-border-radius: 2%;
+    -moz-border-radius: 2%;
+    -ms-border-radius: 2%;
+    -o-border-radius: 2%;
+    background-color: #fff;
+}

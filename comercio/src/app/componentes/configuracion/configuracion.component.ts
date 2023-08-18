@@ -5,7 +5,8 @@ import { Proveedor } from 'src/app/entidades/proveedor';
 import { Marca } from 'src/app/entidades/marca';
 import { Registro } from 'src/app/entidades/registro';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { isEmpty } from 'rxjs';
+import { delay } from 'rxjs';
+
 
 @Component({
   selector: 'app-configuracion',
@@ -15,18 +16,18 @@ import { isEmpty } from 'rxjs';
 export class ConfiguracionComponent implements OnInit {
   marca: any = [];
   producto: any = [];
-  proveedor: any = [];
   listaDeProductos: any = [];
   listaDeProveedores: any = [];
   listaDeMarcas: any = [];
   formulario: FormGroup;
   proveedores: FormGroup;
-  collapseProducto: boolean = false;
-  collapseProveedor: boolean = true;
-  collapseGastos: boolean = false;
   ingresoProducto: FormGroup;
   ingresoMarca: FormGroup;
   ingresoProveedor: FormGroup;
+  lecturaCodeBar:FormGroup;
+  collapseProducto: boolean = false;
+  collapseProveedor: boolean = true;
+  collapseGastos: boolean = false;
   registro: any;
   urlCodBarras: string = '';
   campoVacio: boolean = true;
@@ -39,11 +40,8 @@ export class ConfiguracionComponent implements OnInit {
     this.formulario = this.servicioFormulario.group({
       formProducto: ['', Validators.required],
       formCodProd: ['', Validators.required],
-      formMarca: [''],
-      formProveedor: [''],
-      formCosto: ['', Validators.required],
-      formGanancia: ['', Validators.required],
-      formCodBarras: [''],
+      formMarca: ['', Validators.required],
+      formCodBarras: ['', Validators.required],
       formImagen: [''],
     });
     this.proveedores = this.servicioFormulario.group({
@@ -65,6 +63,9 @@ export class ConfiguracionComponent implements OnInit {
     this.ingresoProveedor = this.servicioFormulario.group({
       formNuevoProveedor: ['', Validators.required],
     });
+    this.lecturaCodeBar = this.servicioFormulario.group({
+      formCodeBar:[''],
+    })
   }
 
   get nuevoProducto() {
@@ -94,9 +95,7 @@ export class ConfiguracionComponent implements OnInit {
     });
     this.configurar.obtenerDatosProveedores().subscribe((data) => {
       this.listaDeProveedores = data;
-      for (let i = 0; i < data.length; i++) {
-        this.proveedor[i] = data[i].nombreProveedor;
-      }
+      
     });
     this.configurar.obtenerRegistro().subscribe((data) => {
       this.registro = data;
@@ -263,16 +262,8 @@ export class ConfiguracionComponent implements OnInit {
         this.formulario.get('formProducto')?.setValue(item.nombreProducto);
         this.formulario.get('formCodProd')?.setValue(item.codigoProducto);
         this.formulario.get('formMarca')?.setValue(item.marcaProducto);
-        this.formulario.get('formProveedor')?.setValue(item.proveedorProducto);
-        this.formulario.get('formCosto')?.setValue(item.costoProducto);
-        this.formulario.get('formGanancia')?.setValue(item.gananciaProducto);
         this.formulario.get('formCodBarras')?.setValue(item.barrasProducto);
         this.formulario.get('formImagen')?.setValue(item.imagenProducto);
-
-        /*this.urlCodBarras =
-        'https://barcode.tec-it.com/barcode.ashx?data=' +
-        item.codigoProducto +
-        '&code=Code128&translate-esc=on';*/
       }
     }
   }
@@ -308,7 +299,6 @@ export class ConfiguracionComponent implements OnInit {
         this.formulario.reset();
         this.formulario.get('formProducto')?.setValue('');
         this.formulario.get('formMarca')?.setValue('');
-        this.formulario.get('formProveedor')?.setValue('');
         this.id = 0;
         this.ngOnInit();
         break;
@@ -327,8 +317,7 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   imprimirCodigoDeProducto(codigo: string) {
-    document.getElementById('cerrarModalCodigoDeBarras')?.click();
-    let mywindow = window.open('', 'PRINT', 'height=400,width=600');
+    let mywindow = window.open('', 'PRINT', 'height=600,width=600');
     mywindow?.document.write('<html><head>');
     mywindow?.document.write('<meta charset="UTF-8">');
     mywindow?.document.write(
@@ -338,16 +327,36 @@ export class ConfiguracionComponent implements OnInit {
     mywindow?.document.write('</head><body>');
     for (let i = 0; i < 45; i++) {
       mywindow?.document.write(
-        '<img height=100px; width:114px; src=' + codigo + '/>'
+        '<img height=100px; width:114px; src=' + codigo + 'onload="print()"/>'
       );
     }
     mywindow?.document.write('</body></html>');
     mywindow?.document.close();
     mywindow?.focus();
-    mywindow?.print();
-    mywindow?.close();
+    setTimeout( () => {
+      mywindow?.print();
+      mywindow?.close();
+ }, 300);
     document.getElementById('cerrarModalCodigoDeBarras')?.click();
     return true;
+  }
+
+  iniciarScanner(){
+    const myModal = document.getElementById('codeBar');
+    const myInput = document.getElementById('hiddenCodeBar');
+
+   myModal?.addEventListener('shown.bs.modal', () => {
+    myInput?.focus()})
+
+  }
+
+  leerScanner(){
+    let codigo = this.lecturaCodeBar.get('formCodeBar')?.value;
+    if(codigo!="" || codigo!=null){
+      document.getElementById('btnCerrarBarCode')?.click();
+      this.formulario.get('formCodBarras')?.setValue(codigo);
+      this.lecturaCodeBar.get('formCodeBar')?.setValue("");
+    }
   }
 
   guardarCodigoDeProducto() {
@@ -378,9 +387,6 @@ export class ConfiguracionComponent implements OnInit {
       let producto = this.formulario.get('formProducto')?.value;
       let codigoDelProducto = this.formulario.get('formCodProd')?.value;
       let marca = this.formulario.get('formMarca')?.value;
-      let proveedor = this.formulario.get('formProveedor')?.value;
-      let costo = this.formulario.get('formCosto')?.value;
-      let ganancia = this.formulario.get('formGanancia')?.value;
       let codigoDeBarrasDelProducto =
         this.formulario.get('formCodBarras')?.value;
       let imagen = this.formulario.get('formImagen')?.value;
@@ -402,9 +408,6 @@ export class ConfiguracionComponent implements OnInit {
           producto,
           codigoDelProducto,
           marca,
-          proveedor,
-          costo,
-          ganancia,
           codigoDeBarrasDelProducto,
           imagen
         );
@@ -435,9 +438,6 @@ export class ConfiguracionComponent implements OnInit {
       let producto = this.formulario.get('formProducto')?.value;
       let codigoDelProducto = this.formulario.get('formCodProd')?.value;
       let marca = this.formulario.get('formMarca')?.value;
-      let proveedor = this.formulario.get('formProveedor')?.value;
-      let costo = this.formulario.get('formCosto')?.value;
-      let ganancia = this.formulario.get('formGanancia')?.value;
       let codigoDeBarrasDelProducto =
         this.formulario.get('formCodBarras')?.value;
       let imagen = this.formulario.get('formImagen')?.value;
@@ -458,9 +458,6 @@ export class ConfiguracionComponent implements OnInit {
           producto,
           codigoDelProducto,
           marca,
-          proveedor,
-          costo,
-          ganancia,
           codigoDeBarrasDelProducto,
           imagen
         );
@@ -487,7 +484,6 @@ export class ConfiguracionComponent implements OnInit {
     if (valor == 1) {
       modal.get('formProducto')?.setValue('');
       modal.get('formMarca')?.setValue('');
-      modal.get('formProveedor')?.setValue('');
     }
   }
 
@@ -569,7 +565,7 @@ export class ConfiguracionComponent implements OnInit {
     }
     let idNuevoProveedor = 0;
     if (nuevoProveedor != '' && nuevoProveedor != null) {
-      for (let item of this.proveedor) {
+      for (let item of this.listaDeProveedores.nombreProveedor) {
         if (item == nuevoProveedor) {
           valorRepetido = true;
           alert('VALOR REPETIDO!!!'); //Cambiar por algo mas estetico.
@@ -578,21 +574,13 @@ export class ConfiguracionComponent implements OnInit {
       }
       if (valorRepetido == false) {
         let nuevoItemProveedor;
-        if (this.collapseProducto) {
-          nuevoItemProveedor = new Proveedor(
-            idNuevoProveedor,
-            nuevoProveedor,
-            '',
-            ''
-          );
-        } else {
           nuevoItemProveedor = new Proveedor(
             idNuevoProveedor,
             nuevoProveedor,
             nuevoProveedorTelefono,
             nuevoProveedorEmail
           );
-        }
+        
         this.configurar.agregarDatosProveedor(nuevoItemProveedor).subscribe({
           next: (data) => {
             this.ingresoProveedor.reset();

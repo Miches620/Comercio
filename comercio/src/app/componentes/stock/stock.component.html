@@ -1,0 +1,182 @@
+<section id="Stock">
+    <div class="container mt-3">
+      <h3 class="text-center">Stock</h3>
+      <div class="stock-body">
+        <form [formGroup]="stock">
+          <div class="mb-3">
+            <datalist id="productos">
+                <option selected disabled value="">Seleccione Producto</option>
+                <option *ngFor="let item of listaDeProductos" value={{item.nombreProducto}}></option>
+            </datalist>
+            <label for="tipoDeProducto" class="form-label"
+              >Producto</label
+            >
+            <input
+              class="form-select"
+              id="tipoDeProducto"
+              formControlName="formProducto"
+              list="productos"
+            >
+          </div>
+          <div class="mb-3">
+            <label id="cantidad" for="cantidadProducto" class="form-label"
+              >Cantidad</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="cantidadProducto"
+              formControlName="formCantidad"
+            />
+          </div>
+          <div class="mb-3">
+            <datalist id="proveedores">
+                <option *ngFor="let item of listaDeProveedores" value={{item.nombreProveedor}}></option>
+            </datalist>
+            <label for="Proveedor" class="form-label"
+              >Proveedor</label
+            >
+            <input
+              class="form-select"
+              id="Proveedor"
+              formControlName="formProveedor"
+              list="proveedores"
+            >
+          </div>
+          <div class="mb-3">
+            <label for="costo" class="form-label"
+              >Costo</label
+            >
+            <input
+              type="number"
+              class="form-control"
+              id="costo"
+              formControlName="formCosto"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="ganancia" class="form-label">Ganancia</label>
+            <input
+              type="number"
+              class="form-control"
+              id="ganancia"
+              formControlName="formGanancia"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="vencimiento" class="form-label">Vencimiento</label>
+            <input
+              type="date"
+              class="form-control"
+              id="vencimiento"
+              formControlName="formVencimiento"
+            />
+          </div>
+          <div class="mb-3">
+            <button
+            id="btnEscanearProducto"
+            type="submit"
+            class="btn btn-primary"
+            (click)="iniciarScanner()"
+            data-bs-toggle="modal"
+            data-bs-target="#codeBar2"
+          >
+          <i class="fa-solid fa-qrcode"></i>
+          </button>
+          <div class="registros">
+          <button
+            id="btnAgregarProducto"
+            type="submit"
+            class="btn btn-primary"
+          >
+          <i class="fa-solid fa-plus"></i>
+          </button>
+          <button
+            id="btnEditarProducto"
+            type="submit"
+            class="btn btn-warning"
+          >
+          <i class="fa-solid fa-pen-to-square"></i>
+          </button>
+          <button
+            id="btnBorrarProducto"
+            type="submit"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#borrarModal"
+          >
+          <i class="fa-solid fa-trash-can"></i>
+          </button>
+          <button
+            id="btnLimpiar"
+            type="submit"
+            class="btn btn-success"
+          >
+          <i class="fa-solid fa-arrows-rotate"></i>
+          </button>
+        </div>
+    </div>
+          <img id="previewImage" [src]="tempImagen" alt="Vista Previa del Producto">
+        </form>
+        <div id="TablaRegistro">
+          <table class="table">
+            <thead class="table-dark">
+              <th scope="col">ID</th>
+              <th scope="col">Producto</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Marca</th>
+              <th scope="col">Proveedor</th>
+              <th scope="col">Costo</th>
+              <th scope="col">Ganancia (%)</th>
+              <th scope="col">Ingreso</th>
+              <th scope="col">Vencimiento</th>
+              <th scope="col">Cod. Barras</th>
+            </thead>
+            <tbody>
+                
+              <tr *ngFor="let item of listaDeStock" ><!--Deberia generar una nueva lista en el ts que rejunte los datos de listaDeStock y listaDeProductos-->
+                <td scope="row" id="CodProd">
+                  <!--<a </a>(click)="obtenerDatosSeleccion(item.id)">{{
+                    item.codigoProducto
+                  }}</a>-->{{item.codigoProducto}}
+                </td>
+                <td scope="row">{{item.nombreProducto}}</td>
+                <td scope="row">{{item.cantidadProducto}}</td>
+                <td scope="row">{{item.marcaProducto}}</td>
+                <td scope="row">{{item.proveedorProducto}}</td>
+                <td scope="row">${{item.costoProducto}}</td>
+                <td scope="row">${{item.gananciaProducto}}({{item.porcentajeProducto}}%)</td>
+                <td scope="row">{{item.ingresoProducto}}</td>
+                <td scope="row">{{item.vencimientoProducto}}</td>
+                <td scope="row" id="idCodBar">{{item.barrasProducto}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+    </div>
+</div>
+</section>
+
+<div class="modal fade"  id="codeBar2">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Esperando Lectura..</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnCerrarBarCode2"></button>
+      </div>
+      <form [formGroup]="lecturaCodeBar">
+      <div class="modal-body text-center">
+        <input type="text"  class="visually-hidden" id="hiddenCodeBar2" formControlName="formCodeBar" (change)="recuperarRegistro()">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        
+      </div>
+    </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-ban"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+      

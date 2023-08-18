@@ -78,7 +78,7 @@
 }
 
 #TablaRegistro, #TablaProveedores{
-    height: 26rem;
+    height: 17rem;
     overflow: auto;
     width:100%;
     display: flex;

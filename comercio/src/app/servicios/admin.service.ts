@@ -32,6 +32,10 @@ export class AdminService {
     return this.http.get(this.url+'registro')
   }
 
+  obtenerStock():Observable<any>{
+    return this.http.get(this.url+'stock')
+  }
+
   //POST:
 
   agregarDatosProducto(producto:Producto):Observable<any>{

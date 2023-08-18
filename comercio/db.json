@@ -18,12 +18,16 @@
     {
       "id": 6,
       "nombreMarca": "Always"
+    },
+    {
+      "id": 7,
+      "nombreMarca": "ACCU-CHECK"
     }
   ],
   "producto": [
     {
       "id": 1,
-      "nombreProducto": "Algodones"
+      "nombreProducto": "Algodon"
     },
     {
       "id": 2,
@@ -36,6 +40,14 @@
     {
       "id": 4,
       "nombreProducto": "Perfume de bebe"
+    },
+    {
+      "id": 5,
+      "nombreProducto": "Aloe Vera"
+    },
+    {
+      "id": 6,
+      "nombreProducto": "Tiras Reactivas"
     }
   ],
   "proveedor": [
@@ -70,32 +82,71 @@
       "nombreProducto": "Algodon",
       "codigoProducto": "A1",
       "marcaProducto": "PYG",
-      "proveedorProducto": "Ramon",
-      "costoProducto": 46,
-      "gananciaProducto": 1,
-      "barrasProducto": 12435433,
-      "imagenProducto": ""
+      "barrasProducto": "12435433",
+      "imagenProducto": null
     },
     {
       "id": 2,
       "nombreProducto": "Pañales",
       "codigoProducto": "A2",
       "marcaProducto": "Pampers",
-      "proveedorProducto": "Johnson&Johnson",
-      "costoProducto": 766,
-      "gananciaProducto": 2,
       "barrasProducto": "12435444",
-      "imagenProducto": ""
+      "imagenProducto": null
     },
     {
       "id": 3,
       "nombreProducto": "Crema corporal",
       "codigoProducto": "A3",
       "marcaProducto": "",
-      "proveedorProducto": "",
-      "costoProducto": 522,
-      "gananciaProducto": 4,
       "barrasProducto": "8765432",
+      "imagenProducto": null
+    },
+    {
+      "id": 4,
+      "nombreProducto": "Aloe Vera",
+      "codigoProducto": "A4",
+      "marcaProducto": "Johnson",
+      "barrasProducto": "637367272",
+      "imagenProducto": null
+    },
+    {
+      "id": 5,
+      "nombreProducto": "Tiras Reactivas",
+      "codigoProducto": "A5",
+      "marcaProducto": "ACCU-CHECK",
+      "barrasProducto": "4015630067626",
+      "imagenProducto": "assets\\imagenes\\tiras-reactivas.jpg"
+    }
+  ],
+  "stock": [
+    {
+      "id": 1,
+      "codigoProducto": "A1",
+      "nombreProducto": "Algodon",
+      "cantidadProducto": 50,
+      "marcaProducto": "Huggies",
+      "proveedorProducto": "Carlos S.R.L",
+      "costoProducto": 1200,
+      "gananciaProducto": 1260,
+      "porcentajeProducto": 5,
+      "ingresoProducto": "17/07/2023",
+      "vencimientoProducto": "18/08/2023",
+      "barrasProducto": "12435433",
+      "imagenProducto": null
+    },
+    {
+      "id": 2,
+      "codigoProducto": "A2",
+      "nombreProducto": "Pañales",
+      "cantidadProducto": 100,
+      "marcaProducto": "Pampers",
+      "proveedorProducto": "Pepita S.A",
+      "costoProducto": 780,
+      "gananciaProducto": 800,
+      "porcentajeProducto": 2.5,
+      "ingresoProducto": "17/07/2023",
+      "vencimientoProducto": "18/08/2023",
+      "barrasProducto": "12435444",
       "imagenProducto": null
     }
   ]
