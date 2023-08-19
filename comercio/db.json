@@ -129,8 +129,8 @@
       "costoProducto": 1200,
       "gananciaProducto": 1260,
       "porcentajeProducto": 5,
-      "ingresoProducto": "17/07/2023",
-      "vencimientoProducto": "18/08/2023",
+      "ingresoProducto": "17/07/23",
+      "vencimientoProducto": "18/08/23",
       "barrasProducto": "12435433",
       "imagenProducto": null
     },
@@ -144,10 +144,25 @@
       "costoProducto": 780,
       "gananciaProducto": 800,
       "porcentajeProducto": 2.5,
-      "ingresoProducto": "17/07/2023",
-      "vencimientoProducto": "18/08/2023",
+      "ingresoProducto": "17/07/23",
+      "vencimientoProducto": "18/08/23",
       "barrasProducto": "12435444",
       "imagenProducto": null
+    },
+    {
+      "id": 3,
+      "codigoProducto": "A5",
+      "nombreProducto": "Tiras Reactivas",
+      "cantidadProducto": "5",
+      "marcaProducto": "ACCU-CHECK",
+      "proveedorProducto": "Ramon",
+      "costoProducto": 5000,
+      "gananciaProducto": 5500,
+      "porcentajeProducto": 10,
+      "ingresoProducto": "19/08/23",
+      "vencimientoProducto": "17/07/24",
+      "barrasProducto": "4015630067626",
+      "imagenProducto": "assets\\imagenes\\tiras-reactivas.jpg"
     }
   ]
 }

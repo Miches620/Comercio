@@ -8,12 +8,12 @@ export class Stock {
     private costoProducto:number;
     private gananciaProducto:number;
     private porcentajeProducto:number;
-    private ingresoProducto:Date;
-    private vencimientoProducto:Date;
+    private ingresoProducto:String;
+    private vencimientoProducto:String;
     private barrasProducto:String;
     private imagenProducto:String;
 
-    constructor(id:number,codigoProducto:String, nombreProducto:String, cantidadProducto:number, marcaProducto:String, proveedorProducto:String, costoProducto:number,  gananciaProducto:number, porcentajeProducto:number, ingresoProducto:Date, vencimientoProducto:Date, barrasProducto:String, imagenProducto:String) {
+    constructor(id:number,codigoProducto:String, nombreProducto:String, cantidadProducto:number, marcaProducto:String, proveedorProducto:String, costoProducto:number,  gananciaProducto:number, porcentajeProducto:number, ingresoProducto:String, vencimientoProducto:String, barrasProducto:String, imagenProducto:String) {
         this.id = id;
         this.codigoProducto = codigoProducto;
         this.nombreProducto = nombreProducto;
