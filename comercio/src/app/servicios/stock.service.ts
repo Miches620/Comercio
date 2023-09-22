@@ -17,4 +17,12 @@ export class StockService {
   agregarStock(stock:Stock):Observable<any>{
     return this.http.post(this.url+'stock',stock);
   }
+
+  modificarStock(id:number,stock:Stock):Observable<any>{
+    return this.http.put(this.url+'stock/'+id,stock)
+  }
+
+  borrarStock(id:number):Observable<any>{
+    return this.http.delete(this.url+'stock/'+id);
+  }
 }

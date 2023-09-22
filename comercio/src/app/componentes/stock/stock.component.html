@@ -96,6 +96,7 @@
             id="btnEditarProducto"
             type="submit"
             class="btn btn-warning"
+            (click)="editarRegistroSeleccionado() "
           >
           <i class="fa-solid fa-pen-to-square"></i>
           </button>
@@ -112,14 +113,15 @@
             id="btnLimpiar"
             type="submit"
             class="btn btn-success"
+            (click)="resetearModal()"
           >
           <i class="fa-solid fa-arrows-rotate"></i>
           </button>
         </div>
     </div>
-          <img id="previewImage" [src]="tempImagen" alt="Vista Previa del Producto">
+          <img id="previewImage" [src]="tempImagen" alt="Vista Previa del Producto" (change)="verificarImagen()">
         </form>
-        <div id="TablaRegistro">
+        <div id="TablaStock">
           <table class="table">
             <thead class="table-dark">
               <th scope="col">ID</th>
@@ -128,7 +130,8 @@
               <th scope="col">Marca</th>
               <th scope="col">Proveedor</th>
               <th scope="col">Costo</th>
-              <th scope="col">Ganancia (%)</th>
+              <th id="colGanancia"*ngIf="this.opcion" scope="col" (mouseout)="switchOpcion()">Ganancia</th>
+              <th id="colPorcentaje"*ngIf="!this.opcion" scope="col" (mouseover)="switchOpcion()">%</th>
               <th scope="col">Ingreso</th>
               <th scope="col">Vencimiento</th>
               <th scope="col">Cod. Barras</th>
@@ -137,19 +140,20 @@
                 
               <tr *ngFor="let item of listaDeStock" ><!--Deberia generar una nueva lista en el ts que rejunte los datos de listaDeStock y listaDeProductos-->
                 <td scope="row" id="CodProd">
-                  <!--<a </a>(click)="obtenerDatosSeleccion(item.id)">{{
+                  <a (click)="obtenerDatosSeleccion(item.id)">{{
                     item.codigoProducto
-                  }}</a>-->{{item.codigoProducto}}
+                  }}</a>
                 </td>
                 <td scope="row">{{item.nombreProducto}}</td>
                 <td scope="row">{{item.cantidadProducto}}</td>
                 <td scope="row">{{item.marcaProducto}}</td>
                 <td scope="row">{{item.proveedorProducto}}</td>
                 <td scope="row">${{item.costoProducto}}</td>
-                <td scope="row">${{item.gananciaProducto}}({{item.porcentajeProducto}}%)</td>
+                <td scope="row"*ngIf="this.opcion">${{item.gananciaProducto}}</td>
+                <td scope="row"*ngIf="!this.opcion">{{item.porcentajeProducto}}%</td>
                 <td scope="row">{{item.ingresoProducto}}</td>
                 <td scope="row">{{item.vencimientoProducto}}</td>
-                <td scope="row" id="idCodBar">{{item.barrasProducto}}</td>
+                <td scope="row" id="idCodBar"><a (click)="obtenerDatosSeleccion(item.id)">{{item.barrasProducto}}</a></td>
               </tr>
             </tbody>
           </table>
@@ -176,6 +180,54 @@
     </form>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-ban"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="borrarModal"
+  tabindex="-1"
+  aria-labelledby="BorrarProducto"
+  aria-hidden="true"
+><div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="BorrarProducto">
+          Confirmar accion
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div style="text-align: center">
+          <p>
+            Borrar Seleccion?
+          </p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          id="cerrarModalEliminar"
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+        <i class="fa-solid fa-ban"></i>
+        </button>
+        <button
+          id="btnBorrarRegistroDeProducto"
+          type="button"
+          class="btn btn-danger"
+          (click)="borrarStockSeleccionado()"
+        >
+        <i class="fa-solid fa-check"></i>
+        </button>
       </div>
     </div>
   </div>

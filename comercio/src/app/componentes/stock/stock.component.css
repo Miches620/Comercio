@@ -32,7 +32,6 @@
    margin-bottom: 0;
    display: flex;
    justify-content: space-between
-
 }
 
 .table thead, .table tbody{
@@ -41,25 +40,16 @@
 
 }
 
-#TablaRegistro, #TablaProveedores{
-    height:fit-content;
-    max-height: 40.5em;
-    overflow: auto;
-    width:100%;
-    display: flex;
-    justify-content: flex-end;
-}
-
-#TablaProveedores{
-    height: 10rem;
-}
-
-#CodProd, #idCodBar{
+#CodProd, #hiddenCodeBar{
     color:rgb(52, 52, 219);
     cursor: pointer;
     text-decoration: underline;
 }
 
+#colGanancia, #colPorcentaje{
+    cursor: pointer;
+    text-decoration: underline;
+}
 .modalIngreso-body{
     margin-left: 1rem;
     display: flex;
@@ -95,3 +85,19 @@
     -o-border-radius: 2%;
     background-color: #fff;
 }
+
+#TablaStock{
+    height: 24rem;
+    overflow: auto;
+    width:100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    background: #201f1f;
+    z-index: 1;
+    border-bottom: 2px solid;
+  }

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Producto } from '../entidades/producto';
 import { Marca } from '../entidades/marca';
@@ -11,6 +11,7 @@ import { Registro } from '../entidades/registro';
   providedIn: 'root'
 })
 export class AdminService {
+  @Output() navBar: EventEmitter<any> = new EventEmitter();
   url:string="http://localhost:3000/";
 
   constructor(private http:HttpClient) { }

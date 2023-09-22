@@ -9,45 +9,73 @@
   "marca": [
     {
       "id": 1,
-      "nombreMarca": "Pampers"
+      "nombreMarca": "Doncella"
     },
     {
-      "id": 4,
-      "nombreMarca": "Johnson"
-    },
-    {
-      "id": 6,
-      "nombreMarca": "Always"
-    },
-    {
-      "id": 7,
-      "nombreMarca": "ACCU-CHECK"
+      "id": 2,
+      "nombreMarca": "Estrella"
     }
   ],
   "producto": [
     {
       "id": 1,
-      "nombreProducto": "Algodon"
+      "nombreProducto": "Algodon x70Gr"
     },
     {
       "id": 2,
-      "nombreProducto": "Pañales"
+      "nombreProducto": "Algodon x140Gr"
     },
     {
       "id": 3,
-      "nombreProducto": "Crema corporal"
+      "nombreProducto": "Algodon x300Gr"
     },
     {
       "id": 4,
-      "nombreProducto": "Perfume de bebe"
+      "nombreProducto": "Algodon x500Gr"
     },
     {
       "id": 5,
-      "nombreProducto": "Aloe Vera"
+      "nombreProducto": "Algodon Super x200Gr"
     },
     {
       "id": 6,
-      "nombreProducto": "Tiras Reactivas"
+      "nombreProducto": "Paños de Algodon x40u"
+    },
+    {
+      "id": 7,
+      "nombreProducto": "Algodon Clasico x75Gr"
+    },
+    {
+      "id": 8,
+      "nombreProducto": "Algodon Clasico x140Gr"
+    },
+    {
+      "id": 9,
+      "nombreProducto": "Algodon Clasico x300Gr"
+    },
+    {
+      "id": 10,
+      "nombreProducto": "Algodon Clasico x500Gr"
+    },
+    {
+      "id": 11,
+      "nombreProducto": "Algodon Super x100Gr"
+    },
+    {
+      "id": 12,
+      "nombreProducto": "Algodon Super x400Gr"
+    },
+    {
+      "id": 13,
+      "nombreProducto": "Algodon Recortado Baby x100Gr"
+    },
+    {
+      "id": 14,
+      "nombreProducto": "Discos de Algodon x80u"
+    },
+    {
+      "id": 15,
+      "nombreProducto": "Algodon Premium x75Gr"
     }
   ],
   "proveedor": [
@@ -79,90 +107,253 @@
   "registro": [
     {
       "id": 1,
-      "nombreProducto": "Algodon",
-      "codigoProducto": "A1",
-      "marcaProducto": "PYG",
-      "barrasProducto": "12435433",
-      "imagenProducto": null
+      "nombreProducto": "Algodon x70Gr",
+      "codigoProducto": "B-01",
+      "marcaProducto": "Doncella",
+      "barrasProducto": "7790940003034",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
     {
       "id": 2,
-      "nombreProducto": "Pañales",
-      "codigoProducto": "A2",
-      "marcaProducto": "Pampers",
-      "barrasProducto": "12435444",
-      "imagenProducto": null
+      "nombreProducto": "Algodon x140Gr",
+      "codigoProducto": "B-02",
+      "marcaProducto": "Doncella",
+      "barrasProducto": "7790940000026",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
     {
       "id": 3,
-      "nombreProducto": "Crema corporal",
-      "codigoProducto": "A3",
-      "marcaProducto": "",
-      "barrasProducto": "8765432",
-      "imagenProducto": null
+      "nombreProducto": "Algodon x300Gr",
+      "codigoProducto": "B-03",
+      "marcaProducto": "Doncella",
+      "barrasProducto": "7790940003089",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
     {
       "id": 4,
-      "nombreProducto": "Aloe Vera",
-      "codigoProducto": "A4",
-      "marcaProducto": "Johnson",
-      "barrasProducto": "637367272",
-      "imagenProducto": null
+      "nombreProducto": "Algodon x500Gr",
+      "codigoProducto": "B-04",
+      "marcaProducto": "Doncella",
+      "barrasProducto": "7790940003065",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
     {
       "id": 5,
-      "nombreProducto": "Tiras Reactivas",
-      "codigoProducto": "A5",
-      "marcaProducto": "ACCU-CHECK",
-      "barrasProducto": "4015630067626",
-      "imagenProducto": "assets\\imagenes\\tiras-reactivas.jpg"
+      "nombreProducto": "Algodon Super x200Gr",
+      "codigoProducto": "B-05",
+      "marcaProducto": "Doncella",
+      "barrasProducto": "7790940000040",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 6,
+      "nombreProducto": "Paños de Algodon x40u",
+      "codigoProducto": "B-06",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064002104",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 7,
+      "nombreProducto": "Algodon Clasico x75Gr",
+      "codigoProducto": "B-07",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064000261",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 8,
+      "nombreProducto": "Algodon Clasico x140Gr",
+      "codigoProducto": "B-08",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064000124",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 9,
+      "nombreProducto": "Algodon Clasico x300Gr",
+      "codigoProducto": "B-09",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064000131",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 10,
+      "nombreProducto": "Algodon Clasico x500Gr",
+      "codigoProducto": "B-10",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064001664",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 11,
+      "nombreProducto": "Algodon Super x100Gr",
+      "codigoProducto": "B-11",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064001701",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 12,
+      "nombreProducto": "Algodon Super x200Gr",
+      "codigoProducto": "B-12",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064001718",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 13,
+      "nombreProducto": "Algodon Super x400Gr",
+      "codigoProducto": "B-13",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064001725",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 14,
+      "nombreProducto": "Algodon Recortado Baby x100Gr",
+      "codigoProducto": "B-14",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064001954",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 15,
+      "nombreProducto": "Discos de Algodon x80u",
+      "codigoProducto": "B-15",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064001909",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 16,
+      "nombreProducto": "Algodon Premium x75Gr",
+      "codigoProducto": "B-16",
+      "marcaProducto": "Estrella",
+      "barrasProducto": "7790064000230",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
     }
   ],
   "stock": [
     {
-      "id": 1,
-      "codigoProducto": "A1",
-      "nombreProducto": "Algodon",
-      "cantidadProducto": 50,
-      "marcaProducto": "Huggies",
-      "proveedorProducto": "Carlos S.R.L",
-      "costoProducto": 1200,
-      "gananciaProducto": 1260,
-      "porcentajeProducto": 5,
-      "ingresoProducto": "17/07/23",
-      "vencimientoProducto": "18/08/23",
-      "barrasProducto": "12435433",
-      "imagenProducto": null
-    },
-    {
-      "id": 2,
-      "codigoProducto": "A2",
-      "nombreProducto": "Pañales",
-      "cantidadProducto": 100,
-      "marcaProducto": "Pampers",
-      "proveedorProducto": "Pepita S.A",
-      "costoProducto": 780,
-      "gananciaProducto": 800,
-      "porcentajeProducto": 2.5,
-      "ingresoProducto": "17/07/23",
-      "vencimientoProducto": "18/08/23",
-      "barrasProducto": "12435444",
-      "imagenProducto": null
-    },
-    {
       "id": 3,
-      "codigoProducto": "A5",
-      "nombreProducto": "Tiras Reactivas",
-      "cantidadProducto": "5",
-      "marcaProducto": "ACCU-CHECK",
+      "codigoProducto": "B-10",
+      "nombreProducto": "Algodon Clasico x500Gr",
+      "cantidadProducto": "25",
+      "marcaProducto": "Estrella",
+      "proveedorProducto": "Johnson&Johnson",
+      "costoProducto": 1450,
+      "gananciaProducto": 217.5,
+      "porcentajeProducto": 15,
+      "ingresoProducto": "11/09/23",
+      "vencimientoProducto": "23/09/23",
+      "barrasProducto": "7790064001664",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 4,
+      "codigoProducto": "B-01",
+      "nombreProducto": "Algodon x70Gr",
+      "cantidadProducto": "21",
+      "marcaProducto": "Doncella",
+      "proveedorProducto": "Pepito SRL",
+      "costoProducto": 450,
+      "gananciaProducto": 22.5,
+      "porcentajeProducto": 5,
+      "ingresoProducto": "11/09/23",
+      "vencimientoProducto": "26/12/24",
+      "barrasProducto": "7790940003034",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 5,
+      "codigoProducto": "B-10",
+      "nombreProducto": "Algodon Clasico x500Gr",
+      "cantidadProducto": "15",
+      "marcaProducto": "Estrella",
       "proveedorProducto": "Ramon",
-      "costoProducto": 5000,
-      "gananciaProducto": 5500,
+      "costoProducto": 1500,
+      "gananciaProducto": 150,
       "porcentajeProducto": 10,
-      "ingresoProducto": "19/08/23",
-      "vencimientoProducto": "17/07/24",
-      "barrasProducto": "4015630067626",
-      "imagenProducto": "assets\\imagenes\\tiras-reactivas.jpg"
+      "ingresoProducto": "11/09/23",
+      "vencimientoProducto": "29/12/25",
+      "barrasProducto": "7790064001664",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 6,
+      "codigoProducto": "B-15",
+      "nombreProducto": "Discos de Algodon x80u",
+      "cantidadProducto": "24",
+      "marcaProducto": "Estrella",
+      "proveedorProducto": "Jorgito",
+      "costoProducto": 2666,
+      "gananciaProducto": 106.64,
+      "porcentajeProducto": 4,
+      "ingresoProducto": "22/09/23",
+      "vencimientoProducto": "03/06/25",
+      "barrasProducto": "7790064001909",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 7,
+      "codigoProducto": "B-12",
+      "nombreProducto": "Algodon Super x200Gr",
+      "cantidadProducto": "15",
+      "marcaProducto": "Estrella",
+      "proveedorProducto": "Johnson&Johnson",
+      "costoProducto": 3532,
+      "gananciaProducto": 423.84,
+      "porcentajeProducto": 12,
+      "ingresoProducto": "22/09/23",
+      "vencimientoProducto": "20/12/25",
+      "barrasProducto": "7790064001718",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 8,
+      "codigoProducto": "B-03",
+      "nombreProducto": "Algodon x300Gr",
+      "cantidadProducto": "23",
+      "marcaProducto": "Doncella",
+      "proveedorProducto": "Pepito SRL",
+      "costoProducto": 1455,
+      "gananciaProducto": 43.65,
+      "porcentajeProducto": 3,
+      "ingresoProducto": "22/09/23",
+      "vencimientoProducto": "//",
+      "barrasProducto": "7790940003089",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 10,
+      "codigoProducto": "B-04",
+      "nombreProducto": "Algodon x500Gr",
+      "cantidadProducto": "100",
+      "marcaProducto": "Doncella",
+      "proveedorProducto": "Jorgito",
+      "costoProducto": 2545,
+      "gananciaProducto": 81.44,
+      "porcentajeProducto": 3.2,
+      "ingresoProducto": "22/09/23",
+      "vencimientoProducto": "//",
+      "barrasProducto": "7790940003065",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 11,
+      "codigoProducto": "B-07",
+      "nombreProducto": "Algodon Clasico x75Gr",
+      "cantidadProducto": "50",
+      "marcaProducto": "Estrella",
+      "proveedorProducto": "Jorgito",
+      "costoProducto": 1499,
+      "gananciaProducto": 49.47,
+      "porcentajeProducto": 3.3,
+      "ingresoProducto": "22/09/23",
+      "vencimientoProducto": "",
+      "barrasProducto": "7790064000261",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
     }
   ]
 }

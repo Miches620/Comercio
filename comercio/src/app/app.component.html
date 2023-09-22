@@ -8,8 +8,8 @@
 </head>
 <body>
     <app-header></app-header>
-      <!--<app-configuracion></app-configuracion>-->
-      <app-stock></app-stock>
+      <app-configuracion *ngIf="SelecNavBar==2"></app-configuracion>
+      <app-stock *ngIf="SelecNavBar==1"></app-stock>
 </body>
 </html>
 <router-outlet></router-outlet>

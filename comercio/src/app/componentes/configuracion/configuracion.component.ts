@@ -5,7 +5,7 @@ import { Proveedor } from 'src/app/entidades/proveedor';
 import { Marca } from 'src/app/entidades/marca';
 import { Registro } from 'src/app/entidades/registro';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { delay } from 'rxjs';
+//import { delay } from 'rxjs';
 
 
 @Component({
@@ -32,6 +32,7 @@ export class ConfiguracionComponent implements OnInit {
   urlCodBarras: string = '';
   campoVacio: boolean = true;
   id: number = 0;
+  cacheDeEdicion:any;
 
   constructor(
     private configurar: AdminService,
@@ -105,15 +106,15 @@ export class ConfiguracionComponent implements OnInit {
   recuperarId(pOM: number) {
     let seleccion;
     let objetivo;
-    let lista;
+
     if (pOM == 1) {
       seleccion = this.formulario.get('formProducto')?.value;
       objetivo = this.ingresoProducto.get('formNuevoProducto');
-      lista = this.listaDeProductos;
+    
     } else {
       seleccion = this.formulario.get('formMarca')?.value;
       objetivo = this.ingresoMarca.get('formNuevaMarca');
-      lista = this.listaDeMarcas;
+
     }
     if (seleccion == '' || seleccion == null) {
       this.campoVacio = true;
@@ -127,6 +128,8 @@ export class ConfiguracionComponent implements OnInit {
             }
           }
           objetivo?.setValue(seleccion);
+          this.cacheDeEdicion=seleccion;
+         
           break;
         }
         case 2:{
@@ -137,6 +140,8 @@ export class ConfiguracionComponent implements OnInit {
             }
           }
           objetivo?.setValue(seleccion);
+          this.cacheDeEdicion=seleccion;
+          
           break;
         }
       }
@@ -144,10 +149,11 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   editarProductoOMarca(pOM: number) {
-    let seleccion;
+    let seleccion:string;
     let lista;
     let valorRepetido: boolean = false;
     let objeto: any;
+    let idMarca:number;
 
     if (pOM == 1) {
       seleccion = this.ingresoProducto.get('formNuevoProducto')?.value;
@@ -158,6 +164,8 @@ export class ConfiguracionComponent implements OnInit {
       objeto = new Marca(this.id, seleccion);
       lista = this.marca;
     }
+
+    //1 verifica que el dato guardado en seleccion no se encuentre en la lista correspondiente a modificar (producto o marca)
     for (let i = 0; i < lista.length; i++) {
       if (lista[i] == seleccion) {
         alert(
@@ -169,6 +177,8 @@ export class ConfiguracionComponent implements OnInit {
         valorRepetido = false;
       }
     }
+
+    //2 Si no se encuentra: a) primero modifica la lista desplegable
     if (valorRepetido == false && seleccion != '' && seleccion != null) {
       switch (pOM) {
         case 1: {
@@ -189,25 +199,41 @@ export class ConfiguracionComponent implements OnInit {
           break;
         }
         case 2: {
+          for(let item of this.registro){
+              if(item.marcaProducto == this.cacheDeEdicion){
+                idMarca = item.id;
+                let nuevoRegistroEditado = new Registro(idMarca,item.nombreProducto,item.codigoProducto,seleccion,item.barrasProducto,item.imagenProducto);
+                        this.configurar.editarRegistro(idMarca,nuevoRegistroEditado).subscribe({
+                          next: (data)=> {
+                      },
+                      error: (error) => {
+                        alert(
+                          'Error al intentar editar la etiqueta(REG). Por favor intente nuevamente'
+                        );
+                      },
+                    });
+                  }
+              }
           this.configurar.editarDatosMarca(this.id, objeto).subscribe({
-            next: (data) => {
-              this.ingresoMarca.get('formNuevaMarca')?.setValue('');
-              this.formulario.get('formMarca')?.setValue('');
-              document.getElementById('cerrarModalNuevaMarca')?.click();
-              alert('Dato actualizado correctamente');
-              this.ngOnInit();
-            },
+            next: (data) => {},
             error: (error) => {
               alert(
-                'Error al intentar editar la etiqueta. Por favor intente nuevamente'
+                'Error al intentar editar la etiqueta(DM). Por favor intente nuevamente'
               );
             },
-          });
+            });
+          this.ngOnInit();
+          document.getElementById('cerrarModalNuevaMarca')?.click();
+                        alert('Dato actualizado correctamente');
+                        this.ingresoMarca.get('formNuevaMarca')?.setValue('');
+                        this.formulario.get('formMarca')?.setValue('');
+          this.obtenerDatosSeleccion(this.id);
           break;
         }
       }
       this.id = 0;
     }
+    
   }
 
   borrarProductoOMarca(pOM: number) {
@@ -263,7 +289,7 @@ export class ConfiguracionComponent implements OnInit {
         this.formulario.get('formCodProd')?.setValue(item.codigoProducto);
         this.formulario.get('formMarca')?.setValue(item.marcaProducto);
         this.formulario.get('formCodBarras')?.setValue(item.barrasProducto);
-        this.formulario.get('formImagen')?.setValue(item.imagenProducto);
+        //this.formulario.get('formImagen')?.setValue(item.imagenProducto);
       }
     }
   }
@@ -356,6 +382,12 @@ export class ConfiguracionComponent implements OnInit {
       document.getElementById('btnCerrarBarCode')?.click();
       this.formulario.get('formCodBarras')?.setValue(codigo);
       this.lecturaCodeBar.get('formCodeBar')?.setValue("");
+    for(let item of this.registro){
+      if (item.barrasProducto == codigo){
+        this.formulario.get('formProducto')?.setValue(item.nombreProducto);
+        this.formulario.get('formMarca')?.setValue(item.marcaProducto);
+      }
+    }
     }
   }
 
@@ -387,7 +419,7 @@ export class ConfiguracionComponent implements OnInit {
       let producto = this.formulario.get('formProducto')?.value;
       let codigoDelProducto = this.formulario.get('formCodProd')?.value;
       let marca = this.formulario.get('formMarca')?.value;
-      let codigoDeBarrasDelProducto =
+      let codigoDeBarrasDelProducto = this.formulario.get('formCodBarras')?.value;
         this.formulario.get('formCodBarras')?.value;
       let imagen = this.formulario.get('formImagen')?.value;
       for (let item of this.registro) {
@@ -395,6 +427,7 @@ export class ConfiguracionComponent implements OnInit {
           item.barrasProducto == codigoDeBarrasDelProducto &&
           item.codigoProducto == codigoDelProducto &&
           item.id != this.id
+          
         ) {
           valorRepetido = true;
           alert(
@@ -424,7 +457,7 @@ export class ConfiguracionComponent implements OnInit {
           },
         });
       }
-      this.id = 0;
+      //this.id = 0;
     } else {
       this.formulario.markAllAsTouched();
       alert('Atencion! uno o mas campos requeridos no han sido completados!!');
@@ -440,8 +473,14 @@ export class ConfiguracionComponent implements OnInit {
       let marca = this.formulario.get('formMarca')?.value;
       let codigoDeBarrasDelProducto =
         this.formulario.get('formCodBarras')?.value;
-      let imagen = this.formulario.get('formImagen')?.value;
-
+        let imagen = this.formulario.get('formImagen')?.value;
+        if(imagen!=null && imagen!=""){
+          imagen="";
+          imagen = './assets/imagenes/'+this.formulario.get('formImagen')?.value.substring(12);
+        }else{
+          imagen="/assets/imagenes/sinImagen.png";
+        }
+     
       for (let item of this.registro) {
         if (
           item.barrasProducto == codigoDeBarrasDelProducto &&

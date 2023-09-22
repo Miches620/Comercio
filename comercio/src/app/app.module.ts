@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -8,6 +8,7 @@ import { HeaderComponent } from './componentes/header/header.component';
 import {HttpClientModule} from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StockComponent } from './componentes/stock/stock.component';
+import { AdminService } from './servicios/admin.service';
 
 @NgModule({
   declarations: [
@@ -25,4 +26,5 @@ import { StockComponent } from './componentes/stock/stock.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule{}
+

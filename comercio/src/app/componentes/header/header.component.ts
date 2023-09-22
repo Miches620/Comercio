@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Login } from 'src/app/entidades/login';
+import { AdminService } from 'src/app/servicios/admin.service';
 import { loginAdmin } from 'src/app/servicios/login.service';
 
 @Component({
@@ -15,8 +16,9 @@ export class HeaderComponent implements OnInit {
   formulario: FormGroup;
   login:boolean=false;
   logout:boolean=true;
+  navBarSel:number=0;
     constructor(
-    private loginFormBuilder: FormBuilder, private servicio: loginAdmin
+    private loginFormBuilder: FormBuilder, private servicio: loginAdmin, private servicio2: AdminService
   ) {
     this.formulario = this.loginFormBuilder.group({
       ingresoUsuario: ['', [Validators.required]],
@@ -26,6 +28,12 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     
+}
+
+seleccionNavBar(num:number){
+  this.navBarSel=num;
+  this.servicio2.navBar.emit({data:this.navBarSel});
+  this.ngOnInit();
 }
 
 limpiarFormulario() {
