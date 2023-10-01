@@ -89,14 +89,13 @@
     height: 10rem;
 }
 
-#CodProd, #idCodBar,#idProveedor{
-    color:rgb(52, 52, 219);
-    cursor: pointer;
-    text-decoration: underline;
-}
 
 #btnAgregarProducto, #btnEditarProducto, #btnBorrarProducto, #btnAgregarProveedor, #btnEditarProveedor, #btnBorrarProveedor{
     margin-right: .5rem;
+}
+
+#btnLimpiarProveedor{
+    margin-left: .5rem;
 }
 
 #btnproducto,#btncod,#btnmarca,#btnproveedor,#btnbarras{
@@ -148,3 +147,16 @@
     11% , 21% ,41% , 61% , 71% , 91% , 99%
     { height: 18px}
   }
+
+  .table tbody tr:hover{
+    cursor: pointer;
+   background: rgba(127, 255, 212, 0.11);
+}
+
+.table tbody tr td{
+    background: none;
+}
+
+.table tbody tr:hover :first-child{
+    font-weight:550;
+ }

@@ -40,12 +40,6 @@
 
 }
 
-#CodProd, #hiddenCodeBar{
-    color:rgb(52, 52, 219);
-    cursor: pointer;
-    text-decoration: underline;
-}
-
 #colGanancia, #colPorcentaje{
     cursor: pointer;
     text-decoration: underline;
@@ -66,10 +60,9 @@
 }
 
 
-#previewImage{
+#previewImage, #NopreviewImage{
     height: 16rem;
     width: 23rem;
-    border: 2px solid red;
     border-radius: 4%;
     -webkit-border-radius: 4%;
     -moz-border-radius: 4%;
@@ -101,3 +94,29 @@ thead th {
     z-index: 1;
     border-bottom: 2px solid;
   }
+
+  #NopreviewImage{
+    border : 2px solid red;
+  }
+
+  #previewImage{
+    border : 2px solid green;
+  }
+
+
+  .table tbody tr:hover{
+    cursor: pointer;
+   background: rgba(127, 255, 212, 0.11);
+}
+
+.table tbody tr td{
+    background: none;
+}
+
+.table tbody tr:hover :first-child{
+   font-weight:550;
+}
+
+#agreeCodeBar2{
+    margin-left: 1rem;
+}

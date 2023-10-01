@@ -27,7 +27,7 @@ export class StockComponent implements OnInit {
   tempBarras:string="";
   tempImagen:string="/assets/imagenes/sinImagen.png";
   tempIngreso:string="";
-  marcoImagen:any=document.getElementById('previewImage');
+  imagenValida:boolean=false;
   
   valorRepetido:number=0;
   obtenerFechaActual:Date=new Date();
@@ -41,6 +41,7 @@ export class StockComponent implements OnInit {
   tempGanancia:number = 0;
 
   opcion:boolean=false;
+  guardarOpcion:boolean=false;
 
   constructor(
     private configurar: AdminService,
@@ -57,6 +58,7 @@ export class StockComponent implements OnInit {
     });
     this.lecturaCodeBar = this.servicioStock.group({
       formCodeBar:[''],
+      formCodeBar2:[''],
     });
   }
 
@@ -80,7 +82,7 @@ export class StockComponent implements OnInit {
     this.tempIngreso="";
     this.tempBarras="";
     this.tempImagen="/assets/imagenes/sinImagen.png";
-    this.marcoImagen.style.border = "2px solid red";
+    this.imagenValida= false;
   }
 
   recuperarFechaActual(){
@@ -113,49 +115,77 @@ export class StockComponent implements OnInit {
     }
   
   switchOpcion(){
-    
+    if(this.guardarOpcion==false){
     if(this.opcion==true){
       this.opcion=false;
     }else{
       this.opcion=true;
     }
   }
+  }
+
+  bloquearOpcion(){
+    if(this.guardarOpcion==false){
+    this.guardarOpcion=true;
+    }else{
+      this.guardarOpcion=false;
+    }
+  }
 
   iniciarScanner(){
     const myModal = document.getElementById('codeBar2');
     const myInput = document.getElementById('hiddenCodeBar2');
-
    myModal?.addEventListener('shown.bs.modal', () => {
     myInput?.focus()})
   }
 
-  recuperarRegistro(){
-    this.marcoImagen=document.getElementById('previewImage');
-    let codigo = this.lecturaCodeBar.get('formCodeBar')?.value;
-    if(codigo!="" || codigo!=null){
+  desbloquearIngresoManual(origen:number){
+    if(origen==1){
       document.getElementById('btnCerrarBarCode2')?.click();
-      this.lecturaCodeBar.get('formCodeBar')?.setValue("");
+    }else{
+      document.getElementById('btnCerrarBarCode3')?.click();
+      this.lecturaCodeBar.reset();
+    }
+  }
+
+  recuperarRegistro(origen:number){
+    let codigo="";
+    if(origen==1){
+      codigo = this.lecturaCodeBar.get("formCodeBar")?.value;
+    }else{
+      codigo = this.lecturaCodeBar.get("formCodeBar2")?.value;
+    } 
+    if(codigo!="" || codigo!=null){
+      if(origen==1){
+        document.getElementById('btnCerrarBarCode2')?.click();
+        this.lecturaCodeBar.get('formCodeBar')?.setValue("");
+      }else{
+        document.getElementById('btnCerrarBarCode3')?.click();
+        this.lecturaCodeBar.get('formCodeBar2')?.setValue("");
+       
+      }
+      
       for(let item of this.listaDeProductos){
         if(item.barrasProducto==codigo || item.codigoProducto==codigo){
           this.stock.get('formProducto')?.setValue(item.nombreProducto);
-          this.id=item.id;
+          //this.id=item.id; //daria la impresion de que guardar la id en esta instancia es al pedo.
           this.tempImagen=item.imagenProducto;
             this.tempMarca=item.marcaProducto;
             this.tempBarras=item.barrasProducto;
             this.tempCodProd=item.codigoProducto; 
-        }else{
-          alert('Producto no registrado. Por favor comuniquese con el administrador.');
         }
       }
       this.verificarImagen();
+  }else{
+    alert('Por favor ingrese un registro valido')
   }
 }
 
 verificarImagen(){
   if(this.tempImagen!="/assets/imagenes/sinImagen.png"){
-    this.marcoImagen.style.border = "2px solid green";
+    this.imagenValida= true;
   }else{
-    this.marcoImagen.style.border = "2px solid red";
+    this.imagenValida= false;
   }
 }
 
@@ -172,7 +202,6 @@ agregarStock(){
   this.tempGanancia = ((this.tempCosto/100)*this.tempPorcentaje);
   this.tempGanancia = Math.round(this.tempGanancia * 100) / 100;
 
-  let repeticion = 0;
  //verifica que si el ingreso fue por QR, el mismo exista dentro de la lista de productos registrados en CONFIGURAR
   if(this.tempCodProd==null || this.tempCodProd==""){
     for(let item of this.listaDeProductos){
@@ -185,16 +214,27 @@ agregarStock(){
     }
     this.verificarImagen();
   }
+  if(this.id==0){
+    for(let item of this.listaDeStock){
+      if(item.nombreProducto==this.tempProducto && item.proveedorProducto==this.tempProveedor && item.vencimientoProducto==this.tempVencimiento){
+        this.id=item.id;
+      }
+    }
+  }
+  this.valorRepetido=0;
   //si Existe como producto ya registrado, verifica que en la lista de STOCK de esta pantalla no exista cargado exactamente el mismo valor
+   
  for(let item of this.listaDeStock){
   if(item.codigoProducto==this.tempCodProd && item.proveedorProducto==this.tempProveedor && item.vencimientoProducto==this.tempVencimiento){
     this.valorRepetido=1;
-  }else{
-    this.valorRepetido=0;
   }
 }
+//si el valor ya existiera dentro de la lista de STOCK, el boton de agregar tendra un comportamiento extra. a saber:
+  
+    
   //ingreso nuevo
    if(this.valorRepetido==0){
+    this.id=0;
     let ingresoTempStock = new Stock(this.id,this.tempCodProd,this.tempProducto,this.tempCantidad,this.tempMarca,this.tempProveedor,this.tempCosto,this.tempGanancia,this.tempPorcentaje,this.tempIngreso,this.tempVencimiento,this.tempBarras,this.tempImagen);
     this.sStock.agregarStock(ingresoTempStock).subscribe({
       next: (data) =>{
@@ -202,20 +242,44 @@ agregarStock(){
         this.ngOnInit();
         this.reiniciarVariables();
       },
-      error: (error) =>{
-        alert('Error al intentar agregar producto al Stock. Por favor intente nuevamente.');
+      error: (e) =>{
+        alert('Error al intentar agregar producto al Stock. Por favor intente nuevamente.' + e);
       },
     });
   }else{
   //Actualizacion de Stock Existente
-  /*se llamara al proceso de edicion de stock sumando la cantidad que se agregue en el formulario al item stockeado (es decir, si el form tenia en cantidad 4 y
-    el valor ya existia en el listado con 10 unidades, se actualizara el valor, dejandole 14 unidades)
-  siempre y cuando:
-  1)el nombre del producto sea el mismo (pueden existir 2 valores con el mismo codigo de producto. verificar nombres en ese caso)
-  2)la fecha de vencimiento y el proveedor sean los mismos
-  
-  caso contrario, se agregara un nuevo item al stock ya que se considera un producto distinto*/
-
+  for(let item of this.listaDeStock){
+  if(item.id==this.id){
+    this.tempCantidad+=item.cantidadProducto;
+    this.tempIngreso=item.ingresoProducto;
+  }
+  }
+  let seleccionEditada = new Stock(
+    this.id,
+    this.tempCodProd,
+    this.tempProducto,
+    this.tempCantidad,
+    this.tempMarca,
+    this.tempProveedor,
+    this.tempCosto,
+    this.tempGanancia,
+    this.tempPorcentaje,
+    this.tempIngreso,
+    this.tempVencimiento,
+    this.tempBarras,
+    this.tempImagen);
+  this.sStock.modificarStock(this.id, seleccionEditada).subscribe({
+    next: (data) => {
+      alert('Stock Actualizado Correctamente');
+      this.ngOnInit();
+      this.resetearModal();
+    },
+    error: (error) => {
+      alert(
+        'Error al intentar actualizar el stock. Por favor intente nuevamente'
+      );
+    },
+  });
   }
   }else{
     this.stock.markAllAsTouched();
@@ -253,7 +317,8 @@ resetearModal() {
   this.tempBarras = "";
   this.tempIngreso= "";
   this.tempImagen="/assets/imagenes/sinImagen.png"
-  this.marcoImagen.style.border = "2px solid red";
+  this.imagenValida= false;
+  this.valorRepetido=0;
 }
 
 borrarStockSeleccionado() {

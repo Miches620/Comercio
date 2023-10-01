@@ -167,18 +167,11 @@
             <th scope="col">Cod. Barras</th>
           </thead>
           <tbody>
-            <tr *ngFor="let item of registro">
-              <td scope="row" id="CodProd">
-                <a (click)="obtenerDatosSeleccion(item.id)">{{
-                  item.codigoProducto
-                }}</a>
-              </td>
+            <tr *ngFor="let item of registro" (click)="obtenerDatosSeleccion(item.id)">
+              <td scope="row" id="CodProd">{{item.codigoProducto}}</td>
               <td scope="row">{{ item.nombreProducto }}</td>
               <td scope="row">{{ item.marcaProducto }}</td>
-              <td scope="row" id="idCodBar">
-                <a (click)="obtenerDatosSeleccion(item.id)">{{
-                  item.barrasProducto
-                }}</a>
+              <td scope="row" id="idCodBar">{{item.barrasProducto}}
               </td>
             </tr>
           </tbody>
@@ -243,6 +236,14 @@
         >
         <i class="fa-solid fa-trash-can"></i>
         </button>
+        <button
+        id="btnLimpiarProveedor"
+        type="submit"
+        class="btn btn-success"
+        (click)="resetearModal(proveedores,0)"
+      >
+      <i class="fa-solid fa-arrows-rotate"></i>
+      </button>
       </form>
       <div id="TablaProveedores">
         <table class="table">
@@ -252,12 +253,8 @@
             <th scope="col">Email</th>
           </thead>
           <tbody>
-            <tr *ngFor="let item of listaDeProveedores">
-              <td scope="row" id="idProveedor">
-                <a (click)="recuperarProveedor(item.id)">{{
-                  item.nombreProveedor
-                }}</a>
-              </td>
+            <tr *ngFor="let item of listaDeProveedores" (click)="recuperarProveedor(item.id)">
+              <td scope="row" id="idProveedor">{{item.nombreProveedor}}</td>
               <td scope="row">{{ item.telefonoProveedor }}</td>
               <td scope="row">{{ item.emailProveedor }}</td>
             </tr>

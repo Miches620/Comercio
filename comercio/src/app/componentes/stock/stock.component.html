@@ -23,7 +23,7 @@
               >Cantidad</label
             >
             <input
-              type="text"
+              type="number"
               class="form-control"
               id="cantidadProducto"
               formControlName="formCantidad"
@@ -119,7 +119,8 @@
           </button>
         </div>
     </div>
-          <img id="previewImage" [src]="tempImagen" alt="Vista Previa del Producto" (change)="verificarImagen()">
+          <img *ngIf="!this.imagenValida"id="NopreviewImage" [src]="tempImagen" alt="Vista Previa del Producto no disponible" (change)="verificarImagen()">
+          <img *ngIf="this.imagenValida"id="previewImage" [src]="tempImagen" alt="Vista Previa del Producto" (change)="verificarImagen()">
         </form>
         <div id="TablaStock">
           <table class="table">
@@ -130,20 +131,15 @@
               <th scope="col">Marca</th>
               <th scope="col">Proveedor</th>
               <th scope="col">Costo</th>
-              <th id="colGanancia"*ngIf="this.opcion" scope="col" (mouseout)="switchOpcion()">Ganancia</th>
+              <th id="colGanancia"*ngIf="this.opcion" scope="col" (mouseout)="switchOpcion()" (click)=" bloquearOpcion()">Ganancia</th>
               <th id="colPorcentaje"*ngIf="!this.opcion" scope="col" (mouseover)="switchOpcion()">%</th>
               <th scope="col">Ingreso</th>
               <th scope="col">Vencimiento</th>
               <th scope="col">Cod. Barras</th>
             </thead>
-            <tbody>
-                
-              <tr *ngFor="let item of listaDeStock" ><!--Deberia generar una nueva lista en el ts que rejunte los datos de listaDeStock y listaDeProductos-->
-                <td scope="row" id="CodProd">
-                  <a (click)="obtenerDatosSeleccion(item.id)">{{
-                    item.codigoProducto
-                  }}</a>
-                </td>
+            <tbody>    
+              <tr *ngFor="let item of listaDeStock" (click)="obtenerDatosSeleccion(item.id)">
+                <td scope="row" id="CodProd">{{item.codigoProducto}}</td>
                 <td scope="row">{{item.nombreProducto}}</td>
                 <td scope="row">{{item.cantidadProducto}}</td>
                 <td scope="row">{{item.marcaProducto}}</td>
@@ -153,7 +149,7 @@
                 <td scope="row"*ngIf="!this.opcion">{{item.porcentajeProducto}}%</td>
                 <td scope="row">{{item.ingresoProducto}}</td>
                 <td scope="row">{{item.vencimientoProducto}}</td>
-                <td scope="row" id="idCodBar"><a (click)="obtenerDatosSeleccion(item.id)">{{item.barrasProducto}}</a></td>
+                <td scope="row" id="idCodBar">{{item.barrasProducto}}</td>
               </tr>
             </tbody>
           </table>
@@ -162,29 +158,51 @@
 </div>
 </section>
 
+<!--Modal de Lector de Codigo de Barras-->
 <div class="modal fade"  id="codeBar2">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Esperando Lectura..</h5>
+        <h5  class="modal-title">Esperando Lectura..</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnCerrarBarCode2"></button>
       </div>
       <form [formGroup]="lecturaCodeBar">
       <div class="modal-body text-center">
-        <input type="text"  class="visually-hidden" id="hiddenCodeBar2" formControlName="formCodeBar" (change)="recuperarRegistro()">
-        <div class="spinner-border" role="status">
+        <input type="text"  class="visually-hidden" id="hiddenCodeBar2" formControlName="formCodeBar" (change)="recuperarRegistro(1)">
+        <div  class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
         </div>
-        
       </div>
     </form>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-ban"></i></button>
+        <button type="button" class="btn btn-primary" (click)="desbloquearIngresoManual(1)" data-bs-toggle="modal" data-bs-target="#codeBar3"><i class="fa-solid fa-keyboard"></i></button>
       </div>
     </div>
   </div>
 </div>
-
+<!--Modal de Ingreso Manual de Codigo-->
+<div class="modal fade"  id="codeBar3">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5  class="modal-title">Ingrese el codigo:</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btnCerrarBarCode3"></button>
+      </div>
+      <form [formGroup]="lecturaCodeBar">
+      <div class="modal-body text-center">
+        <input type="text"   id="insertCodeBar2" formControlName="formCodeBar2">
+        <button type="button"  id="agreeCodeBar2" class="btn btn-primary" (click)="recuperarRegistro(2)"><i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+    </form>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-ban"></i></button>
+        <button type="button" class="btn btn-primary"(click)="desbloquearIngresoManual(2)" data-bs-toggle="modal" data-bs-target="#codeBar2"><i class="fa-solid fa-qrcode"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal de Confirmacion de Borrado de Producto-->
 <div
   class="modal fade"
   id="borrarModal"
