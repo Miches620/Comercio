@@ -1,97 +1,99 @@
-import { Component, OnInit } from '@angular/core';
-import { AdminService } from 'src/app/servicios/admin.service';
-import { Producto } from 'src/app/entidades/producto';
-import { Proveedor } from 'src/app/entidades/proveedor';
-import { Marca } from 'src/app/entidades/marca';
-import { Registro } from 'src/app/entidades/registro';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-//import { delay } from 'rxjs';
-
+import { Component, OnInit } from "@angular/core";
+import { AdminService } from "src/app/servicios/admin.service";
+import {Producto as ProductoInterface} from "src/app/entidades/interfaces/producto";
+import {Proveedor as ProveedorInterface} from "src/app/entidades/interfaces/proveedor";
+import {Marca as MarcaInterface} from "src/app/entidades/interfaces/marca";
+import {Registro as RegistroInterface} from "src/app/entidades/interfaces/registro";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 
 @Component({
-  selector: 'app-configuracion',
-  templateUrl: './configuracion.component.html',
-  styleUrls: ['./configuracion.component.css'],
+  selector: "app-configuracion",
+  templateUrl: "./configuracion.component.html",
+  styleUrls: ["./configuracion.component.css"],
 })
 export class ConfiguracionComponent implements OnInit {
-  marca: any = [];
-  producto: any = [];
-  listaDeProductos: any = [];
-  listaDeProveedores: any = [];
-  listaDeMarcas: any = [];
+  marca: string[] = [];
+  producto: string[] = [];
+
+  listaDeProductos: ProductoInterface[]=[];
+  listaDeProveedores: ProveedorInterface[]=[];
+  listaDeMarcas:MarcaInterface[]=[];
+  registro: RegistroInterface[]=[];
+
   formulario: FormGroup;
   proveedores: FormGroup;
   ingresoProducto: FormGroup;
   ingresoMarca: FormGroup;
   ingresoProveedor: FormGroup;
   lecturaCodeBar:FormGroup;
+
   collapseProducto: boolean = false;
   collapseProveedor: boolean = true;
   collapseGastos: boolean = false;
-  registro: any;
-  urlCodBarras: string = '';
+  
+  urlCodBarras: string = "";
   campoVacio: boolean = true;
   id: number = 0;
-  cacheDeEdicion:any;
+  cacheDeEdicion:string="";
 
   constructor(
     private configurar: AdminService,
     private servicioFormulario: FormBuilder
   ) {
     this.formulario = this.servicioFormulario.group({
-      formProducto: ['', Validators.required],
-      formCodProd: ['', Validators.required],
-      formMarca: ['', Validators.required],
-      formCodBarras: ['', Validators.required],
-      formImagen: [''],
+      formProducto: ["", Validators.required],
+      formCodProd: ["", Validators.required],
+      formMarca: ["", Validators.required],
+      formCodBarras: ["", Validators.required],
+      formImagen: [""],
     });
     this.proveedores = this.servicioFormulario.group({
-      formProveedor: ['', Validators.required],
-      formTelefono: ['', Validators.minLength(10)],
+      formProveedor: ["", Validators.required],
+      formTelefono: ["", Validators.minLength(10)],
       formEmail: [
-        '',
+        "",
         Validators.pattern(
           "[a-zA-Z0-9!#$%&'*/=?^_`{|}~+-]([.]?[a-zA-Z0-9!#$%&'*/=?^_`{|}~+-])+@[a-zA-Z0-9]([^@&%$/()=?¿!.,:;]|d)+[a-zA-Z0-9][.][a-zA-Z]{2,4}([.][a-zA-Z]{2})?"
         ),
       ],
     });
     this.ingresoProducto = this.servicioFormulario.group({
-      formNuevoProducto: ['', Validators.required],
+      formNuevoProducto: ["", Validators.required],
     });
     this.ingresoMarca = this.servicioFormulario.group({
-      formNuevaMarca: ['', Validators.required],
+      formNuevaMarca: ["", Validators.required],
     });
     this.ingresoProveedor = this.servicioFormulario.group({
-      formNuevoProveedor: ['', Validators.required],
+      formNuevoProveedor: ["", Validators.required],
     });
     this.lecturaCodeBar = this.servicioFormulario.group({
-      formCodeBar:[''],
-    })
+      formCodeBar:[""],
+    });
   }
 
   get nuevoProducto() {
-    return this.ingresoProducto.get('formNuevoProducto');
+    return this.ingresoProducto.get("formNuevoProducto");
   }
 
   get nuevaMarca() {
-    return this.ingresoMarca.get('formNuevaMarca');
+    return this.ingresoMarca.get("formNuevaMarca");
   }
 
   get nuevoProveedor() {
-    return this.ingresoProveedor.get('formNuevoProveedor');
+    return this.ingresoProveedor.get("formNuevoProveedor");
   }
 
   ngOnInit(): void {
-    this.configurar.obtenerDatosMarcas().subscribe((data) => {
+    this.configurar.obtenerDatosMarcas().subscribe(data => {
       this.listaDeMarcas=data;
       for (let i = 0; i < data.length; i++) {
-        this.marca[i] = data[i].nombreMarca;
+        this.marca = data.map(marca => marca.nombreMarca);
       }
     });
     this.configurar.obtenerDatosProductos().subscribe((data) => {
       this.listaDeProductos=data;
       for (let i = 0; i < data.length; i++) {
-        this.producto[i] = data[i].nombreProducto;
+        this.producto = data.map(producto => producto.nombreProducto);
       }
     });
     this.configurar.obtenerDatosProveedores().subscribe((data) => {
@@ -103,232 +105,221 @@ export class ConfiguracionComponent implements OnInit {
     });
   }
 
-  recuperarId(pOM: number) {
+  recuperarId(productoOMarca: number) {
     let seleccion;
     let objetivo;
 
-    if (pOM == 1) {
-      seleccion = this.formulario.get('formProducto')?.value;
-      objetivo = this.ingresoProducto.get('formNuevoProducto');
+    if (productoOMarca == 1) {
+      seleccion = this.formulario.get("formProducto")?.value;
+      objetivo = this.ingresoProducto.get("formNuevoProducto");
     
     } else {
-      seleccion = this.formulario.get('formMarca')?.value;
-      objetivo = this.ingresoMarca.get('formNuevaMarca');
+      seleccion = this.formulario.get("formMarca")?.value;
+      objetivo = this.ingresoMarca.get("formNuevaMarca");
 
     }
-    if (seleccion == '' || seleccion == null) {
+    if (seleccion == "" || seleccion == null) {
       this.campoVacio = true;
     } else {
-      switch(pOM){
-        case 1:{
-          for (let i = 0; i < this.listaDeProductos.length; i++) {
-            if (this.listaDeProductos[i].nombreProducto == seleccion) {
-              this.id = this.listaDeProductos[i].id;
-              this.campoVacio = false;
-            }
+      switch(productoOMarca){
+      case 1:{
+        for (let i = 0; i < this.listaDeProductos.length; i++) {
+          if (this.listaDeProductos[i].nombreProducto == seleccion) {
+            this.id = this.listaDeProductos[i].id;
+            this.campoVacio = false;
           }
-          objetivo?.setValue(seleccion);
-          this.cacheDeEdicion=seleccion;
+        }
+        objetivo?.setValue(seleccion);
+        this.cacheDeEdicion=seleccion;
          
-          break;
-        }
-        case 2:{
-          for (let i = 0; i < this.listaDeMarcas.length; i++) {
-            if (this.listaDeMarcas[i].nombreMarca == seleccion) {
-              this.id = this.listaDeMarcas[i].id;
-              this.campoVacio = false;
-            }
+        break;
+      }
+      case 2:{
+        for (let i = 0; i < this.listaDeMarcas.length; i++) {
+          if (this.listaDeMarcas[i].nombreMarca == seleccion) {
+            this.id = this.listaDeMarcas[i].id;
+            this.campoVacio = false;
           }
-          objetivo?.setValue(seleccion);
-          this.cacheDeEdicion=seleccion;
-          
-          break;
         }
+        objetivo?.setValue(seleccion);
+        this.cacheDeEdicion=seleccion;
+          
+        break;
+      }
       }
     }
   }
 
-  editarProductoOMarca(pOM: number) {
+  editarProductoOMarca(productoOMarca: number) {
     let seleccion:string;
     let lista;
-    let valorRepetido: boolean = false;
-    let objeto: any;
-    let idMarca:number;
+    let nuevoProducto: ProductoInterface | undefined = undefined;
+    let nuevaMarca: MarcaInterface | undefined = undefined;
+    let atributo:string="";
 
-    if (pOM == 1) {
-      seleccion = this.ingresoProducto.get('formNuevoProducto')?.value;
-      objeto = new Producto(this.id, seleccion);
+    if (productoOMarca == 1) {
+      seleccion = this.ingresoProducto.get("formNuevoProducto")?.value;
+      nuevoProducto = {id:this.id,nombreProducto:seleccion};
       lista = this.producto;
     } else {
-      seleccion = this.ingresoMarca.get('formNuevaMarca')?.value;
-      objeto = new Marca(this.id, seleccion);
+      seleccion = this.ingresoMarca.get("formNuevaMarca")?.value;
+      nuevaMarca = {id:this.id, nombreMarca:seleccion};
       lista = this.marca;
     }
 
     //1 verifica que el dato guardado en seleccion no se encuentre en la lista correspondiente a modificar (producto o marca)
-    for (let i = 0; i < lista.length; i++) {
-      if (lista[i] == seleccion) {
-        alert(
-          'Atencion: el campo contiene una etiqueta que ya se encuentra en la lista. Por favor pruebe nuevamente con otro nombre.'
-        );
-        valorRepetido = true;
-        break;
-      } else {
-        valorRepetido = false;
-      }
+ 
+    const valorRepetido = lista.find(item => item===seleccion);
+    if(valorRepetido){
+      alert(
+        "Atencion: el campo contiene una etiqueta que ya se encuentra en la lista. Por favor pruebe nuevamente con otro nombre."
+      );
     }
 
     //2 Si no se encuentra: a) primero modifica la lista desplegable
-    if (valorRepetido == false && seleccion != '' && seleccion != null) {
-      switch (pOM) {
-        case 1: {
-          this.configurar.editarDatosProducto(this.id, objeto).subscribe({
-            next: (data) => {
-              this.ingresoProducto.get('formNuevoProducto')?.setValue('');
-              this.formulario.get('formProducto')?.setValue('');
-              document.getElementById('cerrarModalNuevoProducto')?.click();
-              alert('Dato actualizado correctamente');
-              this.ngOnInit();
+    if (!valorRepetido  && seleccion != "" && seleccion != null) {
+      switch (productoOMarca) {
+      case 1: {
+        if(nuevoProducto!=undefined){
+          this.configurar.editarDatosProducto(this.id,nuevoProducto).subscribe({
+            next: () => {
+              this.ingresoProducto.get("formNuevoProducto")?.setValue("");
+              this.formulario.get("formProducto")?.setValue("");
+              document.getElementById("cerrarModalNuevoProducto")?.click();
+              alert("Producto actualizado correctamente");
             },
-            error: (error) => {
+            error: (e) => {
               alert(
-                'Error al intentar editar la etiqueta. Por favor intente nuevamente'
+                "Error al intentar editar la etiqueta Producto. Por favor intente nuevamente. " +e
               );
             },
           });
-          break;
+          atributo="nombreProducto=";
+          this.configurar.editarMultiplesRegistros(atributo,this.cacheDeEdicion,seleccion);
         }
-        case 2: {
-          for(let item of this.registro){
-              if(item.marcaProducto == this.cacheDeEdicion){
-                idMarca = item.id;
-                let nuevoRegistroEditado = new Registro(idMarca,item.nombreProducto,item.codigoProducto,seleccion,item.barrasProducto,item.imagenProducto);
-                        this.configurar.editarRegistro(idMarca,nuevoRegistroEditado).subscribe({
-                          next: (data)=> {
-                      },
-                      error: (error) => {
-                        alert(
-                          'Error al intentar editar la etiqueta(REG). Por favor intente nuevamente'
-                        );
-                      },
-                    });
-                  }
-              }
-          this.configurar.editarDatosMarca(this.id, objeto).subscribe({
-            next: (data) => {},
-            error: (error) => {
+        break;
+      }
+      case 2: {
+   
+        if(nuevaMarca!=undefined){
+          this.configurar.editarDatosMarca(this.id,nuevaMarca).subscribe({
+            next: () => {
+              this.ingresoMarca.get("formNuevaMarca")?.setValue("");
+              this.formulario.get("formMarca")?.setValue("");
+              document.getElementById("cerrarModalNuevaMarca")?.click();
+              alert("Marca actualizada correctamente");
+            },
+            error: (e) => {
               alert(
-                'Error al intentar editar la etiqueta(DM). Por favor intente nuevamente'
+                "Error al intentar editar la etiqueta Marca. Por favor intente nuevamente."+e
               );
             },
-            });
-          this.ngOnInit();
-          document.getElementById('cerrarModalNuevaMarca')?.click();
-                        alert('Dato actualizado correctamente');
-                        this.ingresoMarca.get('formNuevaMarca')?.setValue('');
-                        this.formulario.get('formMarca')?.setValue('');
-          this.obtenerDatosSeleccion(this.id);
-          break;
+          });
+          atributo="marcaProducto=";
+          this.configurar.editarMultiplesRegistros(atributo,this.cacheDeEdicion,seleccion);
         }
+        break;
+      }
       }
       this.id = 0;
+      
     }
-    
+    this.ngOnInit();
   }
 
-  borrarProductoOMarca(pOM: number) {
-    switch (pOM) {
-      case 1: {
-        if (this.ingresoProducto.valid && this.id != 0) {
-          this.configurar.borrarProducto(this.id).subscribe({
-            next: (data) => {
-              alert('Producto Eliminado Correctamente');
+  borrarProductoOMarca(productoOMarca: number) {
+    switch (productoOMarca) {
+    case 1: {
+      if (this.ingresoProducto.valid && this.id != 0) {
+        this.configurar.borrarProducto(this.id).subscribe({
+          next: () => {
+            alert("Producto Eliminado Correctamente");
+            this.ngOnInit();
+            this.ingresoProducto.reset();
+            this.formulario.get("formProducto")?.setValue("");
+            document.getElementById("cerrarModalNuevoProducto")?.click();
+          },
+          error: (e) => {
+            alert(
+              "Error al intentar borrar el Producto. Por favor intente nuevamente. "+e
+            );
+          },
+        });
+      }
+      break;
+    }
+    case 2:
+      {
+        if (this.ingresoMarca.valid && this.id != 0) {
+          this.configurar.borrarMarca(this.id).subscribe({
+            next: () => {
+              alert("Marca Eliminada Correctamente");
               this.ngOnInit();
-              this.ingresoProducto.reset();
-              this.formulario.get('formProducto')?.setValue('');
-              document.getElementById('cerrarModalNuevoProducto')?.click();
+              this.ingresoMarca.reset();
+              this.formulario.get("formMarca")?.setValue("");
+              document.getElementById("cerrarModalNuevaMarca")?.click();
             },
-            error: (error) => {
+            error: (e) => {
               alert(
-                'Error al intentar borrar el Producto. Por favor intente nuevamente'
+                "Error al intentar borrar la Marca. Por favor intente nuevamente. "+e
               );
             },
           });
         }
         break;
       }
-      case 2:
-        {
-          if (this.ingresoMarca.valid && this.id != 0) {
-            this.configurar.borrarMarca(this.id).subscribe({
-              next: (data) => {
-                alert('Marca Eliminada Correctamente');
-                this.ngOnInit();
-                this.ingresoMarca.reset();
-                this.formulario.get('formMarca')?.setValue('');
-                document.getElementById('cerrarModalNuevaMarca')?.click();
-              },
-              error: (error) => {
-                alert(
-                  'Error al intentar borrar la Marca. Por favor intente nuevamente'
-                );
-              },
-            });
-          }
-          break;
-        }
-        this.id = 0;
+      this.id = 0;
     }
   }
 
   obtenerDatosSeleccion(id: number) {
     this.id = id;
-    for (let item of this.registro) {
+    for (const item of this.registro) {
       if (item.id == id) {
-        this.formulario.get('formProducto')?.setValue(item.nombreProducto);
-        this.formulario.get('formCodProd')?.setValue(item.codigoProducto);
-        this.formulario.get('formMarca')?.setValue(item.marcaProducto);
-        this.formulario.get('formCodBarras')?.setValue(item.barrasProducto);
-        //this.formulario.get('formImagen')?.setValue(item.imagenProducto);
+        this.formulario.get("formProducto")?.setValue(item.nombreProducto);
+        this.formulario.get("formCodProd")?.setValue(item.codigoProducto);
+        this.formulario.get("formMarca")?.setValue(item.marcaProducto);
+        this.formulario.get("formCodBarras")?.setValue(item.barrasProducto);
+        //this.formulario.get('formImagen')?.setValue(item.getimagenProducto);
       }
     }
   }
 
   generarCodigoDeBarras() {
-    let codProd = this.formulario.get('formCodProd')?.value;
-    if (codProd == '' || codProd == null) {
+    const codProd = this.formulario.get("formCodProd")?.value;
+    if (codProd == "" || codProd == null) {
       this.campoVacio = true;
     } else {
       this.campoVacio = false;
       this.urlCodBarras =
-        'https://barcode.tec-it.com/barcode.ashx?data=' +
+        "https://barcode.tec-it.com/barcode.ashx?data=" +
         codProd +
-        '&code=Code128&translate-esc=on';
+        "&code=Code128&translate-esc=on";
     }
   }
 
   abrirColapsable(id: number) {
     switch (id) {
-      case 1: {
-        this.collapseProducto = true;
-        this.collapseProveedor = false;
-        this.collapseGastos = false;
-        this.proveedores.reset();
-        this.id = 0;
-        this.ngOnInit();
-        break;
-      }
-      case 2: {
-        this.collapseProducto = false;
-        this.collapseProveedor = true;
-        this.collapseGastos = false;
-        this.formulario.reset();
-        this.formulario.get('formProducto')?.setValue('');
-        this.formulario.get('formMarca')?.setValue('');
-        this.id = 0;
-        this.ngOnInit();
-        break;
-      }
+    case 1: {
+      this.collapseProducto = true;
+      this.collapseProveedor = false;
+      this.collapseGastos = false;
+      this.proveedores.reset();
+      this.id = 0;
+      this.ngOnInit();
+      break;
+    }
+    case 2: {
+      this.collapseProducto = false;
+      this.collapseProveedor = true;
+      this.collapseGastos = false;
+      this.formulario.reset();
+      this.formulario.get("formProducto")?.setValue("");
+      this.formulario.get("formMarca")?.setValue("");
+      this.id = 0;
+      this.ngOnInit();
+      break;
+    }
       /*case 3:{
     this.collapseProducto=false;
     this.collapseProveedor=false;
@@ -343,72 +334,72 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   imprimirCodigoDeProducto(codigo: string) {
-    let mywindow = window.open('', 'PRINT', 'height=600,width=600');
-    mywindow?.document.write('<html><head>');
-    mywindow?.document.write('<meta charset="UTF-8">');
+    const mywindow = window.open("", "PRINT", "height=600,width=600");
+    mywindow?.document.write("<html><head>");
+    mywindow?.document.write("<meta charset=\"UTF-8\">");
     mywindow?.document.write(
-      '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+      "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
     );
-    mywindow?.document.write('<style>img{margin-right:1rem}</style>');
-    mywindow?.document.write('</head><body>');
+    mywindow?.document.write("<style>img{margin-right:1rem}</style>");
+    mywindow?.document.write("</head><body>");
     for (let i = 0; i < 45; i++) {
       mywindow?.document.write(
-        '<img height=100px; width:114px; src=' + codigo + 'onload="print()"/>'
+        "<img height=100px; width:114px; src=" + codigo + "onload=\"print()\"/>"
       );
     }
-    mywindow?.document.write('</body></html>');
+    mywindow?.document.write("</body></html>");
     mywindow?.document.close();
     mywindow?.focus();
     setTimeout( () => {
       mywindow?.print();
       mywindow?.close();
- }, 300);
-    document.getElementById('cerrarModalCodigoDeBarras')?.click();
+    }, 300);
+    document.getElementById("cerrarModalCodigoDeBarras")?.click();
     return true;
   }
 
   iniciarScanner(){
-    const myModal = document.getElementById('codeBar');
-    const myInput = document.getElementById('hiddenCodeBar');
+    const myModal = document.getElementById("codeBar");
+    const myInput = document.getElementById("hiddenCodeBar");
 
-   myModal?.addEventListener('shown.bs.modal', () => {
-    myInput?.focus()})
+    myModal?.addEventListener("shown.bs.modal", () => {
+      myInput?.focus();});
 
   }
 
   leerScanner(){
-    let codigo = this.lecturaCodeBar.get('formCodeBar')?.value;
+    const codigo = this.lecturaCodeBar.get("formCodeBar")?.value;
     if(codigo!="" || codigo!=null){
-      document.getElementById('btnCerrarBarCode')?.click();
-      this.formulario.get('formCodBarras')?.setValue(codigo);
-      this.lecturaCodeBar.get('formCodeBar')?.setValue("");
-    for(let item of this.registro){
-      if (item.barrasProducto == codigo){
-        this.formulario.get('formProducto')?.setValue(item.nombreProducto);
-        this.formulario.get('formMarca')?.setValue(item.marcaProducto);
+      document.getElementById("btnCerrarBarCode")?.click();
+      this.formulario.get("formCodBarras")?.setValue(codigo);
+      this.lecturaCodeBar.get("formCodeBar")?.setValue("");
+      for(const item of this.registro){
+        if (item.barrasProducto == codigo){
+          this.formulario.get("formProducto")?.setValue(item.nombreProducto);
+          this.formulario.get("formMarca")?.setValue(item.marcaProducto);
+        }
       }
-    }
     }
   }
 
   guardarCodigoDeProducto() {
-    this.urlCodBarras += '&imageType=Jpg&download=true';
-    document.getElementById('cerrarModalCodigoDeBarras')?.click();
+    this.urlCodBarras += "&imageType=Jpg&download=true";
+    document.getElementById("cerrarModalCodigoDeBarras")?.click();
   }
 
   borrarRegistroSeleccionado() {
     if (this.formulario.valid && this.id != 0) {
       this.configurar.borrarRegistro(this.id).subscribe({
-        next: (data) => {
-          alert('Registro Eliminado Correctamente');
+        next: () => {
+          alert("Registro Eliminado Correctamente");
           this.ngOnInit();
           this.formulario.reset();
         },
-        error: (error) => {
-          alert('Error al borrar el Registro. Por favor intente nuevamente');
+        error: (e) => {
+          alert("Error al borrar el Registro. Por favor intente nuevamente. "+e);
         },
       });
-      document.getElementById('cerrarModalEliminar')?.click();
+      document.getElementById("cerrarModalEliminar")?.click();
     }
     this.id = 0;
   }
@@ -416,13 +407,15 @@ export class ConfiguracionComponent implements OnInit {
   editarRegistroSeleccionado() {
     if (this.formulario.valid) {
       let valorRepetido: boolean = false;
-      let producto = this.formulario.get('formProducto')?.value;
-      let codigoDelProducto = this.formulario.get('formCodProd')?.value;
-      let marca = this.formulario.get('formMarca')?.value;
-      let codigoDeBarrasDelProducto = this.formulario.get('formCodBarras')?.value;
-        this.formulario.get('formCodBarras')?.value;
-      let imagen = this.formulario.get('formImagen')?.value;
-      for (let item of this.registro) {
+      const producto:string = this.formulario.get("formProducto")?.value;
+      const codigoDelProducto:string = this.formulario.get("formCodProd")?.value;
+      const marca:string = this.formulario.get("formMarca")?.value;
+      const codigoDeBarrasDelProducto:string = this.formulario.get("formCodBarras")?.value;
+      const idRegistro=this.id;
+      let registroEditado:RegistroInterface | undefined=undefined;
+      this.formulario.get("formCodBarras")?.value;
+      const imagen = this.formulario.get("formImagen")?.value;
+      for (const item of this.registro) {
         if (
           item.barrasProducto == codigoDeBarrasDelProducto &&
           item.codigoProducto == codigoDelProducto &&
@@ -431,28 +424,28 @@ export class ConfiguracionComponent implements OnInit {
         ) {
           valorRepetido = true;
           alert(
-            'Atencion: Esta duplicando un registro ya existente. Por favor verifique y vuelva a intentar.'
+            "Atencion: Esta duplicando un registro ya existente. Por favor verifique y vuelva a intentar."
           );
         }
       }
       if (valorRepetido == false) {
-        let registroEditado = new Registro(
-          this.id,
-          producto,
-          codigoDelProducto,
-          marca,
-          codigoDeBarrasDelProducto,
-          imagen
-        );
+        registroEditado={
+          id:idRegistro,
+          nombreProducto:producto,
+          codigoProducto:codigoDelProducto,
+          marcaProducto:marca,
+          barrasProducto:codigoDeBarrasDelProducto,
+          imagenProducto:imagen
+        };
         this.configurar.editarRegistro(this.id, registroEditado).subscribe({
-          next: (data) => {
-            alert('Registro Actualizado Correctamente');
+          next: () => {
+            alert("Registro Actualizado Correctamente");
             this.ngOnInit();
             this.formulario.reset();
           },
-          error: (error) => {
+          error: (e) => {
             alert(
-              'Error al intentar actualizar el registro. Por favor intente nuevamente'
+              "Error al intentar actualizar el registro. Por favor intente nuevamente. "+e
             );
           },
         });
@@ -460,54 +453,55 @@ export class ConfiguracionComponent implements OnInit {
       //this.id = 0;
     } else {
       this.formulario.markAllAsTouched();
-      alert('Atencion! uno o mas campos requeridos no han sido completados!!');
+      alert("Atencion! uno o mas campos requeridos no han sido completados!!");
     }
   }
 
   agregarAlListado() {
     if (this.formulario.valid) {
       let valorRepetido: boolean = false;
-      let idNuevoProducto = 0;
-      let producto = this.formulario.get('formProducto')?.value;
-      let codigoDelProducto = this.formulario.get('formCodProd')?.value;
-      let marca = this.formulario.get('formMarca')?.value;
-      let codigoDeBarrasDelProducto =
-        this.formulario.get('formCodBarras')?.value;
-        let imagen = this.formulario.get('formImagen')?.value;
-        if(imagen!=null && imagen!=""){
-          imagen="";
-          imagen = './assets/imagenes/'+this.formulario.get('formImagen')?.value.substring(12);
-        }else{
-          imagen="/assets/imagenes/sinImagen.png";
-        }
+      const idNuevoProducto = 0;
+      const producto = this.formulario.get("formProducto")?.value;
+      const codigoDelProducto = this.formulario.get("formCodProd")?.value;
+      const marca = this.formulario.get("formMarca")?.value;
+      const codigoDeBarrasDelProducto =
+        this.formulario.get("formCodBarras")?.value;
+      let imagen = this.formulario.get("formImagen")?.value;
+      if(imagen!=null && imagen!=""){
+        imagen="";
+        imagen = "./assets/imagenes/"+this.formulario.get("formImagen")?.value.substring(12);
+      }else{
+        imagen="/assets/imagenes/sinImagen.png";
+      }
+      let nuevoRegistro:RegistroInterface | undefined=undefined;
      
-      for (let item of this.registro) {
+      for (const item of this.registro) {
         if (
           item.barrasProducto == codigoDeBarrasDelProducto &&
           item.codigoProducto == codigoDelProducto
         ) {
           valorRepetido = true;
-          alert('INGRESO REPETIDO');
+          alert("INGRESO REPETIDO");
           this.formulario.reset();
         }
       }
       if (valorRepetido == false) {
-        let nuevoRegistro = new Registro(
-          idNuevoProducto,
-          producto,
-          codigoDelProducto,
-          marca,
-          codigoDeBarrasDelProducto,
-          imagen
-        );
+        nuevoRegistro = {
+          id:idNuevoProducto,
+          nombreProducto:producto,
+          codigoProducto:codigoDelProducto,
+          marcaProducto:marca,
+          barrasProducto:codigoDeBarrasDelProducto,
+          imagenProducto:imagen
+        };
         this.configurar.agregarRegistro(nuevoRegistro).subscribe({
-          next: (data) => {
+          next: () => {
             this.formulario.reset();
             this.ngOnInit();
           },
-          error: (error) => {
+          error: (e) => {
             alert(
-              'Error al intentar actualizar el listado. Por favor intente nuevamente'
+              "Error al intentar actualizar el listado. Por favor intente nuevamente. "+e
             );
           },
         });
@@ -517,38 +511,39 @@ export class ConfiguracionComponent implements OnInit {
     }
   }
 
-  resetearModal(modal: any, valor: number) {
+  resetearModal(modal: FormGroup, valor: number) {
     modal.reset();
     this.id = 0;
     if (valor == 1) {
-      modal.get('formProducto')?.setValue('');
-      modal.get('formMarca')?.setValue('');
+      modal.get("formProducto")?.setValue("");
+      modal.get("formMarca")?.setValue("");
     }
   }
 
   ingresarNuevoProducto() {
     let valorRepetido: boolean = false;
-    let nuevoProducto = this.ingresoProducto.get('formNuevoProducto')?.value;
-    let idNuevoProducto = 0;
-    if (nuevoProducto != '' && nuevoProducto != null) {
-      for (let item of this.producto) {
+    const nuevoProducto = this.ingresoProducto.get("formNuevoProducto")?.value;
+    const idNuevoProducto = 0;
+    let nuevoItemProducto:ProductoInterface | undefined=undefined;
+    if (nuevoProducto != "" && nuevoProducto != null) {
+      for (const item of this.producto) {
         if (item == nuevoProducto) {
           valorRepetido = true;
-          alert('VALOR REPETIDO!!!'); //Cambiar por algo mas estetico.
+          alert("VALOR REPETIDO!!!"); //Cambiar por algo mas estetico.
           this.ingresoProducto.reset();
         }
       }
       if (valorRepetido == false) {
-        let nuevoItemProducto = new Producto(idNuevoProducto, nuevoProducto);
+        nuevoItemProducto= {id:idNuevoProducto, nombreProducto:nuevoProducto};
         this.configurar.agregarDatosProducto(nuevoItemProducto).subscribe({
-          next: (data) => {
+          next: () => {
             this.ingresoProducto.reset();
-            document.getElementById('cerrarModalNuevoProducto')?.click();
+            document.getElementById("cerrarModalNuevoProducto")?.click();
             this.ngOnInit();
           },
-          error: (error) => {
+          error: (e) => {
             alert(
-              'Error al intentar registrar el producto. Por favor intente nuevamente'
+              "Error al intentar registrar el producto. Por favor intente nuevamente. "+e
             );
           },
         });
@@ -560,27 +555,28 @@ export class ConfiguracionComponent implements OnInit {
 
   ingresarNuevaMarca() {
     let valorRepetido: boolean = false;
-    let nuevaMarca = this.ingresoMarca.get('formNuevaMarca')?.value;
-    let idNuevaMarca = 0;
-    if (nuevaMarca != '' && nuevaMarca != null) {
-      for (let item of this.marca) {
+    const nuevaMarca = this.ingresoMarca.get("formNuevaMarca")?.value;
+    const idNuevaMarca = 0;
+    let nuevoItemMarca:MarcaInterface | undefined=undefined;
+    if (nuevaMarca != "" && nuevaMarca != null) {
+      for (const item of this.marca) {
         if (item == nuevaMarca) {
           valorRepetido = true;
-          alert('VALOR REPETIDO!!!'); //Cambiar por algo mas estetico.
+          alert("VALOR REPETIDO!!!"); //Cambiar por algo mas estetico.
           this.ingresoMarca.reset();
         }
       }
       if (valorRepetido == false) {
-        let nuevoItemMarca = new Marca(idNuevaMarca, nuevaMarca);
+        nuevoItemMarca = {id:idNuevaMarca, nombreMarca:nuevaMarca};
         this.configurar.agregarDatosMarca(nuevoItemMarca).subscribe({
-          next: (data) => {
+          next: () => {
             this.ingresoMarca.reset();
-            document.getElementById('cerrarModalNuevaMarca')?.click();
+            document.getElementById("cerrarModalNuevaMarca")?.click();
             this.ngOnInit();
           },
-          error: (error) => {
+          error: (e) => {
             alert(
-              'Error al intentar registrar la marca. Por favor intente nuevamente'
+              "Error al intentar registrar la marca. Por favor intente nuevamente. "+e
             );
           },
         });
@@ -595,40 +591,41 @@ export class ConfiguracionComponent implements OnInit {
     let nuevoProveedor;
     let nuevoProveedorTelefono;
     let nuevoProveedorEmail;
+    let nuevoItemProveedor:ProveedorInterface | undefined=undefined;
     if (this.collapseProducto) {
-      nuevoProveedor = this.ingresoProveedor.get('formNuevoProveedor')?.value;
+      nuevoProveedor = this.ingresoProveedor.get("formNuevoProveedor")?.value;
     } else {
-      nuevoProveedor = this.proveedores.get('formProveedor')?.value;
-      nuevoProveedorTelefono = this.proveedores.get('formTelefono')?.value;
-      nuevoProveedorEmail = this.proveedores.get('formEmail')?.value;
+      nuevoProveedor = this.proveedores.get("formProveedor")?.value;
+      nuevoProveedorTelefono = this.proveedores.get("formTelefono")?.value;
+      nuevoProveedorEmail = this.proveedores.get("formEmail")?.value;
     }
-    let idNuevoProveedor = 0;
-    if (nuevoProveedor != '' && nuevoProveedor != null) {
-      for (let item of this.listaDeProveedores.nombreProveedor) {
-        if (item == nuevoProveedor) {
+    const idNuevoProveedor = 0;
+    if (nuevoProveedor != "" && nuevoProveedor != null) {
+      for (const item of this.listaDeProveedores) {
+        if (item.nombreProveedor == nuevoProveedor) {
           valorRepetido = true;
-          alert('VALOR REPETIDO!!!'); //Cambiar por algo mas estetico.
+          alert("VALOR REPETIDO!!!"); //Cambiar por algo mas estetico.
           this.ingresoProveedor.reset();
         }
       }
       if (valorRepetido == false) {
-        let nuevoItemProveedor;
-          nuevoItemProveedor = new Proveedor(
-            idNuevoProveedor,
-            nuevoProveedor,
-            nuevoProveedorTelefono,
-            nuevoProveedorEmail
-          );
+        nuevoItemProveedor = {
+          id:idNuevoProveedor,
+          nombreProveedor:nuevoProveedor,
+          telefonoProveedor:nuevoProveedorTelefono,
+          emailProveedor:nuevoProveedorEmail
+        };
         
         this.configurar.agregarDatosProveedor(nuevoItemProveedor).subscribe({
-          next: (data) => {
+          next: () => {
             this.ingresoProveedor.reset();
-            document.getElementById('cerrarModalNuevoProveedor')?.click();
+            document.getElementById("cerrarModalNuevoProveedor")?.click();
             this.ngOnInit();
+            this.proveedores.reset();
           },
-          error: (error) => {
+          error: (e) => {
             alert(
-              'Error al intentar registrar el proveedor. Por favor intente nuevamente'
+              "Error al intentar registrar el proveedor. Por favor intente nuevamente. "+e
             );
           },
         });
@@ -640,54 +637,54 @@ export class ConfiguracionComponent implements OnInit {
 
   recuperarProveedor(id: number) {
     this.id = id;
-    for (let item of this.listaDeProveedores) {
+    for (const item of this.listaDeProveedores) {
       if (item.id == id) {
-        this.proveedores.get('formProveedor')?.setValue(item.nombreProveedor);
-        this.proveedores.get('formTelefono')?.setValue(item.telefonoProveedor);
-        this.proveedores.get('formEmail')?.setValue(item.emailProveedor);
+        this.proveedores.get("formProveedor")?.setValue(item.nombreProveedor);
+        this.proveedores.get("formTelefono")?.setValue(item.telefonoProveedor);
+        this.proveedores.get("formEmail")?.setValue(item.emailProveedor);
       }
     }
   }
 
   editarProveedor() {
     if (this.proveedores.valid) {
-      let proveedor = this.proveedores.get('formProveedor')?.value;
-      let telefono = this.proveedores.get('formTelefono')?.value;
-      let email = this.proveedores.get('formEmail')?.value;
-
-      let proveedorEditado = new Proveedor(this.id, proveedor, telefono, email);
+      const proveedor = this.proveedores.get("formProveedor")?.value;
+      const telefono = this.proveedores.get("formTelefono")?.value;
+      const email = this.proveedores.get("formEmail")?.value;
+      let proveedorEditado:ProveedorInterface | undefined=undefined;
+      proveedorEditado = {id:this.id, nombreProveedor:proveedor, telefonoProveedor:telefono, emailProveedor:email};
       this.configurar
         .editarDatosProveedor(this.id, proveedorEditado)
         .subscribe({
-          next: (data) => {
-            alert('Datos Actualizados Correctamente');
+          next: () => {
+            alert("Datos Actualizados Correctamente");
             this.ngOnInit();
             this.proveedores.reset();
           },
-          error: (error) => {
+          error: (e) => {
             alert(
-              'Error al intentar actualizar los datos. Por favor intente nuevamente'
+              "Error al intentar actualizar los datos. Por favor intente nuevamente. "+e
             );
           },
         });
       this.id = 0;
     } else {
       this.proveedores.markAllAsTouched();
-      alert('Atencion! uno o mas campos requeridos no han sido completados!!');
+      alert("Atencion! uno o mas campos requeridos no han sido completados!!");
     }
   }
 
   borrarProveedor() {
     if (this.id != 0) {
       this.configurar.borrarProveedor(this.id).subscribe({
-        next: (data) => {
-          alert('Proveedor Eliminado Correctamente');
+        next: () => {
+          alert("Proveedor Eliminado Correctamente");
           this.ngOnInit();
           this.proveedores.reset();
         },
-        error: (error) => {
+        error: (e) => {
           alert(
-            'Error al intentar borrar la seleccion. Por favor intente nuevamente'
+            "Error al intentar borrar la seleccion. Por favor intente nuevamente. "+e
           );
         },
       });

@@ -86,7 +86,7 @@
             formControlName="formMarca"
           >
             <option selected disabled value="">Seleccione Marca</option>
-            <option *ngFor="let item of marca">{{ item }}</option>
+            <option *ngFor="let item of marca">{{item}}</option>
           </select>
           <button
             id="btnmarca"
@@ -169,7 +169,7 @@
           <tbody>
             <tr *ngFor="let item of registro" (click)="obtenerDatosSeleccion(item.id)">
               <td scope="row" id="CodProd">{{item.codigoProducto}}</td>
-              <td scope="row">{{ item.nombreProducto }}</td>
+              <td scope="row">{{ item.nombreProducto}}</td>
               <td scope="row">{{ item.marcaProducto }}</td>
               <td scope="row" id="idCodBar">{{item.barrasProducto}}
               </td>

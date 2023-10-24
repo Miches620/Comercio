@@ -1,83 +1,83 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Login } from 'src/app/entidades/login';
-import { AdminService } from 'src/app/servicios/admin.service';
-import { loginAdmin } from 'src/app/servicios/login.service';
+import { Component, Input, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Login } from "src/app/entidades/login";
+import { AdminService } from "src/app/servicios/admin.service";
+import { loginAdmin } from "src/app/servicios/login.service";
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
+  selector: "app-header",
+  templateUrl: "./header.component.html",
+  styleUrls: ["./header.component.css"],
 })
 export class HeaderComponent implements OnInit {
-  @Input() dataEntrante:any
-  contraseña: any;
-  datosLogin: any;
+  @Input() dataEntrante:any;
+  contraseña: string="";
+  datosLogin: string="";
   formulario: FormGroup;
   login:boolean=false;
   logout:boolean=true;
   navBarSel:number=0;
-    constructor(
+  constructor(
     private loginFormBuilder: FormBuilder, private servicio: loginAdmin, private servicio2: AdminService
   ) {
     this.formulario = this.loginFormBuilder.group({
-      ingresoUsuario: ['', [Validators.required]],
-      ingresoContraseña: ['', [Validators.required, Validators.minLength(4)]],
+      ingresoUsuario: ["", [Validators.required]],
+      ingresoContraseña: ["", [Validators.required, Validators.minLength(4)]],
     });
   }
 
   ngOnInit(): void {
     
-}
+  }
 
-seleccionNavBar(num:number){
-  this.navBarSel=num;
-  this.servicio2.navBar.emit({data:this.navBarSel});
-  this.ngOnInit();
-}
+  seleccionNavBar(num:number){
+    this.navBarSel=num;
+    this.servicio2.navBar.emit({data:this.navBarSel});
+    this.ngOnInit();
+  }
 
-limpiarFormulario() {
-  this.formulario.reset();
-}
+  limpiarFormulario() {
+    this.formulario.reset();
+  }
 
-iniciarSesion(){
-if(this.formulario.valid){
-  let user=this.formulario.get('ingresoUsuario')?.value;
-  let pwd=this.formulario.get('ingresoContraseña')?.value
-  let login = new Login(1,user,pwd);
-  this.servicio.obtenerAccesoAdmin(login).subscribe({ //aca falla porque aun no tengo el backend hecho!!!!!!
-    next:(data) =>{
-      console.log(data);
-     if(data==true){
-       this.dataEntrante=data;
-       this.login=true;
-       this.logout=false;
-       this.servicio.iniciarSesion.emit({data:this.dataEntrante})
-      document.getElementById('cerrarLogin')?.click();
-      this.limpiarFormulario();
+  iniciarSesion(){
+    if(this.formulario.valid){
+      const user=this.formulario.get("ingresoUsuario")?.value;
+      const pwd=this.formulario.get("ingresoContraseña")?.value;
+      const login = new Login(1,user,pwd);
+      this.servicio.obtenerAccesoAdmin(login).subscribe({ //aca falla porque aun no tengo el backend hecho!!!!!!
+        next:(data) =>{
+          console.log(data);
+          if(data==true){
+            this.dataEntrante=data;
+            this.login=true;
+            this.logout=false;
+            this.servicio.iniciarSesion.emit({data:this.dataEntrante});
+            document.getElementById("cerrarLogin")?.click();
+            this.limpiarFormulario();
       
-      }else{
+          }else{
         
-        alert("Los datos ingresados son incorrectos. Por favor intente nuevamente.")
-      }
-    },
-    error:(error) =>{
-      alert("Error al intentar ingresar los datos. Por favor intente nuevamente");
+            alert("Los datos ingresados son incorrectos. Por favor intente nuevamente.");
+          }
+        },
+        error:(e) =>{
+          alert("Error al intentar ingresar los datos. Por favor intente nuevamente. "+e);
+        }
+      });
+    }else{
+      alert(
+        "Error al actualizar los datos. Verifique que los datos ingresados cumplan con las condiciones de ingreso"
+      );
+      this.formulario.markAllAsTouched();
     }
-  })
-}else{
-  alert(
-    'Error al actualizar los datos. Verifique que los datos ingresados cumplan con las condiciones de ingreso'
-  );
-  this.formulario.markAllAsTouched();
-}
-}
+  }
 
-cerrarSesion(){
-  this.dataEntrante=false;
-       this.login=false;
-       this.logout=true;
-       this.servicio.cerrarSesion.emit({data:this.dataEntrante})
-      document.getElementById('cerrarLogout')?.click();
-}
+  cerrarSesion(){
+    this.dataEntrante=false;
+    this.login=false;
+    this.logout=true;
+    this.servicio.cerrarSesion.emit({data:this.dataEntrante});
+    document.getElementById("cerrarLogout")?.click();
+  }
 }

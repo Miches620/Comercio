@@ -1,14 +1,15 @@
-import { HttpClient } from '@angular/common/http';
-import { EventEmitter, Injectable, Output } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Producto } from '../entidades/producto';
-import { Marca } from '../entidades/marca';
-import { Proveedor } from '../entidades/proveedor';
-import { Registro } from '../entidades/registro';
+import { HttpClient } from "@angular/common/http";
+import { EventEmitter, Injectable, Output } from "@angular/core";
+import { Observable } from "rxjs";
+import {Producto as ProductoInterface} from "../entidades/interfaces/producto";
+import {Marca as MarcaInterface} from "../entidades/interfaces/marca";
+import {Proveedor as ProveedorInterface} from "../entidades/interfaces/proveedor";
+import {Registro as RegistroInterface} from "../entidades/interfaces/registro";
+
 
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AdminService {
   @Output() navBar: EventEmitter<any> = new EventEmitter();
@@ -18,73 +19,89 @@ export class AdminService {
 
   //GET:
 
-  obtenerDatosMarcas():Observable<any>{
-    return this.http.get(this.url+'marca');
+  obtenerDatosMarcas():Observable<MarcaInterface[]>{
+    return this.http.get<MarcaInterface[]>(this.url+"marca");
   }
-  obtenerDatosProductos():Observable<any>{
-    return this.http.get(this.url+'producto');
+  obtenerDatosProductos():Observable<ProductoInterface[]>{
+    return this.http.get<ProductoInterface[]>(this.url+"producto");
   }
   
-  obtenerDatosProveedores():Observable<any>{
-    return this.http.get(this.url+'proveedor');
+  obtenerDatosProveedores():Observable<ProveedorInterface[]>{
+    return this.http.get<ProveedorInterface[]>(this.url+"proveedor");
   }
 
-  obtenerRegistro():Observable<any>{
-    return this.http.get(this.url+'registro')
+  obtenerRegistro():Observable<RegistroInterface[]>{
+    return this.http.get<RegistroInterface[]>(this.url+"registro");
   }
-
 
   //POST:
 
-  agregarDatosProducto(producto:Producto):Observable<any>{
-    return this.http.post(this.url+'producto',producto)
+  agregarDatosProducto(producto:ProductoInterface):Observable<ProductoInterface>{
+    return this.http.post<ProductoInterface>(this.url+"producto",producto);
   }
 
-  agregarDatosProveedor(proveedor:Proveedor):Observable<any>{
-    return this.http.post(this.url+'proveedor',proveedor)
+  agregarDatosProveedor(proveedor:ProveedorInterface):Observable<ProveedorInterface>{
+    return this.http.post<ProveedorInterface>(this.url+"proveedor",proveedor);
   }
 
-  agregarDatosMarca(marca:Marca):Observable<any>{
-    return this.http.post(this.url+'marca',marca)
+  agregarDatosMarca(marca:MarcaInterface):Observable<MarcaInterface>{
+    return this.http.post<MarcaInterface>(this.url+"marca",marca);
   }
 
-  agregarRegistro(registro:Registro):Observable<any>{
-    return this.http.post(this.url+'registro',registro)
+  agregarRegistro(registro:RegistroInterface):Observable<RegistroInterface>{
+    return this.http.post<RegistroInterface>(this.url+"registro",registro);
   }
 
   //PUT:
 
-  editarRegistro(id:number,registro:Registro):Observable<any>{
-  return this.http.put(this.url+'registro/'+id,registro);
+  editarRegistro(id:number,registro:RegistroInterface):Observable<RegistroInterface>{
+    return this.http.put<RegistroInterface>(this.url+"registro/"+id,registro);
   }
 
-  editarDatosProveedor(id:number,proveedor:Proveedor):Observable<any>{
-    return this.http.put(this.url+'proveedor/'+id,proveedor);
+  editarMultiplesRegistros(atributo:string,antiguoValor:string,nuevoValor:string){
+    this.http.get<RegistroInterface[]>(
+      this.url+"registro/?"+atributo+antiguoValor).subscribe(registros => 
+    {
+      
+      registros.forEach(registro => {
+        if(atributo=="marcaProducto="){
+          registro.marcaProducto = nuevoValor;
+        }else{
+          registro.nombreProducto = nuevoValor;
+        }
+        this.http.put(this.url+"registro/"+registro.id,registro).subscribe();
+      });
+    });
+    this.url="http://localhost:3000/";
   }
 
-  editarDatosProducto(id:number,producto:Producto):Observable<any>{
-    return this.http.put(this.url+'producto/'+id,producto);
+  editarDatosProveedor(id:number,proveedor:ProveedorInterface):Observable<ProveedorInterface>{
+    return this.http.put<ProveedorInterface>(this.url+"proveedor/"+id,proveedor);
   }
 
-  editarDatosMarca(id:number,marca:Marca):Observable<any>{
-    return this.http.put(this.url+'marca/'+id,marca);
+  editarDatosProducto(id:number,producto:ProductoInterface):Observable<ProductoInterface>{
+    return this.http.put<ProductoInterface>(this.url+"producto/"+id,producto);
+  }
+
+  editarDatosMarca(id:number,marca:MarcaInterface):Observable<MarcaInterface>{
+    return this.http.put<MarcaInterface>(this.url+"marca/"+id,marca);
   }
 
   //DELETE:
 
-  borrarRegistro(id:number):Observable<any>{
-    return this.http.delete(this.url+'registro/'+id);
+  borrarRegistro(id:number):Observable<void>{
+    return this.http.delete<void>(this.url+"registro/"+id);
   }
 
-  borrarProveedor(id:number):Observable<any>{
-    return this.http.delete(this.url+'proveedor/'+id);
+  borrarProveedor(id:number):Observable<void>{
+    return this.http.delete<void>(this.url+"proveedor/"+id);
   }
 
-  borrarProducto(id:number):Observable<any>{
-    return this.http.delete(this.url+'producto/'+id);
+  borrarProducto(id:number):Observable<void>{
+    return this.http.delete<void>(this.url+"producto/"+id);
   }
 
-  borrarMarca(id:number):Observable<any>{
-    return this.http.delete(this.url+'marca/'+id);
+  borrarMarca(id:number):Observable<void>{
+    return this.http.delete<void>(this.url+"marca/"+id);
   }
 }

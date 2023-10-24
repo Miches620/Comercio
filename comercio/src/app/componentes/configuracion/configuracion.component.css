@@ -160,3 +160,11 @@
 .table tbody tr:hover :first-child{
     font-weight:550;
  }
+
+thead th{
+    position:sticky;
+    top: 0;
+    background: #201f1f;
+    z-index: 1;
+    border-bottom: 2px solid;
+} 

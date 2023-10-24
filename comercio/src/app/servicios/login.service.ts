@@ -1,15 +1,15 @@
-import { EventEmitter, Injectable, Output } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Login } from '../entidades/login';
+import { EventEmitter, Injectable, Output } from "@angular/core";
+import { HttpClient, /*HttpClientModule*/} from "@angular/common/http";
+import { Observable } from "rxjs";
+import { Login } from "../entidades/login";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class loginAdmin {
-  @Output() iniciarSesion: EventEmitter<any> = new EventEmitter()
-  @Output() cerrarSesion: EventEmitter<any> = new EventEmitter()
-  url:string="http://localhost:3000/login"
+  @Output() iniciarSesion: EventEmitter<any> = new EventEmitter();
+  @Output() cerrarSesion: EventEmitter<any> = new EventEmitter();
+  url:string="http://localhost:3000/login";
   constructor(private http: HttpClient) {
   }
 

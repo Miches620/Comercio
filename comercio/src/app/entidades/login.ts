@@ -1,12 +1,12 @@
 export class Login {
-    private id:number;
-    private user:String;
-    private pwd:String;
+  private id:number;
+  private user:string;
+  private pwd:string;
 
 
-    constructor(id:number, user:String, pwd:String) {
-        this.id = id;
-        this.user = user;
-        this.pwd = pwd;
-    }
+  constructor(id:number, user:string, pwd:string) {
+    this.id = id;
+    this.user = user;
+    this.pwd = pwd;
+  }
 }
