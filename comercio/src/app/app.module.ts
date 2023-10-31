@@ -9,13 +9,15 @@ import {HttpClientModule} from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { StockComponent } from './componentes/stock/stock.component';
 import { AdminService } from './servicios/admin.service';
+import { FacturacionComponent } from './componentes/facturacion/facturacion.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ConfiguracionComponent,
     HeaderComponent,
-    StockComponent
+    StockComponent,
+    FacturacionComponent
   ],
   imports: [
     BrowserModule,

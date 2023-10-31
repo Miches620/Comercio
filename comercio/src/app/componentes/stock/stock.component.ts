@@ -97,7 +97,6 @@ export class StockComponent implements OnInit {
     if(mes<10){
       this.tempIngreso=+dia+"/0"+mes+"/"+anio;
     }
-    console.log(this.tempIngreso);
   }
 
   convertirFormatoFecha(fecha:string){
@@ -357,7 +356,6 @@ export class StockComponent implements OnInit {
       for (const item of this.listaDeStock) {
         if (
           item.nombreProducto == this.tempProducto &&
-        //item.cantidadProducto == this.tempCantidad &&
         item.proveedorProducto == this.tempProveedor &&
         item.vencimientoProducto == this.tempVencimiento &&
         item.id != this.id

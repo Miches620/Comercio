@@ -334,15 +334,41 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   imprimirCodigoDeProducto(codigo: string) {
+    console.log(codigo.length);
+    let margin:string="0";
+    let impresiones:number=0;
+    switch(codigo.length){
+    case 78:{
+      margin="1";
+      impresiones=45;
+      break;
+    }
+    case 80:{
+      margin=".5";
+      impresiones=30;
+      break;
+    }
+    case 89:{
+      margin="1";
+      impresiones=20;
+      break;
+    }
+    default:{
+      margin=".5";
+      impresiones=40;
+      break;
+    }
+
+    }
     const mywindow = window.open("", "PRINT", "height=600,width=600");
     mywindow?.document.write("<html><head>");
     mywindow?.document.write("<meta charset=\"UTF-8\">");
     mywindow?.document.write(
       "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
     );
-    mywindow?.document.write("<style>img{margin-right:1rem}</style>");
+    mywindow?.document.write("<style>img{margin-right:"+margin+"rem;}body{display:flex; flex-wrap:wrap;}</style>");
     mywindow?.document.write("</head><body>");
-    for (let i = 0; i < 45; i++) {
+    for (let i = 0; i < impresiones; i++) {
       mywindow?.document.write(
         "<img height=100px; width:114px; src=" + codigo + "onload=\"print()\"/>"
       );

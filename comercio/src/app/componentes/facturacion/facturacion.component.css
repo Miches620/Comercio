@@ -1,0 +1,165 @@
+#Facturacion{
+    height: 50%;
+}
+/*HEADER*/
+.header form{
+   margin-top: 2rem;
+   display:flex;
+   background-color: rgb(207, 193, 193);
+   border-top-right-radius:5px ;
+   border-top-left-radius: 5px;
+   justify-content: center;
+   gap:1rem;
+   width: 100%;
+}
+
+.mb-3{
+    margin-bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    flex-direction: column;
+ }
+ #carrito{
+     height: 2.5rem;
+     width: 3rem;
+ }
+ #cantidad{
+    width: 5rem;
+ }
+ #producto{
+    width:50rem;
+ }
+ /*-----*/
+
+/*BODY*/
+.body{
+    display: flex;
+    gap: 1rem;
+}
+.body .detalle{
+    width: 20%;
+}
+
+.body .detalle .item-detalle{
+    display: flex;
+    flex-direction: column;
+}
+
+.body .detalle .cerrar-detalle{
+    display: flex;
+    justify-content: flex-end;
+}
+
+#NopreviewImage, #previewImage{
+    border-radius: 5px;
+    width: 100%;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px; 
+}
+
+  #previewImage{
+    border : 1px solid green;
+  }
+
+#btnLimpiar, #btnBorrar{
+    background-color: #fff;
+    border: none;
+    color: rgb(221, 36, 36);
+}
+
+
+
+.body .resumen{
+    margin-top: .5rem;
+    width: 100%;
+    display: flex;
+    justify-items: center;
+}
+
+#ListaDeCompras{
+width: 100%;
+}
+
+/* Estilos para la tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+/* Estilos para el encabezado de la tabla */
+.table-dark th {
+    position: sticky;
+    top: 0;
+    background: #201f1f;
+    z-index: 1;
+    color: white;
+    padding: 8px;
+}
+
+
+
+/* Estilos para las celdas de la tabla */
+.table td, .table th {
+    border-bottom: 1px solid #dee2e6;
+    padding: 8px;
+    text-align: center;
+}
+
+.table td{
+    vertical-align: middle;
+}
+
+/* Estilos para el sector de total y cobranza */
+/*Falta trabajar la parte responsive de esta seccion debajo de 1400px*/
+
+
+.cobranza{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto auto auto; /* Divide el espacio en tres columnas iguales */
+    grid-gap: .5rem; /* Espacio entre las columnas */
+    align-items: center; /* Alinea verticalmente en el centro */
+    margin-top: .5rem;
+  /*  display: flex;*/
+   /* justify-items: center;*/
+  /*  width: 100%;*/
+   /* justify-content: flex-end;*/
+   /* border-collapse: collapse;*/
+    /*text-align: left;*/
+    border-top: 1px solid rgb(207, 193, 193);
+}
+
+.contenedor-cobranza {
+    width: 100%;
+    display: grid;
+    grid-template-columns:  1fr 1fr 1fr 1fr 1fr 1fr auto auto auto; /* Grilla de 9 columnas */
+    grid-gap: 3rem; /* Espacio entre los elementos */
+    align-items: center; /* Alinea verticalmente en el centro */
+    justify-content: space-evenly;
+  }
+
+#btnCobrar, #total, #lblTotal{
+   margin-top: .5rem;
+   text-align: center;
+}
+
+#total, #lblTotal{
+   vertical-align: middle;
+   padding: 8px;
+}
+
+#lblTotal{
+    grid-column: 7 / auto;
+}
+
+#total{
+    grid-column: 8 / auto;
+}
+
+#btnCobrar{
+    grid-column: 9 / auto;
+}

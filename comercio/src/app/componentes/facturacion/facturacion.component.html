@@ -1,0 +1,117 @@
+<section id="Facturacion">
+    <div class="container mt-3">
+      <h3 class="text-center">Facturacion</h3>
+
+      <div class="header">
+        <form [formGroup]="producto">
+        <div class="mb-3">
+            <label for="productos"><b>Producto</b></label>
+            <input
+            id="producto"
+            class="form-control"
+              list="productos"
+              formControlName="formProducto"
+              (keyup)="aplicarProducto($event)"
+              (input)="detalleDeSeleccion($event)"
+            >
+          </div>
+          <div class="mb-3">
+            <label for="cantidad"><b>Unidades</b></label>
+            <input type="number" class="form-control" aria-label="monto" id="cantidad"  formControlName="formCantidad" (keyup)="aplicarCantidad($event)">
+          </div>
+          <div class="mb-3">
+            <button type="button" class="btn btn-primary" id="carrito" (click)="llenarCarrito()"><i class="fa-solid fa-cart-shopping"></i></button>
+          </div>
+        </form>
+      </div>
+
+      <div class="body">
+        <div *ngIf="mostrarDetalle"class="detalle">
+            <div class="cerrar-detalle">
+                <button
+                  id="btnLimpiar"
+                  type="submit"
+                  class="btn btn-danger"
+                  (click)="cerrarDetalle()"
+                >
+                <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+                <div class="item-detalle">
+                  <label class="form-label"><b>Producto: </b></label>
+                  <label class="form-label"id="formProducto"> {{nombreProducto}}</label>
+                </div>
+                <div class="item-detalle">
+                    <label class="form-label"><b>Marca: </b></label>
+                    <label class="form-label"id="formMarca"> {{marcaProducto}}</label>
+                </div>
+                <div class="item-detalle">
+                    <label class="form-label"><b>Precio: </b></label>
+                    <label class="form-label"id="formPrecio"> {{precioProducto}}</label>
+                </div>
+                <div class="item-detalle">
+                <img id="formImagen1"*ngIf="!this.imagenValida"id="NopreviewImage" [src]="tempImagen" alt="Vista Previa del Producto no disponible" (change)="verificarImagen()">
+                <img id="formImagen2"*ngIf="this.imagenValida"id="previewImage" [src]="tempImagen" alt="Vista Previa del Producto" (change)="verificarImagen()">
+                </div>
+            
+        </div>
+        <div class="resumen">
+            <div  id="ListaDeCompras">
+                <table class="table">
+                  <thead class="table-dark">
+                    <th scope="col">ID</th>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Unidades</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Proveedor</th>
+                    <th scope="col">Cod. Barras</th>
+                    <th scope="col">Subtotal</th>
+                    <th scope="col">TOTAL</th>
+                    <th scope="col"></th>
+                  </thead>
+                  <tbody>    
+                    <tr *ngFor="let item of carritoDeCompras">
+                      <td scope="row">{{item.codigoProducto}}</td>
+                      <td scope="row">{{item.nombreProducto}}</td>
+                      <td scope="row">{{item.unidadesProducto}}</td>
+                      <td scope="row">{{item.marcaProducto}}</td>
+                      <td scope="row">{{item.proveedorProducto}}</td>
+                      <td scope="row">{{item.codigoBarrasProducto}}</td>
+                      <td scope="row">${{item.subtotalProducto}}</td>
+                      <td scope="row">${{item.totalProducto}}</td>
+                      <td scope="row">
+                       <button
+                        id="btnBorrar"
+                        type="submit"
+                        class="btn btn-danger"
+                        (click)="borrarItemCarrito(item.id)"
+                      >
+                      <!---->
+                      <i class="fa-solid fa-xmark"></i>
+                      </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+        </div>  
+    </div>
+
+        <div class="cobranza">
+            <div class="contenedor-cobranza">
+            <span id="lblTotal"><b>TOTAL:</b></span>
+            <span id="total"><b>${{this.total}}</b></span>
+            <button id="btnCobrar" type="submit"class="btn btn-primary" (click)="cobrar()"><i class="fa-solid fa-cash-register"></i></button>
+        </div>
+    </div>
+   
+    
+</div>
+</section>
+
+<!--Modal de Lector de Codigo de Barras-->
+
+<!--Modal de Ingreso Manual de Codigo-->
+
+<!--Modal de Confirmacion de Borrado de Producto-->

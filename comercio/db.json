@@ -342,7 +342,7 @@
     },
     {
       "id": 12,
-      "codigoProducto": "B-03",
+      "codigoProducto": "B-10",
       "nombreProducto": "Algodon Clasico x500Gr",
       "cantidadProducto": 150,
       "marcaProducto": "Doncella",
@@ -352,7 +352,7 @@
       "porcentajeProducto": 9,
       "ingresoProducto": "23/10/23",
       "vencimientoProducto": "29/10/23",
-      "barrasProducto": "7790940003089",
+      "barrasProducto": "7790064001664",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     }
   ]
