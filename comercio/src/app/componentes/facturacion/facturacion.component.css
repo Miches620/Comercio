@@ -26,9 +26,19 @@
  }
  #cantidad{
     width: 5rem;
+    /*appearance: auto;
+    -moz-appearance: textfield;*/
  }
+
+ #cantidad::-webkit-inner-spin-button,
+#cantidad::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
  #producto{
     width:50rem;
+    text-transform:uppercase;
  }
  /*-----*/
 

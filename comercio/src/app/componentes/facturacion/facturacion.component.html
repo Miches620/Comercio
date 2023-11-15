@@ -17,10 +17,11 @@
           </div>
           <div class="mb-3">
             <label for="cantidad"><b>Unidades</b></label>
-            <input type="number" class="form-control" aria-label="monto" id="cantidad"  formControlName="formCantidad" (keyup)="aplicarCantidad($event)">
+            <input type="number" class="form-control" aria-label="monto" id="cantidad"  formControlName="formCantidad" (keyup)="aplicarCantidadOCancelar($event)">
           </div>
           <div class="mb-3">
-            <button type="button" class="btn btn-primary" id="carrito" (click)="llenarCarrito()"><i class="fa-solid fa-cart-shopping"></i></button>
+            <button *ngIf="!habilitarCarrito" type="button" class="btn btn-secondary" id="carritoDeshabilitado" disabled><i class="fa-solid fa-cart-shopping"></i></button>
+            <button *ngIf="habilitarCarrito" type="button" class="btn btn-primary" id="carrito" (click)="llenarCarrito()"><i class="fa-solid fa-cart-shopping"></i></button>
           </div>
         </form>
       </div>

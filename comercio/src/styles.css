@@ -1,7 +1,7 @@
-.ng-valid:not(form).ng-touched {
+.ng-valid:not(form, #buscadorInput).ng-touched {
 	border-left: 5px solid #42A948;}
 
-	.ng-invalid:not(form).ng-touched {
+	.ng-invalid:not(form, #buscadorInput).ng-touched {
 	border-left: 5px solid #a94442;}
 
 	.advertencia{

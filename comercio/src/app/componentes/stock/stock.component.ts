@@ -1,11 +1,14 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Historial } from "src/app/entidades/historial";
 import { Stock } from "src/app/entidades/stock";
 import { AdminService } from "src/app/servicios/admin.service";
 import { StockService } from "src/app/servicios/stock.service";
 import {Registro} from "src/app/entidades/interfaces/registro";
 import {Proveedor} from "src/app/entidades/interfaces/proveedor";
+import {Historial as HistorialInterface} from "src/app/entidades/interfaces/historial";
 import {Stock as StockInterface} from "src/app/entidades/interfaces/stock";
+import { Producto } from "src/app/entidades/interfaces/producto";
 
 @Component({
   selector: "app-stock",
@@ -13,13 +16,16 @@ import {Stock as StockInterface} from "src/app/entidades/interfaces/stock";
   styleUrls: ["./stock.component.css"],
 })
 export class StockComponent implements OnInit {
-  listaDeProductos: Registro[] = [];
+  listaDeProductos: Producto[] = [];
   listaDeProveedores: Proveedor[] = [];
-  listaDeStock:StockInterface[]=[]; 
+  listaDeRegistros: Registro[]=[];
+  listaDeIngresos:HistorialInterface[]=[];
+  listaDeStock:StockInterface[]=[];
+  listaDeMarcas:string[]=[]; 
 
   stock: FormGroup;
   lecturaCodeBar:FormGroup;
-  campoVacio: boolean = true;
+  busqueda: FormGroup;
   id: number = 0;
 
   tempCodigoProducto:string="";
@@ -31,17 +37,24 @@ export class StockComponent implements OnInit {
   
   valorRepetido:number=0;
   obtenerFechaActual:Date=new Date();
+  filtroDeBusqueda:string="";
+  seleccionDeBusqueda:string="codigoInput";
 
   tempProducto:string = "";
   tempCantidad:number = 0;
+  tempCantidadValorViejo:number=0;
   tempProveedor:string =  "" ;
   tempCosto:number = 0;
   tempPorcentaje:number = 0;
   tempVencimiento:string =  "" ;
   tempGanancia:number = 0;
 
+  precioProducto= this.tempCosto+this.tempGanancia;
+
   opcion:boolean=false;
   guardarOpcion:boolean=false;
+  campoVacio: boolean = true;
+  stockOHistorial: boolean=false;
 
   constructor(
     private configurar: AdminService,
@@ -51,6 +64,7 @@ export class StockComponent implements OnInit {
     this.stock = this.servicioStock.group({
       formProducto: ["", Validators.required],
       formCantidad: ["", Validators.required],
+      formMarca: ["",Validators.required],
       formProveedor: ["",Validators.required],
       formCosto: ["",Validators.required],
       formGanancia: ["",Validators.required],
@@ -60,19 +74,88 @@ export class StockComponent implements OnInit {
       formCodeBar:[""],
       formCodeBar2:[""],
     });
+    this.busqueda = this.servicioStock.group({
+      formBarraDeBusqueda:[""]
+    });
   }
 
   ngOnInit(): void {
 
-    this.configurar.obtenerRegistro().subscribe((data) => {
+    this.configurar.obtenerRegistro().subscribe((data) =>{
+      this.listaDeRegistros = data;
+    });
+
+    this.configurar.obtenerDatosProductos().subscribe((data) => {
       this.listaDeProductos=data;
     });
     this.configurar.obtenerDatosProveedores().subscribe((data) => {
       this.listaDeProveedores = data; 
     });
+    this.serviceStock.obtenerHistorial().subscribe((data) => {
+      this.listaDeIngresos = data;
+    });
     this.serviceStock.obtenerStock().subscribe((data) => {
       this.listaDeStock = data;
     });
+  }
+
+  get listaDeItemsFiltrados():HistorialInterface[] {
+    if(this.seleccionDeBusqueda=="codigoInput"){
+      document.getElementById("buscadorInput")?.setAttribute("placeholder","");
+      return this.listaDeIngresos.filter(item => item.codigoProducto.toLowerCase().includes(this.busqueda.get("formBarraDeBusqueda")?.value.toLowerCase()));
+    }else if (this.seleccionDeBusqueda=="productoInput"){
+      document.getElementById("buscadorInput")?.setAttribute("placeholder","");
+      return this.listaDeIngresos.filter(item => item.nombreProducto.toLowerCase().includes(this.busqueda.get("formBarraDeBusqueda")?.value.toLowerCase()));
+    }else if (this.seleccionDeBusqueda=="fechaInput"){
+      document.getElementById("buscadorInput")?.setAttribute("placeholder","AAAA/MM/DD");
+      const fechaFiltro = this.convertirFormatoFecha(this.busqueda.get("formBarraDeBusqueda")?.value);
+      if(fechaFiltro.length>7){
+        return this.listaDeIngresos.filter(item =>  item.ingresoProducto.toLowerCase().includes(this.convertirFormatoFecha(this.busqueda.get("formBarraDeBusqueda")?.value)));
+      }else{
+        return this.listaDeIngresos;
+      }
+    }else{
+      document.getElementById("buscadorInput")?.setAttribute("placeholder","");
+      return this.listaDeIngresos;
+    }
+  }
+
+  get stockFiltrado():StockInterface[] {
+    if(this.seleccionDeBusqueda=="codigoInput"){
+      document.getElementById("buscadorInput")?.setAttribute("placeholder","");
+      return this.listaDeStock.filter(item => item.codigoProducto.toLowerCase().includes(this.busqueda.get("formBarraDeBusqueda")?.value.toLowerCase()));
+    }else if (this.seleccionDeBusqueda=="productoInput"){
+      document.getElementById("buscadorInput")?.setAttribute("placeholder","");
+      return this.listaDeStock.filter(item => item.nombreProducto.toLowerCase().includes(this.busqueda.get("formBarraDeBusqueda")?.value.toLowerCase()));
+    }else{
+      document.getElementById("buscadorInput")?.setAttribute("placeholder","");
+      return this.listaDeStock;
+    }
+  }
+
+  cambiarDatosDeTabla(tabla:number){
+    let botonDeseleccionado:HTMLElement;
+    let botonSeleccionado:HTMLElement;
+    let tituloDeTabla:HTMLElement;
+    this.SeleccionarFiltro("codigoInput");
+    // eslint-disable-next-line prefer-const
+    tituloDeTabla = document.getElementById("tituloDeTabla")!;
+    if(tabla==2){
+      this.stockOHistorial=true;
+      botonDeseleccionado = document.getElementById("btnRegistro")!;
+      botonDeseleccionado.style.color="#fff";
+      botonSeleccionado = document.getElementById("btnStock")!;
+      botonSeleccionado.style.color="#0d6efd";
+      tituloDeTabla.textContent="Stock";
+      this.resetearModal();
+    }else{
+      this.stockOHistorial=false;
+      botonDeseleccionado = document.getElementById("btnStock")!;
+      botonDeseleccionado.style.color="#fff";
+      botonSeleccionado = document.getElementById("btnRegistro")!;
+      botonSeleccionado.style.color="#0d6efd";
+      tituloDeTabla.textContent="Historial";
+    }
   }
 
   reiniciarVariables(){
@@ -133,6 +216,25 @@ export class StockComponent implements OnInit {
     }
   }
 
+  SeleccionarFiltro(label:string){
+    this.busqueda.get("formBarraDeBusqueda")?.setValue("");
+    const lblCodigo = document?.getElementById("lblCodigo");
+    const lblProducto = document?.getElementById("lblProducto");
+    const lblFecha = document?.getElementById("lblFecha");
+    const lblsRadios:HTMLElement[] = [lblFecha!, lblProducto!, lblCodigo!];
+    for(const item of lblsRadios){
+      if(item.getAttribute("for")===label){
+        this.ngOnInit();
+        item.style.textDecoration="underline";
+        this.seleccionDeBusqueda=item.getAttribute("for")!;
+      }else{
+        item.style.textDecoration="none";
+         
+      }
+    }
+
+  }
+
   iniciarScanner(){
     const myModal = document.getElementById("codeBar2");
     const myInput = document.getElementById("hiddenCodeBar2");
@@ -149,6 +251,10 @@ export class StockComponent implements OnInit {
     }
   }
 
+  cerrarModal(modal:string){
+    document.getElementById(modal)?.click();
+  }
+
   recuperarRegistro(origen:number){
     let codigo="";
     if(origen==1){
@@ -158,15 +264,15 @@ export class StockComponent implements OnInit {
     } 
     if(codigo!="" || codigo!=null){
       if(origen==1){
-        document.getElementById("btnCerrarBarCode2")?.click();
-        this.lecturaCodeBar.get("formCodeBar")?.setValue("");
+        this.cerrarModal("btnCerrarBarCode2");
+        this.lecturaCodeBar.reset();
       }else{
-        document.getElementById("btnCerrarBarCode3")?.click();
-        this.lecturaCodeBar.get("formCodeBar2")?.setValue("");
+        this.cerrarModal("btnCerrarBarCode3");
+        this.lecturaCodeBar.reset();
        
       }
       
-      for(const item of this.listaDeProductos){
+      for(const item of this.listaDeRegistros){
         if(item.barrasProducto==codigo || item.codigoProducto==codigo){
           this.stock.get("formProducto")?.setValue(item.nombreProducto);
           this.tempImagen=item.imagenProducto;
@@ -189,33 +295,64 @@ export class StockComponent implements OnInit {
     }
   }
 
+  recuperarIngresosFormulario(){
+    this.tempProducto = this.stock.get("formProducto")?.value;
+    this.tempCantidad = this.stock.get("formCantidad")?.value;
+    this.tempMarca=this.stock.get("formMarca")?.value;
+    this.tempProveedor = this.stock.get("formProveedor")?.value;
+    this.tempCosto = this.stock.get("formCosto")?.value;
+    this.tempPorcentaje = this.stock.get("formGanancia")?.value;
+    this.tempVencimiento = this.convertirFormatoFecha(this.stock.get("formVencimiento")?.value);
+    if(this.tempVencimiento=="//" || this.tempVencimiento=="//--"){
+      this.tempVencimiento="";
+    }
+    this.tempGanancia = ((this.tempCosto/100)*this.tempPorcentaje);
+    this.tempGanancia = Math.round(this.tempGanancia * 100) / 100;
+  }
+
+
+  verificarMarcas(){
+    this.listaDeMarcas=[];
+    this.tempProducto = this.stock.get("formProducto")?.value;
+    
+    for(const item of this.listaDeRegistros){
+      if(item.nombreProducto==this.tempProducto){
+        this.listaDeMarcas.push(item.marcaProducto);
+      }
+    }
+    document.getElementById("cantidadProducto")?.focus();
+    if(this.listaDeMarcas.length<2){
+      const unicaMarca = this.listaDeMarcas;
+      this.stock.get("formMarca")?.setValue(unicaMarca);
+    }  
+  }
+  //dentro de agregarStock verificar si es preferible usar item.vencimientoProducto o item.ingresoProducto para encontrar repetidos
+  //considero que es mejor que el repetido suceda si el item.ingresoProducto corresponde con el mismo dia donde se esta haciendo
   agregarStock(){
 
     this.recuperarFechaActual();
     if(this.stock.valid){
-      this.tempProducto = this.stock.get("formProducto")?.value;
-      this.tempCantidad = this.stock.get("formCantidad")?.value;
-      this.tempProveedor = this.stock.get("formProveedor")?.value;
-      this.tempCosto = this.stock.get("formCosto")?.value;
-      this.tempPorcentaje = this.stock.get("formGanancia")?.value;
-      this.tempVencimiento = this.convertirFormatoFecha(this.stock.get("formVencimiento")?.value);
-      this.tempGanancia = ((this.tempCosto/100)*this.tempPorcentaje);
-      this.tempGanancia = Math.round(this.tempGanancia * 100) / 100;
+      this.recuperarIngresosFormulario();
 
       //verifica que si el ingreso fue por QR, el mismo exista dentro de la lista de productos registrados en CONFIGURAR
       if(this.tempCodigoProducto==null || this.tempCodigoProducto==""){
-        for(const item of this.listaDeProductos){
-          if(item.nombreProducto == this.tempProducto){
+        for(const item of this.listaDeRegistros){
+          if(item.nombreProducto == this.tempProducto && item.marcaProducto == this.tempMarca){
             this.tempImagen=item.imagenProducto;
-            this.tempMarca=item.marcaProducto;
             this.tempBarras=item.barrasProducto;
             this.tempCodigoProducto=item.codigoProducto;
+          }
+          else{
+            alert("Error al intentar verificar la existencia del producto. Verifique que el mismo exista dentro del catalogo de productos y vuelva intentar.");
           }
         }
         this.verificarImagen();
       }
+      else{
+        alert("Error de lectura de codigo. Por favor verifique el ingreso y vuelva a intentar.");
+      }
       if(this.id==0){
-        for(const item of this.listaDeStock){
+        for(const item of this.listaDeIngresos){
           if(item.nombreProducto==this.tempProducto && item.proveedorProducto==this.tempProveedor && item.vencimientoProducto==this.tempVencimiento){
             this.id=item.id;
           }
@@ -224,37 +361,18 @@ export class StockComponent implements OnInit {
       this.valorRepetido=0;
       //si Existe como producto ya registrado, verifica que en la lista de STOCK de esta pantalla no exista cargado exactamente el mismo valor
    
-      for(const item of this.listaDeStock){
+      for(const item of this.listaDeIngresos){
         if(item.codigoProducto==this.tempCodigoProducto && item.proveedorProducto==this.tempProveedor && item.vencimientoProducto==this.tempVencimiento){
           this.valorRepetido=1;
         }
       }
-      //si el valor ya existiera dentro de la lista de STOCK, el boton de agregar tendra un comportamiento extra. a saber:
+      //si el valor ya existiera dentro de la lista de STOCK, el boton de agregar tendra un comportamiento extra:
   
     
       //ingreso nuevo
       if(this.valorRepetido==0){
         this.id=0;
-        const ingresoTempStock = new Stock(this.id,this.tempCodigoProducto,this.tempProducto,this.tempCantidad,this.tempMarca,this.tempProveedor,this.tempCosto,this.tempGanancia,this.tempPorcentaje,this.tempIngreso,this.tempVencimiento,this.tempBarras,this.tempImagen);
-        this.serviceStock.agregarStock(ingresoTempStock).subscribe({
-          next: () =>{
-            this.stock.reset();
-            this.ngOnInit();
-            this.reiniciarVariables();
-          },
-          error: (e) =>{
-            alert("Error al intentar agregar producto al Stock. Por favor intente nuevamente." + e);
-          },
-        });
-      }else{
-        //Actualizacion de Stock Existente
-        for(const item of this.listaDeStock){
-          if(item.id==this.id){
-            this.tempCantidad+=item.cantidadProducto;
-            this.tempIngreso=item.ingresoProducto;
-          }
-        }
-        const seleccionEditada = new Stock(
+        const ingresoTempHistorial = new Historial(
           this.id,
           this.tempCodigoProducto,
           this.tempProducto,
@@ -267,32 +385,118 @@ export class StockComponent implements OnInit {
           this.tempIngreso,
           this.tempVencimiento,
           this.tempBarras,
-          this.tempImagen);
-        this.serviceStock.modificarStock(this.id, seleccionEditada).subscribe({
-          next: () => {
-            alert("Stock Actualizado Correctamente");
+          this.tempImagen
+        );
+       
+        this.serviceStock.agregarHistorial(ingresoTempHistorial).subscribe({
+          next: () =>{
+            this.nuevoIngresoStock();           
+            this.stock.reset();
             this.ngOnInit();
-            this.resetearModal();
+            this.reiniciarVariables();
           },
-          error: (e) => {
-            alert(
-              "Error al intentar actualizar el stock. Por favor intente nuevamente. "+e
-            );
+          error: (e) =>{
+            alert("Error al intentar agregar producto al Stock. Por favor intente nuevamente." + e);
           },
         });
+      }else{
+        //Actualizacion de Stock Existente
+        for(const item of this.listaDeIngresos){
+          if(item.id==this.id){
+            this.tempCantidad+=item.cantidadProducto;
+            this.tempIngreso=item.ingresoProducto;
+          }
+        }
+        this.editarRegistro();
+        this.nuevoIngresoStock();
       }
     }else{
       this.stock.markAllAsTouched();
+      alert("Atencion! uno o mas campos requeridos no han sido completados!!");
     }
 
   }
+  nuevoIngresoStock(){
+    const registradoEnStock = this.listaDeStock.find(producto => producto.codigoProducto=== this.tempCodigoProducto);
+    
+    if(!registradoEnStock){
+      const ingresoTempStock = new Stock(
+        this.id,
+        this.tempCodigoProducto,
+        this.tempProducto,
+        this.tempCantidad,
+        this.precioProducto
+      );
+  
+      this.serviceStock.agregarStock(ingresoTempStock).subscribe({
+        next: () =>{}
+      });
+    }else{
+      for(const item of this.listaDeStock){
+        if(item.codigoProducto==this.tempCodigoProducto){
+          this.id=item.id;
+          this.tempCantidad+=item.cantidadProducto;
 
+          const ingresoTempStock = new Stock(
+            this.id,
+            this.tempCodigoProducto,
+            this.tempProducto,
+            this.tempCantidad,
+            this.precioProducto
+          );
+
+          this.serviceStock.modificarStock(this.id,ingresoTempStock).subscribe({
+            next: () =>{}
+          });
+        }
+      }
+    }
+    
+
+  }
+
+
+  edicionColateralDeStock(){
+
+    let stockProductos:number=0;
+    
+    //Verifica que valor dentro del input de cantidad era el mas grande
+    if(this.tempCantidadValorViejo>this.tempCantidad){ 
+      stockProductos= (this.tempCantidadValorViejo - this.tempCantidad) *-1;
+    }else{
+      stockProductos= this.tempCantidad - this.tempCantidadValorViejo;
+    }
+    //en base a eso, stockProductos tomara un valor negativo o uno positivo
+
+    for(const item of this.listaDeStock){
+      if(item.codigoProducto == this.tempCodigoProducto ){
+        this.id=item.id;
+        this.tempCodigoProducto=item.codigoProducto;
+        this.tempProducto=item.nombreProducto;
+        this.precioProducto=item.precioProducto;
+        this.tempCantidad=item.cantidadProducto + stockProductos;
+      }
+    }
+
+    const ingresoTempStock = new Stock(
+      this.id,
+      this.tempCodigoProducto,
+      this.tempProducto,
+      this.tempCantidad,
+      this.precioProducto
+    );
+    this.serviceStock.modificarStock(this.id, ingresoTempStock).subscribe({
+      next: () =>{}
+    });
+  
+  }
   obtenerDatosSeleccion(id: number) {
     this.id = id;
-    for (const item of this.listaDeStock) {
+    for (const item of this.listaDeIngresos) {
       if (item.id == id) {
         this.stock.get("formProducto")?.setValue(item.nombreProducto);
         this.stock.get("formCantidad")?.setValue(item.cantidadProducto);
+        this.stock.get("formMarca")?.setValue(item.marcaProducto);
         this.stock.get("formProveedor")?.setValue(item.proveedorProducto);
         this.stock.get("formCosto")?.setValue(item.costoProducto);
         this.stock.get("formGanancia")?.setValue(item.porcentajeProducto);
@@ -301,9 +505,9 @@ export class StockComponent implements OnInit {
         }
         this.tempIngreso = item.ingresoProducto;
         this.tempCodigoProducto = item.codigoProducto;
-        this.tempMarca = item.marcaProducto;
         this.tempBarras = item.barrasProducto;
         this.tempImagen = item.imagenProducto;
+        this.tempCantidadValorViejo=this.stock.get("formCantidad")?.value;
         this.verificarImagen();
       }
     }
@@ -323,7 +527,7 @@ export class StockComponent implements OnInit {
 
   borrarStockSeleccionado() {
     if (this.stock.valid && this.id != 0) {
-      this.serviceStock.borrarStock(this.id).subscribe({
+      this.serviceStock.borrarHistorial(this.id).subscribe({
         next: () => {
           alert("Seleccion eliminada correctamente");
           this.ngOnInit();
@@ -333,7 +537,7 @@ export class StockComponent implements OnInit {
           alert("Error al borrar la seleccion. Por favor intente nuevamente. "+e);
         },
       });
-      document.getElementById("cerrarModalEliminar")?.click();
+      this.cerrarModal("cerrarModalEliminar");
     }
     this.id = 0;
   }
@@ -341,19 +545,9 @@ export class StockComponent implements OnInit {
   editarRegistroSeleccionado() {
     if (this.stock.valid) {
       let valorRepetido: boolean = false;
-      this.tempProducto = this.stock.get("formProducto")?.value;
-      this.tempCantidad = this.stock.get("formCantidad")?.value;
-      this.tempProveedor = this.stock.get("formProveedor")?.value;
-      this.tempCosto = this.stock.get("formCosto")?.value;
-      this.tempPorcentaje = this.stock.get("formGanancia")?.value;
-      this.tempVencimiento = this.convertirFormatoFecha(this.stock.get("formVencimiento")?.value);
-      if(this.tempVencimiento=="//" || this.tempVencimiento=="//--"){
-        this.tempVencimiento="";
-      }
-      this.tempGanancia = (((this.tempCosto/100)*this.tempPorcentaje));
-      this.tempGanancia = Math.round(this.tempGanancia * 100) / 100;
+      this.recuperarIngresosFormulario();
 
-      for (const item of this.listaDeStock) {
+      for (const item of this.listaDeIngresos) {
         if (
           item.nombreProducto == this.tempProducto &&
         item.proveedorProducto == this.tempProveedor &&
@@ -363,38 +557,12 @@ export class StockComponent implements OnInit {
         ) {
           valorRepetido = true;
           alert(
-            "Atencion: Esta duplicando un registro ya existente. Por favor verifique y vuelva a intentar."
+            "Atencion: Esta intentando duplicar un registro ya existente. Por favor verifique y vuelva a intentar."
           );
         }
       }
       if (valorRepetido == false) {
-        const seleccionEditada = new Stock(
-          this.id,
-          this.tempCodigoProducto,
-          this.tempProducto,
-          this.tempCantidad,
-          this.tempMarca,
-          this.tempProveedor,
-          this.tempCosto,
-          this.tempGanancia,
-          this.tempPorcentaje,
-          this.tempIngreso,
-          this.tempVencimiento,
-          this.tempBarras,
-          this.tempImagen);
-
-        this.serviceStock.modificarStock(this.id, seleccionEditada).subscribe({
-          next: () => {
-            alert("Registro Actualizado Correctamente");
-            this.ngOnInit();
-            this.resetearModal();
-          },
-          error: (e) => {
-            alert(
-              "Error al intentar actualizar el registro. Por favor intente nuevamente. "+e
-            );
-          },
-        });
+        this.editarRegistro();
       }
     } else {
       this.stock.markAllAsTouched();
@@ -402,4 +570,36 @@ export class StockComponent implements OnInit {
     }
   }
 
+  editarRegistro(){
+    const seleccionEditada = new Historial(
+      this.id,
+      this.tempCodigoProducto,
+      this.tempProducto,
+      this.tempCantidad,
+      this.tempMarca,
+      this.tempProveedor,
+      this.tempCosto,
+      this.tempGanancia,
+      this.tempPorcentaje,
+      this.tempIngreso,
+      this.tempVencimiento,
+      this.tempBarras,
+      this.tempImagen);
+
+    this.serviceStock.modificarHistorial(this.id, seleccionEditada).subscribe({
+      next: () => {
+        alert("Registro Actualizado Correctamente");
+        this.edicionColateralDeStock();
+        this.ngOnInit();
+        this.resetearModal();
+      },
+      error: (e) => {
+        alert(
+          "Error al intentar actualizar el registro. Por favor intente nuevamente. "+e
+        );
+      },
+    });
+    
+    
+  }
 }

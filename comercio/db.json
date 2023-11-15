@@ -13,7 +13,7 @@
     },
     {
       "id": 2,
-      "nombreMarca": "Estrellas"
+      "nombreMarca": "Estrella"
     }
   ],
   "producto": [
@@ -149,7 +149,7 @@
       "id": 6,
       "nombreProducto": "Paños de Algodon x40u",
       "codigoProducto": "B-06",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064002104",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
@@ -157,7 +157,7 @@
       "id": 7,
       "nombreProducto": "Algodon Clasico x75Gr",
       "codigoProducto": "B-07",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064000261",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
@@ -165,7 +165,7 @@
       "id": 8,
       "nombreProducto": "Algodon Clasico x140Gr",
       "codigoProducto": "B-08",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064000124",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
@@ -173,7 +173,7 @@
       "id": 9,
       "nombreProducto": "Algodon Clasico x300Gr",
       "codigoProducto": "B-09",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064000131",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
@@ -181,7 +181,7 @@
       "id": 10,
       "nombreProducto": "Algodon Clasico x500Gr",
       "codigoProducto": "B-10",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064001664",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
@@ -189,7 +189,7 @@
       "id": 11,
       "nombreProducto": "Algodon Super x100Gr",
       "codigoProducto": "B-11",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064001701",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
@@ -197,7 +197,7 @@
       "id": 12,
       "nombreProducto": "Algodon Super x200Gr",
       "codigoProducto": "B-12",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064001718",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
@@ -205,7 +205,7 @@
       "id": 13,
       "nombreProducto": "Algodon Super x400Gr",
       "codigoProducto": "B-13",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064001725",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
@@ -213,7 +213,7 @@
       "id": 14,
       "nombreProducto": "Algodon Recortado Baby x100Gr",
       "codigoProducto": "B-14",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064001954",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
@@ -221,7 +221,7 @@
       "id": 15,
       "nombreProducto": "Discos de Algodon x80u",
       "codigoProducto": "B-15",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064001909",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     },
@@ -229,17 +229,17 @@
       "id": 16,
       "nombreProducto": "Algodon Premium x75Gr",
       "codigoProducto": "B-16",
-      "marcaProducto": "Estrellas",
+      "marcaProducto": "Estrella",
       "barrasProducto": "7790064000230",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
     }
   ],
-  "stock": [
+  "historial": [
     {
       "id": 3,
       "codigoProducto": "B-10",
       "nombreProducto": "Algodon Clasico x500Gr",
-      "cantidadProducto": 30,
+      "cantidadProducto": 10,
       "marcaProducto": "Estrella",
       "proveedorProducto": "Johnson&Johnson",
       "costoProducto": 1450,
@@ -254,7 +254,7 @@
       "id": 4,
       "codigoProducto": "B-01",
       "nombreProducto": "Algodon x70Gr",
-      "cantidadProducto": 27,
+      "cantidadProducto": 15,
       "marcaProducto": "Doncella",
       "proveedorProducto": "Pepito SRL",
       "costoProducto": 450,
@@ -269,7 +269,7 @@
       "id": 7,
       "codigoProducto": "B-12",
       "nombreProducto": "Algodon Super x200Gr",
-      "cantidadProducto": 21,
+      "cantidadProducto": 10,
       "marcaProducto": "Estrella",
       "proveedorProducto": "Johnson&Johnson",
       "costoProducto": 3532,
@@ -284,7 +284,7 @@
       "id": 8,
       "codigoProducto": "B-10",
       "nombreProducto": "Algodon Clasico x500Gr",
-      "cantidadProducto": 35,
+      "cantidadProducto": 10,
       "marcaProducto": "Estrella",
       "proveedorProducto": "Pepito SRL",
       "costoProducto": 1300,
@@ -299,7 +299,7 @@
       "id": 9,
       "codigoProducto": "B-10",
       "nombreProducto": "Algodon Clasico x500Gr",
-      "cantidadProducto": 43,
+      "cantidadProducto": 10,
       "marcaProducto": "Estrella",
       "proveedorProducto": "Johnson&Johnson",
       "costoProducto": 1900,
@@ -314,7 +314,7 @@
       "id": 10,
       "codigoProducto": "B-04",
       "nombreProducto": "Algodon x500Gr",
-      "cantidadProducto": 28,
+      "cantidadProducto": 15,
       "marcaProducto": "Doncella",
       "proveedorProducto": "Pepito SRL",
       "costoProducto": 1200,
@@ -344,7 +344,7 @@
       "id": 12,
       "codigoProducto": "B-10",
       "nombreProducto": "Algodon Clasico x500Gr",
-      "cantidadProducto": 150,
+      "cantidadProducto": 10,
       "marcaProducto": "Doncella",
       "proveedorProducto": "Pepito SRL",
       "costoProducto": 690,
@@ -354,6 +354,132 @@
       "vencimientoProducto": "29/10/23",
       "barrasProducto": "7790064001664",
       "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 13,
+      "codigoProducto": "B-06",
+      "nombreProducto": "Paños de Algodon x40u",
+      "cantidadProducto": 13,
+      "marcaProducto": "Estrella",
+      "proveedorProducto": "Pepito SRL",
+      "costoProducto": 100,
+      "gananciaProducto": 10,
+      "porcentajeProducto": 10,
+      "ingresoProducto": "14/11/23",
+      "vencimientoProducto": "14/11/23",
+      "barrasProducto": "7790064002104",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 14,
+      "codigoProducto": "B-12",
+      "nombreProducto": "Algodon Super x200Gr",
+      "cantidadProducto": 10,
+      "marcaProducto": "Estrella",
+      "proveedorProducto": "Johnson&Johnson",
+      "costoProducto": 200,
+      "gananciaProducto": 20,
+      "porcentajeProducto": 10,
+      "ingresoProducto": "14/11/23",
+      "vencimientoProducto": "14/11/23",
+      "barrasProducto": "7790064001718",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 15,
+      "codigoProducto": "B-06",
+      "nombreProducto": "Paños de Algodon x40u",
+      "cantidadProducto": 7,
+      "marcaProducto": "Estrella",
+      "proveedorProducto": "Jorgito",
+      "costoProducto": 300,
+      "gananciaProducto": 30,
+      "porcentajeProducto": 10,
+      "ingresoProducto": "14/11/23",
+      "vencimientoProducto": "15/11/23",
+      "barrasProducto": "7790064002104",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 16,
+      "codigoProducto": "B-05",
+      "nombreProducto": "Algodon Super x200Gr",
+      "cantidadProducto": 25,
+      "marcaProducto": "Doncella",
+      "proveedorProducto": "Pepito SRL",
+      "costoProducto": 500,
+      "gananciaProducto": 25,
+      "porcentajeProducto": 5,
+      "ingresoProducto": "14/11/23",
+      "vencimientoProducto": "12/11/23",
+      "barrasProducto": "7790064001718",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    },
+    {
+      "id": 17,
+      "codigoProducto": "B-05",
+      "nombreProducto": "Algodon Super x200Gr",
+      "cantidadProducto": 10,
+      "marcaProducto": "Doncella",
+      "proveedorProducto": "Jorgito",
+      "costoProducto": 250,
+      "gananciaProducto": 50,
+      "porcentajeProducto": 20,
+      "ingresoProducto": "14/11/23",
+      "vencimientoProducto": "20/12/23",
+      "barrasProducto": "7790940000040",
+      "imagenProducto": "/assets/imagenes/sinImagen.png"
+    }
+  ],
+  "stock": [
+    {
+      "id": 1,
+      "codigoProducto": "B-10",
+      "nombreProducto": "Algodon Clasico x500Gr",
+      "cantidadProducto": 40,
+      "precioProducto": 752.1
+    },
+    {
+      "id": 2,
+      "codigoProducto": "B-01",
+      "nombreProducto": "Algodon x70Gr",
+      "cantidadProducto": 15,
+      "precioProducto": 472.5
+    },
+    {
+      "id": 3,
+      "codigoProducto": "B-03",
+      "nombreProducto": "Algodon x300Gr",
+      "cantidadProducto": 15,
+      "precioProducto": 618
+    },
+    {
+      "id": 4,
+      "codigoProducto": "B-04",
+      "nombreProducto": "Algodon x500Gr",
+      "cantidadProducto": 15,
+      "precioProducto": 1236
+    },
+    {
+      "id": 5,
+      "codigoProducto": "B-12",
+      "nombreProducto": "Algodon Super x200Gr",
+      "cantidadProducto": 20,
+      "precioProducto": 525
+    },
+    {
+      "id": 6,
+      "codigoProducto": "B-06",
+      "nombreProducto": "Paños de Algodon x40u",
+      "cantidadProducto": 20,
+      "precioProducto": 330
+    },
+    {
+      "id": 7,
+      "codigoProducto": "B-05",
+      "nombreProducto": "Algodon Super x200Gr",
+      "cantidadProducto": 35,
+      "precioProducto": 300
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { StockService } from "src/app/servicios/stock.service";
-import {Stock as StockInterface} from "src/app/entidades/interfaces/stock";
+import {Historial as HistorialInterface} from "src/app/entidades/interfaces/historial";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {Carrito as CarritoInterface} from "src/app/entidades/interfaces/carrito";
 //import { jsPDF } from "jspdf";
@@ -14,6 +14,7 @@ import {Carrito as CarritoInterface} from "src/app/entidades/interfaces/carrito"
 export class FacturacionComponent implements OnInit {
 
   producto: FormGroup;
+  CantidadDeProducto:number=0;
 
   @ViewChild("cantidad")
     cantidad!: ElementRef;
@@ -21,17 +22,30 @@ export class FacturacionComponent implements OnInit {
   listadoDeCompra:boolean=true;
   imagenValida:boolean=false;
   mostrarDetalle:boolean=false;
+  habilitarCarrito:boolean=false;
 
-  listaDeStock:StockInterface[]=[];
+  listaDeIngresos:HistorialInterface[]=[];
   carritoDeCompras:CarritoInterface[]=[];
 
+  /*Variables de visor de Detalle*/
   itemSeleccionado:string="";
   nombreProducto:string="";
   marcaProducto:string="";
   precioProducto:string="";
   idActual:number=0;
+
+  /*Variables temporales de nuevo item para el carrito*/
   contadorIds:number=0;
   total:number=0;
+
+  tempCodigoProducto:string="";
+  tempNombreProducto:string="";
+  tempUnidades:number=0;
+  tempMarca:string="";
+  tempProveedor:string="";
+  tempCodigoBarras:string="";
+  tempSubtotal:number=0;
+  tempTotal:number=0;
 
   obtenerFechaActual:Date=new Date();
   fechaActual:string="";
@@ -46,6 +60,8 @@ export class FacturacionComponent implements OnInit {
       formProducto: ["", Validators.required],
       formCantidad: ["", Validators.required],
     });
+
+    this.CantidadDeProducto = this.producto.get("Cantidad")?.value;
   }
 
   ngOnInit(): void {
@@ -55,9 +71,12 @@ export class FacturacionComponent implements OnInit {
 
     document.getElementById("producto")?.focus();
 
-    this.serviceStock.obtenerStock().subscribe((data) => {
-      this.listaDeStock = data;
+    this.serviceStock.obtenerHistorial().subscribe((data) => {
+      this.listaDeIngresos = data;
     });
+
+    //console.log(this.listaDeIngresos);
+
   }
   
   verificarImagen(){
@@ -76,30 +95,74 @@ export class FacturacionComponent implements OnInit {
     this.ngOnInit();
   }
 
-  llenarCarrito(){
-    if(this.producto.valid){
-      for(const item of this.listaDeStock){
-        if(item.id==this.idActual){
-          const tempCodigoProducto=item.codigoProducto;
-          const tempNombreProducto=item.nombreProducto;
-          const tempUnidades= this.producto.get("formCantidad")?.value;
-          const tempMarca = item.marcaProducto;
-          const tempProveedor = item.proveedorProducto;
-          const tempCodigoBarras = item.barrasProducto;
-          const tempSubtotal = (item.costoProducto+item.gananciaProducto);
-          const tempTotal = ((item.costoProducto+item.gananciaProducto)*tempUnidades);
-          this.total+=tempTotal;
+  agregarAlCarrito(){
+    const nuevoProducto = {
+      id:this.contadorIds,
+      codigoProducto:this.tempCodigoProducto,
+      nombreProducto:this.tempNombreProducto,
+      unidadesProducto:this.tempUnidades,
+      marcaProducto:this.tempMarca,
+      proveedorProducto:this.tempProveedor,
+      codigoBarrasProducto:this.tempCodigoBarras,
+      subtotalProducto:this.tempSubtotal,
+      totalProducto:this.tempTotal
+    };
+          
+    this.carritoDeCompras.push(nuevoProducto);
+    this.contadorIds++;
+    this.cerrarDetalle();
+    this.ngOnInit();
+    this.habilitarCarrito=false;         
+  }
 
-          const nuevoProducto = {id:this.contadorIds,codigoProducto:tempCodigoProducto,nombreProducto:tempNombreProducto,unidadesProducto:tempUnidades,marcaProducto:tempMarca,proveedorProducto:tempProveedor,codigoBarrasProducto:tempCodigoBarras,subtotalProducto:tempSubtotal,totalProducto:tempTotal};
-        
-          this.carritoDeCompras.push(nuevoProducto);
-          this.contadorIds++;
-          this.cerrarDetalle();
-          this.ngOnInit();         
+  editarCarrito(){
+    for(const item of this.carritoDeCompras){
+      if(item.codigoProducto ==this.tempCodigoProducto){
+        item.unidadesProducto+=this.producto.get("formCantidad")?.value;
+        item.totalProducto=(item.subtotalProducto*item.unidadesProducto);
+      }
+    }
+    this.cerrarDetalle();
+    this.ngOnInit();
+    this.habilitarCarrito=false; 
+  }
+
+  llenarCarrito(){
+    if(this.producto.valid && this.CantidadDeProducto!=undefined && this.CantidadDeProducto>0){
+      this.habilitarCarrito=true;
+
+      for(const item of this.listaDeIngresos){
+        if(item.id==this.idActual){
+          this.tempCodigoProducto=item.codigoProducto;
+          this.tempNombreProducto=item.nombreProducto;
+          this.tempUnidades= this.producto.get("formCantidad")?.value;
+          this.tempMarca = item.marcaProducto;
+          this.tempProveedor = item.proveedorProducto;
+          this.tempCodigoBarras = item.barrasProducto;
+          this.tempSubtotal = (item.costoProducto+item.gananciaProducto);
+          this.tempTotal = ((item.costoProducto+item.gananciaProducto)*this.tempUnidades);
+          this.total+=this.tempTotal;
         }
       }
+
+      const productoEnElCarrito = this.carritoDeCompras.find(producto => producto.codigoProducto=== this.tempCodigoProducto);
+      if(productoEnElCarrito){
+        this.editarCarrito();
+      }else{
+        this.agregarAlCarrito();
+      }
+      
     }else{
-      alert("Por favor complete los campos antes de avanzar.");
+      this.habilitarCarrito=false;
+      if(isNaN(this.CantidadDeProducto)==true || this.CantidadDeProducto<1){
+        if(this.CantidadDeProducto==null){
+          this.producto.get("formCantidad")?.reset();
+        }
+        alert("Error! Ingrese un valor correcto.");
+      }
+      this.producto.get("formCantidad")?.reset();
+      document.getElementById("cantidad")?.focus();
+      this.CantidadDeProducto=0;
     }
   }
 
@@ -117,11 +180,15 @@ export class FacturacionComponent implements OnInit {
   detalleDeSeleccion(event : Event) {
     const inputElement = event.target as HTMLInputElement;
     this.itemSeleccionado = inputElement.value;
-    
-    const productoSeleccionado = this.listaDeStock.find(producto => producto.codigoProducto === this.itemSeleccionado);
+    let seleccionEnMayuscula:string="";
 
+    if(this.itemSeleccionado.length>3){
+      seleccionEnMayuscula = this.itemSeleccionado.toUpperCase();
+    }
+    
+    const productoSeleccionado = this.listaDeIngresos.find(producto => producto.codigoProducto=== seleccionEnMayuscula);
+    
     if (productoSeleccionado) {
-      
       const { id,nombreProducto, marcaProducto, costoProducto, gananciaProducto } = productoSeleccionado;
       this.nombreProducto=nombreProducto;
       this.marcaProducto=marcaProducto;
@@ -131,11 +198,19 @@ export class FacturacionComponent implements OnInit {
       document.getElementById("cantidad")?.focus();
     }
   }
-
-  aplicarCantidad(event:KeyboardEvent){
+  
+  aplicarCantidadOCancelar(event:KeyboardEvent){
+    this.CantidadDeProducto=this.producto.get("formCantidad")?.value;
+    if(this.CantidadDeProducto>0){
+      this.habilitarCarrito=true;
+    }
     const agregarAlCarrito = document.getElementById("carrito")!;
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && this.habilitarCarrito==true) {
       agregarAlCarrito.click();
+    }
+    if (event.key === "Escape") {
+      this.cerrarDetalle();
+      this.producto.reset();
     }
   }
 
